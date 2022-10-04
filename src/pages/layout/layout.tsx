@@ -86,7 +86,9 @@ function Layout() : JSX.Element {
       <div className="wrapper">
         <Header />
         <main>
-          <Outlet />
+          <div className="page-content">
+            <Outlet />
+          </div>
         </main>
         <Footer />
       </div>
