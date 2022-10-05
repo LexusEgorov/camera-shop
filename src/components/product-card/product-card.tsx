@@ -1,40 +1,40 @@
-function ProductCard() : JSX.Element {
+import { Link } from 'react-router-dom';
+import { Camera } from '../../types/types';
+import ProductCardRating from '../product-card-rating/product-card-rating';
+
+type ProductCardProps = {
+  product: Camera;
+};
+
+function ProductCard({product} : ProductCardProps) : JSX.Element {
+  const {
+    id,
+    name,
+    price,
+    previewImg,
+    previewImg2x,
+    previewImgWebp,
+    previewImgWebp2x,
+    reviewCount,
+    rating,
+  } = product;
+
   return (
     <div className="product-card">
       <div className="product-card__img">
         <picture>
-          <source type="image/webp" srcSet="img/content/img1.webp, img/content/img1@2x.webp 2x" /><img src="img/content/img1.jpg" srcSet="img/content/img1@2x.jpg 2x" width={280} height={240} alt="Ретрокамера «Das Auge IV»" />
+          <source type="image/webp" srcSet={`${String(previewImgWebp)}, ${String(previewImgWebp2x)} 2x`}/>
+          <img src={previewImg} srcSet={`${String(previewImg2x)} 2x`} width={280} height={240} alt={name} />
         </picture>
       </div>
       <div className="product-card__info">
-        <div className="rate product-card__rate">
-          <svg width={17} height={16} aria-hidden="true">
-            <use xlinkHref="#icon-full-star" />
-          </svg>
-          <svg width={17} height={16} aria-hidden="true">
-            <use xlinkHref="#icon-full-star" />
-          </svg>
-          <svg width={17} height={16} aria-hidden="true">
-            <use xlinkHref="#icon-full-star" />
-          </svg>
-          <svg width={17} height={16} aria-hidden="true">
-            <use xlinkHref="#icon-star" />
-          </svg>
-          <svg width={17} height={16} aria-hidden="true">
-            <use xlinkHref="#icon-star" />
-          </svg>
-          <p className="visually-hidden">Рейтинг: 3</p>
-          <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>23</p>
-        </div>
-        <p className="product-card__title">Ретрокамера «Das Auge IV»</p>
-        <p className="product-card__price"><span className="visually-hidden">Цена:</span>73 450 ₽
-        </p>
+        <ProductCardRating rating={rating} reviewCount={reviewCount} />
+        <p className="product-card__title">{name}</p>
+        <p className="product-card__price"><span className="visually-hidden">Цена:</span> {price} ₽</p>
       </div>
       <div className="product-card__buttons">
-        <button className="btn btn--purple product-card__btn" type="button">Купить
-        </button>
-        <a className="btn btn--transparent" href="/#">Подробнее
-        </a>
+        <button className="btn btn--purple product-card__btn" type="button">Купить</button>
+        <Link className="btn btn--transparent" to={`/product/${id}`}>Подробнее</Link>
       </div>
     </div>
   );
