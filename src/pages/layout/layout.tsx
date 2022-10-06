@@ -1,8 +1,16 @@
-import { Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useParams } from 'react-router-dom';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
 
+const EMPTY_KEYS = 0;
+
 function Layout() : JSX.Element {
+  const params = useParams();
+
+  if(!params || Object.keys(params).length === EMPTY_KEYS){
+    return <Navigate to={'/catalog/1'} />;
+  }
+
   return (
     <>
       <div className="visually-hidden">
