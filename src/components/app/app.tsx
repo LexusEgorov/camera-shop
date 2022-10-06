@@ -10,7 +10,7 @@ function App(): JSX.Element {
     <Router>
       <Routes>
         <Route path={AppRoute.Root} element={<Layout />}>
-          <Route index element={<Catalog />}/>
+          <Route path={AppRoute.Catalog} element={<Catalog />}/>
           <Route path={AppRoute.Product} element={<Product />} />
         </Route>
         <Route path={AppRoute.AnyPage} element={<NotFound />} />
