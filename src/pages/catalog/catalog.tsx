@@ -13,7 +13,7 @@ import './style.css';
 
 function Catalog() : JSX.Element {
   const isPromoLoading = useAppSelector(getIsPromoLoading);
-  const isCamerasLoaded = useAppSelector(getIsCamerasLoading);
+  const isCamerasLoading = useAppSelector(getIsCamerasLoading);
 
   const products = useAppSelector(getCameras);
   const promo = useAppSelector(getPromo);
@@ -35,10 +35,10 @@ function Catalog() : JSX.Element {
             <div className="catalog__content">
               <CatalogSort />
               {
-                !isCamerasLoaded && products && <CatalogList products={products} currentPage={currentPage} outputCount={PAGINATION_OUTPUT_COUNT}/>
+                !isCamerasLoading && products && <CatalogList products={products} currentPage={currentPage} outputCount={PAGINATION_OUTPUT_COUNT}/>
               }
               {
-                !isCamerasLoaded && products && <Pagination pagesCount={pagesCount} currentPage={currentPage}/>
+                !isCamerasLoading && products && <Pagination pagesCount={pagesCount} currentPage={currentPage}/>
               }
             </div>
           </div>

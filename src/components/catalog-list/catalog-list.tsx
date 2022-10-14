@@ -12,7 +12,7 @@ function CatalogList({products, currentPage, outputCount} : CatalogListProps) : 
   const startIndex = (currentPage - 1) * outputCount;
   const endIndex = startIndex + outputCount;
 
-  if(startIndex > products.length - 1 || startIndex < 0){
+  if(products.length > 0 && (startIndex >= products.length || startIndex < 0)){
     return <Navigate to='/*' />;
   }
 
