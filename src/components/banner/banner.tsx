@@ -16,7 +16,7 @@ function Banner({promo} : BannerProps) : JSX.Element{
   } = promo;
 
   return (
-    <div className="banner">
+    <div className="banner fade-in">
       <picture>
         <source type="image/webp" srcSet={`${String(previewImgWebp)}, ${String(previewImgWebp2x)} 2x`} />
         <img src={previewImg} srcSet={`${String(previewImg2x)} 2x`} width="1280" height="280" alt="баннер" />

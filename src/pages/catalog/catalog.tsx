@@ -6,15 +6,26 @@ import CatalogList from '../../components/catalog-list/catalog-list';
 import CatalogSort from '../../components/catalog-sort/catalog-sort';
 import Pagination from '../../components/pagination/pagination';
 import { PAGINATION_OUTPUT_COUNT } from '../../const';
-import { products, promo } from '../../fish/fish';
+import { useAppSelector } from '../../hooks/hooks';
+import { getIsCamerasLoading, getIsPromoLoading } from '../../store/app-process/selectors';
+import { getCameras, getPromo } from '../../store/camera-data/selectors';
+import './style.css';
 
 function Catalog() : JSX.Element {
+  const isPromoLoading = useAppSelector(getIsPromoLoading);
+  const isCamerasLoading = useAppSelector(getIsCamerasLoading);
+
+  const products = useAppSelector(getCameras);
+  const promo = useAppSelector(getPromo);
+
   const currentPage = Number(useParams().page);
   const pagesCount = Math.ceil(products.length / PAGINATION_OUTPUT_COUNT);
 
   return (
     <>
-      <Banner promo={promo}/>
+      {
+        !isPromoLoading && promo && <Banner promo={promo}/>
+      }
       <Breadcrumbs />
       <section className="catalog">
         <div className="container">
@@ -23,8 +34,12 @@ function Catalog() : JSX.Element {
             <CatalogFilter />
             <div className="catalog__content">
               <CatalogSort />
-              <CatalogList products={products} currentPage={currentPage} outputCount={PAGINATION_OUTPUT_COUNT}/>
-              <Pagination pagesCount={pagesCount} currentPage={currentPage}/>
+              {
+                !isCamerasLoading && products && <CatalogList products={products} currentPage={currentPage} outputCount={PAGINATION_OUTPUT_COUNT}/>
+              }
+              {
+                !isCamerasLoading && products && <Pagination pagesCount={pagesCount} currentPage={currentPage}/>
+              }
             </div>
           </div>
         </div>
