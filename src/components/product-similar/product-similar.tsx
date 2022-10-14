@@ -1,6 +1,6 @@
 function ProductSimilar() : JSX.Element {
   return (
-    <div className="page-content__section">
+    <div className="page-content__section fade-in">
       <section className="product-similar">
         <div className="container">
           <h2 className="title title--h3">Похожие товары</h2>

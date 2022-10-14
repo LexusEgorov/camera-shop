@@ -1,6 +1,6 @@
 function ProductReview() : JSX.Element {
   return (
-    <div className="page-content__section">
+    <div className="page-content__section fade-in">
       <section className="review-block">
         <div className="container">
           <div className="page-content__headed">
