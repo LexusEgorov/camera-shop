@@ -1,12 +1,46 @@
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
 import ProductReview from '../../components/product-review/product-review';
 import ProductSimilar from '../../components/product-similar/product-similar';
 import UpButton from '../../components/up-btn/up-btn';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { fetchCameraAction, fetchCamerasAction, fetchReviewsAction, fetchSimilarAction } from '../../store/api-actions';
+import { setCurrent } from '../../store/camera-data/camera-data';
+import { getCamera } from '../../store/camera-data/selectors';
 
 function Product() : JSX.Element {
+  const dispatch = useAppDispatch();
+  const productId = Number(useParams().id);
+
+  useEffect(() => {
+    dispatch(fetchSimilarAction(productId));
+    dispatch(fetchReviewsAction(productId));
+    dispatch(setCurrent(productId));
+  });
+
+  let product = useAppSelector(getCamera);
+
+  useEffect(() => {
+    if(!product.id){
+      dispatch(fetchCamerasAction());
+      dispatch(fetchCameraAction(productId));
+    }
+  });
+
+  product = useAppSelector(getCamera);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  const {
+    name,
+  } = product;
+
   return (
     <>
-      <Breadcrumbs />
+      <Breadcrumbs productName={name}/>
       <div className="page-content__section">
         <section className="product">
           <div className="container">

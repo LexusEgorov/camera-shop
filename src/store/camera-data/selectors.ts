@@ -5,7 +5,7 @@ export const getCameras = (state: State) : Cameras => state[NameSpace.CameraData
 
 export const getPromo = (state: State) : Promo => state[NameSpace.CameraData].promo;
 
-export const getCamera = (state: State, id: number) : Camera | undefined => state[NameSpace.CameraData].cameras.find((camera) => camera.id === id);
+export const getCamera = (state: State) : Camera => state[NameSpace.CameraData].currentCamera;
 
 export const getReviews = (state: State) : Reviews => state[NameSpace.CameraData].currentCameraReviews;
 

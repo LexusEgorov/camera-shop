@@ -21,7 +21,12 @@ export const cameraData = createSlice({
       state.currentCameraSimilar = [];
     },
     setCurrent: (state, action) => {
-      state.currentCamera = action.payload;
+      const product = state.cameras.find((camera) => camera.id === action.payload);
+      if(product){
+        state.currentCamera = product;
+      } else {
+        state.currentCamera = {} as Camera;
+      }
     }
   },
   extraReducers(builder) {
@@ -44,4 +49,4 @@ export const cameraData = createSlice({
   },
 });
 
-export const {clearCurrent} = cameraData.actions;
+export const {clearCurrent, setCurrent} = cameraData.actions;
