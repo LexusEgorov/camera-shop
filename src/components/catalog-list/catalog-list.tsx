@@ -17,7 +17,7 @@ function CatalogList({products, currentPage, outputCount} : CatalogListProps) : 
   }
 
   return (
-    <div className="cards catalog__cards">
+    <div className="cards catalog__cards fade-in">
       {
         products.slice(startIndex, endIndex).map((product) => <ProductCard product={product} key={product.id}/>)
       }

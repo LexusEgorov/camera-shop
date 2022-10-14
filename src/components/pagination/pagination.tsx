@@ -37,7 +37,7 @@ function Pagination({pagesCount, currentPage} : PaginationProps) : JSX.Element {
   }
 
   return (
-    <div className="pagination">
+    <div className="pagination fade-in">
       <ul className="pagination__list">
         {paginationOutput}
       </ul>

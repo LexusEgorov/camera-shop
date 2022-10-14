@@ -1,3 +1,8 @@
+import { rootReducer } from '../store/root-reducer';
+import { store } from '../store/store';
+
+/*Структуры данных*/
+
 export type Promo = {
   id: number,
   name: string,
@@ -24,6 +29,46 @@ export type Camera = {
   reviewCount: number,
 }
 
+export type Review = {
+  id: string,
+  userName: string,
+  advantage: string,
+  disadvantage: string,
+  review: string,
+  rating: number,
+  createAt: string,
+  cameraId: number,
+}
+
+/*Псевдонимы типов*/
+
 export type Cameras = Camera[];
+export type Reviews = Review[];
 
+export type IsLoading = boolean;
+export type IsServerError = boolean;
 
+/*Типы хранилища*/
+
+export type AppDispatch = typeof store.dispatch;
+export type State = ReturnType<typeof store.getState>;
+export type Reducer = ReturnType<typeof rootReducer>;
+
+/*Инициализация состояний*/
+
+export type AppProcess = {
+  isCamerasLoading: IsLoading,
+  isPromoLoading: IsLoading,
+  isCameraLoading: IsLoading,
+  isSimilarLoading: IsLoading,
+  isReviewsLoading: IsLoading,
+  isServerError: IsServerError
+}
+
+export type CameraData = {
+  cameras: Cameras,
+  currentCamera: Camera,
+  currentCameraReviews: Reviews,
+  currentCameraSimilar: Cameras,
+  promo: Promo,
+}

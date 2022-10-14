@@ -1,11 +1,21 @@
+import { useEffect } from 'react';
+import { useAppDispatch } from '../../hooks/hooks';
 import { Route, Routes, BrowserRouter as Router } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import Catalog from '../../pages/catalog/catalog';
 import Layout from '../../pages/layout/layout';
 import NotFound from '../../pages/not-found/not-found';
 import Product from '../../pages/product/product';
+import { fetchCamerasAction, fetchPromoAction } from '../../store/api-actions';
 
 function App(): JSX.Element {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchPromoAction());
+    dispatch(fetchCamerasAction());
+  });
+
   return (
     <Router>
       <Routes>
