@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
-import { Navigate, useParams } from 'react-router-dom';
+import { Link, Navigate, useParams } from 'react-router-dom';
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
 import ProductReview from '../../components/product-review/product-review';
 import ProductSimilar from '../../components/product-similar/product-similar';
 import UpButton from '../../components/up-btn/up-btn';
+import { Tab } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { fetchCameraAction, fetchCamerasAction, fetchReviewsAction, fetchSimilarAction } from '../../store/api-actions';
 import { getIsServerError } from '../../store/app-process/selectors';
@@ -12,7 +13,8 @@ import { getCamera } from '../../store/camera-data/selectors';
 
 function Product() : JSX.Element {
   const dispatch = useAppDispatch();
-  const productId = Number(useParams().id);
+  const {id, tab} = useParams();
+  const productId = Number(id);
   const isError = useAppSelector(getIsServerError);
 
   useEffect(() => {
@@ -46,7 +48,39 @@ function Product() : JSX.Element {
     previewImgWebp2x,
     level,
     price,
+    vendorCode,
   } = product;
+
+  const getTab = (currentTab: string | undefined) => {
+    if(currentTab === Tab.Description){
+      return (
+        <div className="tabs__element is-active">
+          <div className="product__tabs-text">
+            {description}
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="tabs__element is-active">
+        <ul className="product__tabs-list">
+          <li className="item-list"><span className="item-list__title">Артикул:</span>
+            <p className="item-list__text">{vendorCode}</p>
+          </li>
+          <li className="item-list"><span className="item-list__title">Категория:</span>
+            <p className="item-list__text">{category}</p>
+          </li>
+          <li className="item-list"><span className="item-list__title">Тип камеры:</span>
+            <p className="item-list__text">{type}</p>
+          </li>
+          <li className="item-list"><span className="item-list__title">Уровень:</span>
+            <p className="item-list__text">{level}</p>
+          </li>
+        </ul>
+      </div>
+    );
+  };
 
   if(isError){
     return <Navigate to='*' />;
@@ -94,31 +128,11 @@ function Product() : JSX.Element {
               </button>
               <div className="tabs product__tabs">
                 <div className="tabs__controls product__tabs-controls">
-                  <button className="tabs__control" type="button">Характеристики</button>
-                  <button className="tabs__control is-active" type="button">Описание</button>
+                  <Link to={`/product/${id}/${Tab.Characteristics}`} className={`tabs__control ${tab === Tab.Characteristics ? 'is-active' : ''}`} type="button">Характеристики</Link>
+                  <Link to={`/product/${id}/${Tab.Description}`} className={`tabs__control ${tab === Tab.Description ? 'is-active' : ''}`} type="button">Описание</Link>
                 </div>
                 <div className="tabs__content">
-                  <div className="tabs__element">
-                    <ul className="product__tabs-list">
-                      <li className="item-list"><span className="item-list__title">Артикул:</span>
-                        <p className="item-list__text"> DA4IU67AD5</p>
-                      </li>
-                      <li className="item-list"><span className="item-list__title">Категория:</span>
-                        <p className="item-list__text">{category}</p>
-                      </li>
-                      <li className="item-list"><span className="item-list__title">Тип камеры:</span>
-                        <p className="item-list__text">{type}</p>
-                      </li>
-                      <li className="item-list"><span className="item-list__title">Уровень:</span>
-                        <p className="item-list__text">{level}</p>
-                      </li>
-                    </ul>
-                  </div>
-                  <div className="tabs__element is-active">
-                    <div className="product__tabs-text">
-                      {description}
-                    </div>
-                  </div>
+                  {getTab(tab)}
                 </div>
               </div>
             </div>
