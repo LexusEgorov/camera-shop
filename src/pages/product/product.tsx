@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { fetchCameraAction, fetchCamerasAction, fetchReviewsAction, fetchSimilarAction } from '../../store/api-actions';
 import { getIsServerError } from '../../store/app-process/selectors';
 import { setCurrent } from '../../store/camera-data/camera-data';
-import { getCamera } from '../../store/camera-data/selectors';
+import { getCamera, getSimilar } from '../../store/camera-data/selectors';
 
 function Product() : JSX.Element {
   const dispatch = useAppDispatch();
@@ -23,7 +23,7 @@ function Product() : JSX.Element {
     dispatch(fetchReviewsAction(productId));
     dispatch(setCurrent(productId));
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [productId]);
 
   let product = useAppSelector(getCamera);
 
@@ -33,9 +33,10 @@ function Product() : JSX.Element {
       dispatch(fetchCameraAction(productId));
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [productId]);
 
   product = useAppSelector(getCamera);
+  const similarProducts = useAppSelector(getSimilar);
 
   const {
     name,
@@ -139,7 +140,9 @@ function Product() : JSX.Element {
           </div>
         </section>
       </div>
-      <ProductSimilar />
+      {
+        similarProducts.length > 0 && <ProductSimilar productsSimilar={similarProducts}/>
+      }
       <ProductReview />
       <UpButton />
     </>
