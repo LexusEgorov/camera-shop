@@ -1,23 +1,27 @@
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
 import ProductReview from '../../components/product-review/product-review';
 import ProductSimilar from '../../components/product-similar/product-similar';
 import UpButton from '../../components/up-btn/up-btn';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { fetchCameraAction, fetchCamerasAction, fetchReviewsAction, fetchSimilarAction } from '../../store/api-actions';
+import { getIsServerError } from '../../store/app-process/selectors';
 import { setCurrent } from '../../store/camera-data/camera-data';
 import { getCamera } from '../../store/camera-data/selectors';
 
 function Product() : JSX.Element {
   const dispatch = useAppDispatch();
   const productId = Number(useParams().id);
+  const isError = useAppSelector(getIsServerError);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     dispatch(fetchSimilarAction(productId));
     dispatch(fetchReviewsAction(productId));
     dispatch(setCurrent(productId));
-  });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   let product = useAppSelector(getCamera);
 
@@ -26,13 +30,10 @@ function Product() : JSX.Element {
       dispatch(fetchCamerasAction());
       dispatch(fetchCameraAction(productId));
     }
-  });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   product = useAppSelector(getCamera);
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   const {
     name,
@@ -46,6 +47,10 @@ function Product() : JSX.Element {
     level,
     price,
   } = product;
+
+  if(isError){
+    return <Navigate to='*' />;
+  }
 
   return (
     <>
