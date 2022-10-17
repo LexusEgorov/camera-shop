@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { Tab } from '../../const';
 import { Camera } from '../../types/types';
 import ProductCardRating from '../product-card-rating/product-card-rating';
 
@@ -34,7 +35,7 @@ function ProductCard({product} : ProductCardProps) : JSX.Element {
       </div>
       <div className="product-card__buttons">
         <button className="btn btn--purple product-card__btn" type="button">Купить</button>
-        <Link className="btn btn--transparent" to={`/product/${id}`}>Подробнее</Link>
+        <Link className="btn btn--transparent" to={`/product/${id}/${Tab.Description}`}>Подробнее</Link>
       </div>
     </div>
   );

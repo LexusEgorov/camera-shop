@@ -3,7 +3,7 @@ export const PAGINATION_OUTPUT_COUNT = 9;
 export enum AppRoute {
   Root = '/',
   Catalog = '/catalog/:page',
-  Product = '/product/:id',
+  Product = '/product/:id/:tab',
   AnyPage = '*',
 }
 
@@ -17,4 +17,9 @@ export enum APIRoute {
   Promo = '/promo',
   Reviews = '/reviews',
   Similar = '/similar',
+}
+
+export enum Tab {
+  Characteristics = 'characteristics',
+  Description = 'description'
 }
