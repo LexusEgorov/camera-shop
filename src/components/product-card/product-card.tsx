@@ -5,9 +5,10 @@ import ProductCardRating from '../product-card-rating/product-card-rating';
 
 type ProductCardProps = {
   product: Camera;
+  isActive?: boolean;
 };
 
-function ProductCard({product} : ProductCardProps) : JSX.Element {
+function ProductCard({product, isActive} : ProductCardProps) : JSX.Element {
   const {
     id,
     name,
@@ -21,7 +22,7 @@ function ProductCard({product} : ProductCardProps) : JSX.Element {
   } = product;
 
   return (
-    <div className="product-card">
+    <div className={`product-card ${isActive ? 'is-active' : ''}`}>
       <div className="product-card__img">
         <picture>
           <source type="image/webp" srcSet={`${previewImgWebp}, ${previewImgWebp2x} 2x`}/>
