@@ -10,13 +10,12 @@ type ProductSimilarProps = {
   productsSimilar: Cameras,
 }
 
-function ProductSimilar({productsSimilar} : ProductSimilarProps) : JSX.Element {
+function ProductSimilar({productsSimilar} : ProductSimilarProps) : JSX.Element | null {
   const [leftProductIndex, setLeftProductIndex] = useState(SLIDER_START);
   const [rightProductIndex, setRightProductIndex] = useState(SLIDER_END);
 
   const handlePrevElementClick = () => {
-    // eslint-disable-next-line no-console
-    console.log('тыцк-');
+
     if(rightProductIndex - 1 >= SLIDER_END){
       setRightProductIndex(rightProductIndex - 1);
       setLeftProductIndex(leftProductIndex - 1);
@@ -24,13 +23,15 @@ function ProductSimilar({productsSimilar} : ProductSimilarProps) : JSX.Element {
   };
 
   const handleNextElementClick = () => {
-    // eslint-disable-next-line no-console
-    console.log('тыцк+');
     if(rightProductIndex + 1 <= productsSimilar.length - 1){
       setRightProductIndex(rightProductIndex + 1);
       setLeftProductIndex(leftProductIndex + 1);
     }
   };
+
+  if(productsSimilar.length === 0){
+    return null;
+  }
 
   return (
     <div className="page-content__section fade-in">
