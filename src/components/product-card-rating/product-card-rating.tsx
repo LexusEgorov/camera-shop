@@ -3,11 +3,15 @@ const MAX_RATE = 5;
 
 type ProductCardRatingProps = {
   rating: number;
-  reviewCount: number;
+  reviewCount?: number;
+  blockClass?: string;
 }
 
-function ProductCardRating({rating, reviewCount} : ProductCardRatingProps ) : JSX.Element {
+function ProductCardRating({rating, reviewCount, blockClass} : ProductCardRatingProps ) : JSX.Element {
   const stars = [];
+
+  const className = blockClass ? blockClass : 'rate product-card__rate';
+
   for(let i = MIN_RATE; i <= MAX_RATE; i++){
     stars.push(
       <svg width={17} height={16} aria-hidden="true" key={i}>
@@ -19,10 +23,12 @@ function ProductCardRating({rating, reviewCount} : ProductCardRatingProps ) : JS
   }
 
   return (
-    <div className="rate product-card__rate">
+    <div className={className}>
       {stars}
       <p className="visually-hidden">Рейтинг: {rating}</p>
-      <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>{reviewCount}</p>
+      {
+        reviewCount && <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>{reviewCount}</p>
+      }
     </div>
   );
 }
