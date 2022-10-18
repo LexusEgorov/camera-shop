@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
+import ProductCardRating from '../../components/product-card-rating/product-card-rating';
 import ProductReview from '../../components/product-review/product-review';
 import ProductSimilar from '../../components/product-similar/product-similar';
 import UpButton from '../../components/up-btn/up-btn';
@@ -50,6 +51,8 @@ function Product() : JSX.Element {
     level,
     price,
     vendorCode,
+    rating,
+    reviewCount
   } = product;
 
   const getTab = (currentTab: string | undefined) => {
@@ -101,25 +104,7 @@ function Product() : JSX.Element {
             </div>
             <div className="product__content">
               <h1 className="title title--h3">{name}</h1>
-              <div className="rate product__rate">
-                <svg width={17} height={16} aria-hidden="true">
-                  <use xlinkHref="#icon-full-star" />
-                </svg>
-                <svg width={17} height={16} aria-hidden="true">
-                  <use xlinkHref="#icon-full-star" />
-                </svg>
-                <svg width={17} height={16} aria-hidden="true">
-                  <use xlinkHref="#icon-full-star" />
-                </svg>
-                <svg width={17} height={16} aria-hidden="true">
-                  <use xlinkHref="#icon-full-star" />
-                </svg>
-                <svg width={17} height={16} aria-hidden="true">
-                  <use xlinkHref="#icon-star" />
-                </svg>
-                <p className="visually-hidden">Рейтинг: 4</p>
-                <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>12</p>
-              </div>
+              <ProductCardRating rating={rating} reviewCount={reviewCount} blockClass='rate product__rate' />
               <p className="product__price"><span className="visually-hidden">Цена:</span>{price} ₽</p>
               <button className="btn btn--purple" type="button">
                 <svg width={24} height={16} aria-hidden="true">
