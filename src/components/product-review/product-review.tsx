@@ -5,7 +5,11 @@ import UserReview from '../user-review/user-review';
 
 const REVIEWS_BLOCK = 3;
 
-function ProductReview() : JSX.Element {
+type ProductReviewProps = {
+  setIsModalOpened: React.Dispatch<React.SetStateAction<boolean>>,
+}
+
+function ProductReview({setIsModalOpened} : ProductReviewProps) : JSX.Element {
   const reviews = useAppSelector(getReviews);
 
   const [reviewsCount, setReviewsCount] = useState(REVIEWS_BLOCK);
@@ -22,7 +26,11 @@ function ProductReview() : JSX.Element {
         <div className="container">
           <div className="page-content__headed">
             <h2 className="title title--h3">Отзывы</h2>
-            <button className="btn" type="button">Оставить свой отзыв</button>
+            <button className="btn" type="button"
+              onClick={() => setIsModalOpened(true)}
+            >
+              Оставить свой отзыв
+            </button>
           </div>
           <ul className="review-block__list">
             {
