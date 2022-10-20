@@ -40,6 +40,15 @@ export type Review = {
   cameraId: number,
 }
 
+export type ReviewPost = {
+  cameraId: number,
+  userName: string,
+  advantage: string,
+  disadvantage: string,
+  review: string,
+  rating: number,
+}
+
 /*Псевдонимы типов*/
 
 export type Cameras = Camera[];
