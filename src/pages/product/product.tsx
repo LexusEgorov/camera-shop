@@ -1,6 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
+import ModalAddReview from '../../components/modal-add-review/modal-add-review';
 import ProductCardRating from '../../components/product-card-rating/product-card-rating';
 import ProductReview from '../../components/product-review/product-review';
 import ProductSimilar from '../../components/product-similar/product-similar';
@@ -25,6 +26,8 @@ function Product() : JSX.Element {
     dispatch(setCurrent(productId));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productId]);
+
+  const [isModalOpened, setIsModalOpened] = useState(false);
 
   let product = useAppSelector(getCamera);
 
@@ -128,8 +131,9 @@ function Product() : JSX.Element {
       {
         similarProducts.length > 0 && <ProductSimilar productsSimilar={similarProducts}/>
       }
-      <ProductReview />
+      <ProductReview setIsModalOpened={setIsModalOpened}/>
       <UpButton />
+      <ModalAddReview isOpened={isModalOpened} setIsOpened={setIsModalOpened}/>
     </>
   );
 }
