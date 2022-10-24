@@ -15,9 +15,7 @@ function ProductReview({setIsModalOpened} : ProductReviewProps) : JSX.Element {
   const [reviewsCount, setReviewsCount] = useState(REVIEWS_BLOCK);
 
   const handleMoreButtonClick = () => {
-    if(reviewsCount + REVIEWS_BLOCK <= reviews.length){
-      setReviewsCount(reviewsCount + REVIEWS_BLOCK);
-    }
+    setReviewsCount(reviewsCount + REVIEWS_BLOCK);
   };
 
   return (

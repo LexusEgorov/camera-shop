@@ -21,25 +21,22 @@ function Product() : JSX.Element {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    dispatch(setCurrent(productId));
     dispatch(fetchSimilarAction(productId));
     dispatch(fetchReviewsAction(productId));
-    dispatch(setCurrent(productId));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [productId]);
+  }, [dispatch, productId]);
 
   const [isModalOpened, setIsModalOpened] = useState(false);
 
-  let product = useAppSelector(getCamera);
+  const product = useAppSelector(getCamera);
 
   useEffect(() => {
     if(!product.id){
       dispatch(fetchCamerasAction());
       dispatch(fetchCameraAction(productId));
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [productId]);
+  }, [dispatch, product.id, productId]);
 
-  product = useAppSelector(getCamera);
   const similarProducts = useAppSelector(getSimilar);
 
   const {
