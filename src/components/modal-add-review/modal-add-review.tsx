@@ -26,7 +26,9 @@ const RATINGS = [
     title: 'Ужасно'
   }
 ];
+
 const MIN_COMMENT_LENGTH = 5;
+const X_SCROLL = 1150;
 
 type ModalAddReviewProps = {
   isOpened: boolean,
@@ -148,6 +150,10 @@ function ModalAddReview({isOpened, setIsOpened} : ModalAddReviewProps) : JSX.Ele
   useEffect(() => {
     if(isOpened){
       document.addEventListener('keydown', handleCloseModalKeydown);
+      document.body.style.overflow = 'hidden';
+      window.scrollTo(0, X_SCROLL);
+    } else {
+      document.body.style.overflow = 'visible';
     }
   }, [handleCloseModalKeydown, isOpened]);
 
