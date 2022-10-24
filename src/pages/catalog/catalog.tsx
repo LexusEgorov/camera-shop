@@ -10,6 +10,7 @@ import { PAGINATION_OUTPUT_COUNT } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { resetError } from '../../store/app-process/app-process';
 import { getIsCamerasLoading, getIsPromoLoading } from '../../store/app-process/selectors';
+import { clearCurrent } from '../../store/camera-data/camera-data';
 import { getCameras, getPromo } from '../../store/camera-data/selectors';
 import './style.css';
 
@@ -18,6 +19,7 @@ function Catalog() : JSX.Element {
 
   useEffect(() => {
     dispatch(resetError());
+    dispatch(clearCurrent());
   }, [dispatch]);
 
   const isPromoLoading = useAppSelector(getIsPromoLoading);
