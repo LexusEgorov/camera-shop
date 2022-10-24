@@ -1,4 +1,5 @@
 import { Fragment, useCallback, useEffect, useState } from 'react';
+import ReactFocusLock from 'react-focus-lock';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { sendReviewAction } from '../../store/api-actions';
 import { getCamera } from '../../store/camera-data/selectors';
@@ -152,94 +153,96 @@ function ModalAddReview({isOpened, setIsOpened} : ModalAddReviewProps) : JSX.Ele
 
   return (
     <div className={`modal ${isOpened ? 'is-active' : ''}`} >
-      <div className="modal__wrapper">
-        <div className="modal__overlay" onClick={handleCloseModalClick}/>
-        <div className="modal__content">
-          <p className="title title--h4">Оставить отзыв</p>
-          <div className="form-review">
-            <form method="post" onSubmit={handleSubmitModal}>
-              <div className="form-review__rate">
-                <fieldset className={`rate form-review__item ${isRateError ? 'is-invalid' : ''}`}>
-                  <legend className="rate__caption">Рейтинг
-                    <svg width={9} height={9} aria-hidden="true">
-                      <use xlinkHref="#icon-snowflake" />
-                    </svg>
-                  </legend>
-                  <div className="rate__bar">
-                    <div className="rate__group">
-                      {
-                        RATINGS.map((rating) => (
-                          <Fragment key={rating.rate}>
-                            <input className="visually-hidden" id={`star-${rating.rate}`} name="rate" type="radio" defaultValue={rating.rate}
-                              onChange={handleRateChange}
-                            />
-                            <label className="rate__label" htmlFor={`star-${rating.rate}`} title={rating.title} />
-                          </Fragment>
-                        ))
-                      }
+      <ReactFocusLock>
+        <div className="modal__wrapper">
+          <div className="modal__overlay" onClick={handleCloseModalClick}/>
+          <div className="modal__content">
+            <p className="title title--h4">Оставить отзыв</p>
+            <div className="form-review">
+              <form method="post" onSubmit={handleSubmitModal}>
+                <div className="form-review__rate">
+                  <fieldset className={`rate form-review__item ${isRateError ? 'is-invalid' : ''}`}>
+                    <legend className="rate__caption">Рейтинг
+                      <svg width={9} height={9} aria-hidden="true">
+                        <use xlinkHref="#icon-snowflake" />
+                      </svg>
+                    </legend>
+                    <div className="rate__bar">
+                      <div className="rate__group">
+                        {
+                          RATINGS.map((rating) => (
+                            <Fragment key={rating.rate}>
+                              <input className="visually-hidden" id={`star-${rating.rate}`} name="rate" type="radio" defaultValue={rating.rate}
+                                onChange={handleRateChange}
+                              />
+                              <label className="rate__label" htmlFor={`star-${rating.rate}`} title={rating.title} />
+                            </Fragment>
+                          ))
+                        }
+                      </div>
+                      <div className="rate__progress"><span className="rate__stars">{rate}</span> <span>/</span> <span className="rate__all-stars">5</span>
+                      </div>
                     </div>
-                    <div className="rate__progress"><span className="rate__stars">{rate}</span> <span>/</span> <span className="rate__all-stars">5</span>
-                    </div>
+                    <p className="rate__message">Нужно оценить товар</p>
+                  </fieldset>
+                  <div className={`custom-input form-review__item ${isNameError ? 'is-invalid' : ''}`}>
+                    <label>
+                      <span className="custom-input__label">Ваше имя
+                        <svg width={9} height={9} aria-hidden="true">
+                          <use xlinkHref="#icon-snowflake" />
+                        </svg>
+                      </span>
+                      <input type="text" name="user-name" placeholder="Введите ваше имя" onInput={handleNameInput}/>
+                    </label>
+                    <p className="custom-input__error">Нужно указать имя</p>
                   </div>
-                  <p className="rate__message">Нужно оценить товар</p>
-                </fieldset>
-                <div className={`custom-input form-review__item ${isNameError ? 'is-invalid' : ''}`}>
-                  <label>
-                    <span className="custom-input__label">Ваше имя
-                      <svg width={9} height={9} aria-hidden="true">
-                        <use xlinkHref="#icon-snowflake" />
-                      </svg>
-                    </span>
-                    <input type="text" name="user-name" placeholder="Введите ваше имя" onInput={handleNameInput}/>
-                  </label>
-                  <p className="custom-input__error">Нужно указать имя</p>
+                  <div className={`custom-input form-review__item ${isAdvantagesError ? 'is-invalid' : ''}`}>
+                    <label>
+                      <span className="custom-input__label">Достоинства
+                        <svg width={9} height={9} aria-hidden="true">
+                          <use xlinkHref="#icon-snowflake" />
+                        </svg>
+                      </span>
+                      <input type="text" name="user-plus" placeholder="Основные преимущества товара" onInput={handleAdvantagesInput}/>
+                    </label>
+                    <p className="custom-input__error">Нужно указать достоинства</p>
+                  </div>
+                  <div className={`custom-input form-review__item ${isDisadvantagesError ? 'is-invalid' : ''}`}>
+                    <label>
+                      <span className="custom-input__label">Недостатки
+                        <svg width={9} height={9} aria-hidden="true">
+                          <use xlinkHref="#icon-snowflake" />
+                        </svg>
+                      </span>
+                      <input type="text" name="user-minus" placeholder="Главные недостатки товара" onInput={handleDisadvantagesInput}/>
+                    </label>
+                    <p className="custom-input__error">Нужно указать недостатки</p>
+                  </div>
+                  <div className={`custom-textarea form-review__item ${isCommentError ? 'is-invalid' : ''}`}>
+                    <label>
+                      <span className="custom-textarea__label">Комментарий
+                        <svg width={9} height={9} aria-hidden="true">
+                          <use xlinkHref="#icon-snowflake" />
+                        </svg>
+                      </span>
+                      <textarea name="user-comment" placeholder="Поделитесь своим опытом покупки" defaultValue={''} onInput={handleCommentInput}/>
+                    </label>
+                    <div className="custom-textarea__error">Нужно добавить комментарий</div>
+                  </div>
                 </div>
-                <div className={`custom-input form-review__item ${isAdvantagesError ? 'is-invalid' : ''}`}>
-                  <label>
-                    <span className="custom-input__label">Достоинства
-                      <svg width={9} height={9} aria-hidden="true">
-                        <use xlinkHref="#icon-snowflake" />
-                      </svg>
-                    </span>
-                    <input type="text" name="user-plus" placeholder="Основные преимущества товара" onInput={handleAdvantagesInput}/>
-                  </label>
-                  <p className="custom-input__error">Нужно указать достоинства</p>
-                </div>
-                <div className={`custom-input form-review__item ${isDisadvantagesError ? 'is-invalid' : ''}`}>
-                  <label>
-                    <span className="custom-input__label">Недостатки
-                      <svg width={9} height={9} aria-hidden="true">
-                        <use xlinkHref="#icon-snowflake" />
-                      </svg>
-                    </span>
-                    <input type="text" name="user-minus" placeholder="Главные недостатки товара" onInput={handleDisadvantagesInput}/>
-                  </label>
-                  <p className="custom-input__error">Нужно указать недостатки</p>
-                </div>
-                <div className={`custom-textarea form-review__item ${isCommentError ? 'is-invalid' : ''}`}>
-                  <label>
-                    <span className="custom-textarea__label">Комментарий
-                      <svg width={9} height={9} aria-hidden="true">
-                        <use xlinkHref="#icon-snowflake" />
-                      </svg>
-                    </span>
-                    <textarea name="user-comment" placeholder="Поделитесь своим опытом покупки" defaultValue={''} onInput={handleCommentInput}/>
-                  </label>
-                  <div className="custom-textarea__error">Нужно добавить комментарий</div>
-                </div>
-              </div>
-              <button className="btn btn--purple form-review__btn" type="submit">Отправить отзыв</button>
-            </form>
+                <button className="btn btn--purple form-review__btn" type="submit">Отправить отзыв</button>
+              </form>
+            </div>
+            <button className="cross-btn" type="button" aria-label="Закрыть попап"
+              onClick={handleCloseModalClick}
+            >
+              <svg width={10} height={10} aria-hidden="true">
+                <use xlinkHref="#icon-close" />
+              </svg>
+            </button>
           </div>
-          <button className="cross-btn" type="button" aria-label="Закрыть попап"
-            onClick={handleCloseModalClick}
-          >
-            <svg width={10} height={10} aria-hidden="true">
-              <use xlinkHref="#icon-close" />
-            </svg>
-          </button>
         </div>
-      </div>
+      </ReactFocusLock>
     </div>
   );
 }
