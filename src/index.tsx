@@ -11,20 +11,22 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-  <Provider store={store}>
-    <ToastContainer
-      position="top-right"
-      autoClose={5000}
-      limit={5}
-      hideProgressBar={false}
-      newestOnTop={false}
-      closeOnClick
-      rtl={false}
-      pauseOnFocusLoss
-      draggable
-      pauseOnHover
-      theme="light"
-    />
-    <App />
-  </Provider>,
+  <React.StrictMode>
+    <Provider store={store}>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        limit={7}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+      <App />
+    </Provider>
+  </React.StrictMode>,
 );

@@ -31,78 +31,85 @@ export const appProcess = createSlice({
   extraReducers(builder) {
     builder
       .addCase(fetchCameraAction.pending, (state) => {
-        cameraToast = toast.loading('Загружаем камеру');
-        state.isCameraLoading = true;
+        if(!state.isCameraLoading){
+          cameraToast = toast.loading('Загружаем камеру');
+          state.isCameraLoading = true;
+        }
       })
       .addCase(fetchCamerasAction.pending, (state) => {
-        camerasToast = toast.loading('Загружаем камеру');
-        state.isCamerasLoading = true;
+        if(!state.isCamerasLoading){
+          camerasToast = toast.loading('Загружаем камеры');
+          state.isCamerasLoading = true;
+        }
       })
       .addCase(fetchPromoAction.pending, (state) => {
-        promoToast = toast.loading('Загружаем промо');
-        state.isPromoLoading = true;
+        if(!state.isPromoLoading){
+          promoToast = toast.loading('Загружаем промо');
+          state.isPromoLoading = true;
+        }
       })
       .addCase(fetchSimilarAction.pending, (state) => {
-        similarToast = toast.loading('Загружаем похожие камеры');
-        state.isSimilarLoading = true;
+        if(!state.isSimilarLoading){
+          similarToast = toast.loading('Загружаем похожие камеры');
+          state.isSimilarLoading = true;
+        }
       })
       .addCase(fetchReviewsAction.pending, (state) => {
-        reviewsToast = toast.loading('Загружаем отзывы');
-        state.isReviewsLoading = true;
+        if(!state.isReviewsLoading){
+          reviewsToast = toast.loading('Загружаем отзывы');
+          state.isReviewsLoading = true;
+        }
       })
       .addCase(sendReviewAction.pending, () => {
         sendReviewToast = toast.loading('Отправляем отзыв');
       })
       .addCase(fetchCameraAction.fulfilled, (state) => {
-        toast.dismiss(cameraToast);
+        toast.update(cameraToast, {render: 'Камера загружена', type: 'success', isLoading: false, autoClose: 3000});
         state.isCameraLoading = false;
       })
       .addCase(fetchCamerasAction.fulfilled, (state) => {
-        toast.dismiss(camerasToast);
+        toast.update(camerasToast, {render: 'Каталог загружен', type: 'success', isLoading: false, autoClose: 3000});
         state.isCamerasLoading = false;
       })
       .addCase(fetchPromoAction.fulfilled, (state) => {
-        toast.dismiss(promoToast);
+        toast.update(promoToast, {render: 'Промо загружено', type: 'success', isLoading: false, autoClose: 3000});
         state.isPromoLoading = false;
       })
       .addCase(fetchSimilarAction.fulfilled, (state) => {
-        toast.dismiss(similarToast);
+        toast.update(similarToast, {render: 'Список похожих загружен', type: 'success', isLoading: false, autoClose: 3000});
         state.isSimilarLoading = false;
       })
       .addCase(fetchReviewsAction.fulfilled, (state) => {
-        toast.dismiss(reviewsToast);
+        toast.update(reviewsToast, {render: 'Отзывы загружены', type: 'success', isLoading: false, autoClose: 3000});
         state.isReviewsLoading = false;
       })
       .addCase(sendReviewAction.fulfilled, () => {
         toast.dismiss(sendReviewToast);
       })
       .addCase(fetchCameraAction.rejected, (state) => {
-        toast.update(cameraToast, {render: 'Не удалось загрузить камеру', type: 'error'});
+        toast.update(cameraToast, {render: 'Не удалось загрузить камеру', type: 'error', isLoading: false, autoClose: 3000});
         state.isCameraLoading = false;
         state.isServerError = true;
       })
       .addCase(fetchCamerasAction.rejected, (state) => {
-        toast.update(camerasToast, {render: 'Не удалось загрузить камеры', type: 'error'});
+        toast.update(camerasToast, {render: 'Не удалось загрузить камеры', type: 'error', isLoading: false, autoClose: 3000});
         state.isCamerasLoading = false;
         state.isServerError = true;
       })
       .addCase(fetchPromoAction.rejected, (state) => {
-        toast.update(promoToast, {render: 'Не удалось загрузить промо', type: 'error'});
+        toast.update(promoToast, {render: 'Не удалось загрузить промо', type: 'error', isLoading: false, autoClose: 3000});
         state.isPromoLoading = false;
-        state.isServerError = true;
       })
       .addCase(fetchSimilarAction.rejected, (state) => {
-        toast.update(similarToast, {render: 'Не удалось загрузить похожие камеры', type: 'error'});
+        toast.update(similarToast, {render: 'Не удалось загрузить похожие камеры', type: 'error', isLoading: false, autoClose: 3000});
         state.isSimilarLoading = false;
-        state.isServerError = true;
       })
       .addCase(fetchReviewsAction.rejected, (state) => {
-        toast.update(reviewsToast, {render: 'Не удалось загрузить отзывы', type: 'error'});
+        toast.update(reviewsToast, {render: 'Не удалось загрузить отзывы', type: 'error', isLoading: false, autoClose: 3000});
         state.isReviewsLoading = false;
-        state.isServerError = true;
       })
       .addCase(sendReviewAction.rejected, () => {
-        toast.update(sendReviewToast, {render: 'Не удалось отправить отзыв', type: 'error'});
+        toast.update(sendReviewToast, {render: 'Не удалось отправить отзыв', type: 'error', isLoading: false, autoClose: 3000});
       });
   },
 });
