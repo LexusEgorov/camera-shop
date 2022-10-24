@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Tab } from '../../const';
+import { useAppDispatch } from '../../hooks/hooks';
+import { setCurrent } from '../../store/camera-data/camera-data';
 import { Camera } from '../../types/types';
 import ProductCardRating from '../product-card-rating/product-card-rating';
 
@@ -9,6 +11,8 @@ type ProductCardProps = {
 };
 
 function ProductCard({product, isActive} : ProductCardProps) : JSX.Element {
+  const dispatch = useAppDispatch();
+
   const {
     id,
     name,
@@ -20,6 +24,8 @@ function ProductCard({product, isActive} : ProductCardProps) : JSX.Element {
     reviewCount,
     rating,
   } = product;
+
+  const handleShowCameraClick = () => dispatch(setCurrent(id));
 
   return (
     <div className={`product-card ${isActive ? 'is-active' : ''}`}>
@@ -36,7 +42,11 @@ function ProductCard({product, isActive} : ProductCardProps) : JSX.Element {
       </div>
       <div className="product-card__buttons">
         <button className="btn btn--purple product-card__btn" type="button">Купить</button>
-        <Link className="btn btn--transparent" to={`/product/${id}/${Tab.Description}`}>Подробнее</Link>
+        <Link className="btn btn--transparent" to={`/product/${id}/${Tab.Description}`}
+          onClick={handleShowCameraClick}
+        >
+          Подробнее
+        </Link>
       </div>
     </div>
   );

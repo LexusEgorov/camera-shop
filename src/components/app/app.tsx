@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useAppDispatch } from '../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { Route, Routes, BrowserRouter as Router } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import Catalog from '../../pages/catalog/catalog';
@@ -7,14 +7,24 @@ import Layout from '../../pages/layout/layout';
 import NotFound from '../../pages/not-found/not-found';
 import Product from '../../pages/product/product';
 import { fetchCamerasAction, fetchPromoAction } from '../../store/api-actions';
+import { getIsServerError } from '../../store/app-process/selectors';
+import { toast } from 'react-toastify';
 
 function App(): JSX.Element {
+  const isError = useAppSelector(getIsServerError);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(fetchPromoAction());
     dispatch(fetchCamerasAction());
-  });
+  }, [dispatch]);
+
+  useEffect(() => {
+    if(isError){
+      toast.dismiss();
+      toast.error('Данные не были загружены!');
+    }
+  }, [isError]);
 
   return (
     <Router>

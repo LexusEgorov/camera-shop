@@ -1,5 +1,20 @@
 export const PAGINATION_OUTPUT_COUNT = 9;
 
+export enum Months {
+  'Января',
+  'Февраля',
+  'Марта',
+  'Апреля',
+  'Мая',
+  'Июня',
+  'Июля',
+  'Августа',
+  'Сентября',
+  'Октября',
+  'Ноября',
+  'Декабря',
+}
+
 export enum AppRoute {
   Root = '/',
   Catalog = '/catalog/:page',
