@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useEffect, useState } from 'react';
+import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import ReactFocusLock from 'react-focus-lock';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { sendReviewAction } from '../../store/api-actions';
@@ -27,9 +27,11 @@ const RATINGS = [
   }
 ];
 
-const MIN_COMMENT_LENGTH = 5;
 const X_SCROLL = 1150;
 const MODAL_DELAY = 500;
+
+const EMPTY_FIELD = '';
+const EMPTY_RATE = 0;
 
 type ModalAddReviewProps = {
   isOpened: boolean,
@@ -39,8 +41,9 @@ type ModalAddReviewProps = {
 function ModalAddReview({isOpened, setIsOpened} : ModalAddReviewProps) : JSX.Element {
   const {id} = useAppSelector(getCamera);
   const dispatch = useAppDispatch();
+  const formRef = useRef<HTMLFormElement | null>(null);
 
-  const [isSuccess, setIsSuccess] = useState(true);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const [rate, setRate] = useState(0);
   const [name, setName] = useState('');
@@ -54,7 +57,28 @@ function ModalAddReview({isOpened, setIsOpened} : ModalAddReviewProps) : JSX.Ele
   const [isDisadvantagesError, setIsDisadvantagesError] = useState(false);
   const [isCommentError, setIsCommentError] = useState(false);
 
-  const handleRateChange = (evt: React.ChangeEvent<HTMLInputElement>) => setRate(Number(evt.target.value));
+  const clearForm = () => {
+    setRate(EMPTY_RATE);
+    setName(EMPTY_FIELD);
+    setAdvantages(EMPTY_FIELD);
+    setDisadvantages(EMPTY_FIELD);
+    setComment(EMPTY_FIELD);
+
+    setIsRateError(false);
+    setIsNameError(false);
+    setIsAdvantagesError(false);
+    setIsDisadvantagesError(false);
+    setIsCommentError(false);
+
+    formRef.current?.reset();
+  };
+
+  const handleRateChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    if(evt.target.value){
+      setIsRateError(false);
+    }
+    setRate(Number(evt.target.value));
+  };
 
   const handleNameInput = (evt: React.FormEvent<HTMLInputElement>) => {
     if(evt.currentTarget.value){
@@ -78,7 +102,7 @@ function ModalAddReview({isOpened, setIsOpened} : ModalAddReviewProps) : JSX.Ele
   };
 
   const handleCommentInput = (evt: React.FormEvent<HTMLTextAreaElement>) => {
-    if(evt.currentTarget.value.length >= MIN_COMMENT_LENGTH){
+    if(evt.currentTarget.value){
       setIsCommentError(false);
     }
     setComment(evt.currentTarget.value);
@@ -121,7 +145,7 @@ function ModalAddReview({isOpened, setIsOpened} : ModalAddReviewProps) : JSX.Ele
       setIsDisadvantagesError(false);
     }
 
-    if(!comment || comment.length < MIN_COMMENT_LENGTH){
+    if(!comment){
       setIsCommentError(true);
       isValid = false;
     }
@@ -139,11 +163,17 @@ function ModalAddReview({isOpened, setIsOpened} : ModalAddReviewProps) : JSX.Ele
         review: comment,
       }));
       setIsSuccess(true);
+      clearForm();
     }
+  };
+
+  const handleContentClick = (evt: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    evt.stopPropagation();
   };
 
   const handleCloseModalClick = () => {
     setIsOpened(false);
+    clearForm();
     setTimeout(() => {
       setIsSuccess(false);
     }, MODAL_DELAY);
@@ -152,6 +182,7 @@ function ModalAddReview({isOpened, setIsOpened} : ModalAddReviewProps) : JSX.Ele
   const handleCloseModalKeydown = useCallback((evt : KeyboardEvent) => {
     if(isOpened && evt.key === 'Escape'){
       setIsOpened(false);
+      clearForm();
       document.removeEventListener('keydown', handleCloseModalKeydown);
     }
   }, [isOpened, setIsOpened]);
@@ -167,11 +198,11 @@ function ModalAddReview({isOpened, setIsOpened} : ModalAddReviewProps) : JSX.Ele
   }, [handleCloseModalKeydown, isOpened]);
 
   return (
-    <div className={`modal ${isOpened ? 'is-active' : ''}`} >
+    <div className={`modal ${isOpened ? 'is-active' : ''}`} onClick={handleCloseModalClick}>
       <ReactFocusLock>
         <div className="modal__wrapper">
-          <div className="modal__overlay" onClick={handleCloseModalClick}/>
-          <div className="modal__content">
+          <div className="modal__overlay"/>
+          <div className="modal__content" onClick={handleContentClick}>
             {
               isSuccess ?
                 (
@@ -193,7 +224,7 @@ function ModalAddReview({isOpened, setIsOpened} : ModalAddReviewProps) : JSX.Ele
                   <>
                     <p className="title title--h4">Оставить отзыв</p>
                     <div className="form-review">
-                      <form method="post" onSubmit={handleSubmitModal}>
+                      <form method="post" onSubmit={handleSubmitModal} ref={formRef}>
                         <div className="form-review__rate">
                           <fieldset className={`rate form-review__item ${isRateError ? 'is-invalid' : ''}`}>
                             <legend className="rate__caption">Рейтинг
