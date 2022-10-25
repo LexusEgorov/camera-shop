@@ -47,32 +47,11 @@ export const cameraData = createSlice({
         const reviews = action.payload;
 
         reviews.sort((a, b) => {
-          const fullDateA = new Date(a.createAt);
-          const fullDateB = new Date(b.createAt);
+          const dateA = new Date(a.createAt).valueOf();
+          const dateB = new Date(b.createAt).valueOf();
 
-          const dateA = {
-            year: fullDateA.getFullYear(),
-            month: fullDateA.getMonth(),
-            day: fullDateA.getDate(),
-          };
-
-          const dateB = {
-            year: fullDateB.getFullYear(),
-            month: fullDateB.getMonth(),
-            day: fullDateB.getDate(),
-          };
-
-          if(dateA.year !== dateB.year){
-            return dateB.year - dateA.year;
-          }
-
-          if(dateA.month !== dateB.month){
-            return dateB.month - dateA.month;
-          }
-
-          return dateB.day - dateA.day;
+          return dateB - dateA;
         });
-
         state.currentCameraReviews = reviews;
       })
       .addCase(sendReviewAction.fulfilled, (state, action) => {
