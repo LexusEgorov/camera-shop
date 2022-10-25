@@ -1,6 +1,6 @@
-import { Cameras, Promo } from '../types/types';
+import { Cameras, Promo, ReviewPost, Reviews } from '../types/types';
 
-export const promo : Promo = {
+export const FISH_PROMO : Promo = {
   id: 1,
   name: 'Ретрокамера Dus Auge lV',
   previewImg: 'img/content/promo.jpg',
@@ -9,7 +9,7 @@ export const promo : Promo = {
   previewImgWebp2x: 'img/content/promo@2x.webp'
 };
 
-export const products : Cameras = [
+export const FISH_PRODUCTS : Cameras = [
   {
     id: 1,
     name: 'Ретрокамера Dus Auge lV',
@@ -171,3 +171,35 @@ export const products : Cameras = [
     reviewCount: 10,
   },
 ];
+
+export const FISH_REVIEWS : Reviews = [
+  {
+    id: 'asf23f23f2-f23f2f2f-f2f32f1f21f1212f-2f1f',
+    cameraId: 1,
+    userName: 'Окунь',
+    advantage: 'Мокро',
+    disadvantage: 'Сухо',
+    rating: 1,
+    review: 'Ужасно, воды меньше, чем в дипломе',
+    createAt: '2022-10-25T04:38:05.054Z',
+  },
+  {
+    id: 'asf23f23f2-f23f2f2f-f2f32f1f21f1212f-2f1f',
+    cameraId: 1,
+    userName: 'Окунь',
+    advantage: 'Мокро',
+    disadvantage: 'Сухо',
+    rating: 1,
+    review: 'Ужасно, воды меньше, чем в дипломе',
+    createAt: '2022-10-25T04:38:05.054Z',
+  },
+];
+
+export const FISH_REVIEW_POST : ReviewPost = {
+  cameraId: 1,
+  userName: 'Окунь',
+  advantage: 'Мокро',
+  disadvantage: 'Сухо',
+  rating: 1,
+  review: 'Ужасно, воды меньше, чем в дипломе',
+};
