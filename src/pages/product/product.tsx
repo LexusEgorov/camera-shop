@@ -5,7 +5,7 @@ import ModalAddReview from '../../components/modal-add-review/modal-add-review';
 import ProductCardRating from '../../components/product-card-rating/product-card-rating';
 import ProductReview from '../../components/product-review/product-review';
 import ProductSimilar from '../../components/product-similar/product-similar';
-import UpButton from '../../components/up-btn/up-btn';
+import UpButton from '../../components/up-button/up-button';
 import { Tab } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { fetchCameraAction, fetchCamerasAction, fetchReviewsAction, fetchSimilarAction } from '../../store/api-actions';

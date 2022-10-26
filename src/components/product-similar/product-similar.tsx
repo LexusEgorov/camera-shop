@@ -49,6 +49,7 @@ function ProductSimilar({productsSimilar} : ProductSimilarProps) : JSX.Element |
             <button className="slider-controls slider-controls--prev" type="button" aria-label="Предыдущий слайд"
               disabled={ productsSimilar.length <= SLIDER_END || leftProductIndex <= SLIDER_START}
               onClick={handlePrevElementClick}
+              data-testid='prev-button'
             >
               <svg width={7} height={12} aria-hidden="true">
                 <use xlinkHref="#icon-arrow" />
@@ -60,6 +61,7 @@ function ProductSimilar({productsSimilar} : ProductSimilarProps) : JSX.Element |
               type="button"
               aria-label="Следующий слайд"
               disabled={ productsSimilar.length <= SLIDER_END || rightProductIndex >= productsSimilar.length - 1}
+              data-testid='next-button'
             >
               <svg width={7} height={12} aria-hidden="true">
                 <use xlinkHref="#icon-arrow" />

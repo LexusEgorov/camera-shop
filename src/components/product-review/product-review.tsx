@@ -26,11 +26,12 @@ function ProductReview({setIsModalOpened} : ProductReviewProps) : JSX.Element {
             <h2 className="title title--h3">Отзывы</h2>
             <button className="btn" type="button"
               onClick={() => setIsModalOpened(true)}
+              data-testid='open-modal-button'
             >
               Оставить свой отзыв
             </button>
           </div>
-          <ul className="review-block__list">
+          <ul className="review-block__list" data-testid='review-block'>
             {
               reviews.map((review) => <UserReview key={review.id} reviewData={review}/>).slice(0, reviewsCount)
             }
@@ -42,6 +43,7 @@ function ProductReview({setIsModalOpened} : ProductReviewProps) : JSX.Element {
                   className="btn btn--purple"
                   type="button"
                   onClick={handleMoreButtonClick}
+                  data-testid='show-more-button'
                 >
                   Показать больше отзывов
                 </button>
