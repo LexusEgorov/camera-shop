@@ -295,7 +295,7 @@ function ModalAddReview({isOpened, setIsOpened} : ModalAddReviewProps) : JSX.Ele
                             <div className="custom-textarea__error">Нужно добавить комментарий</div>
                           </div>
                         </div>
-                        <button className="btn btn--purple form-review__btn" type="submit">Отправить отзыв</button>
+                        <button className="btn btn--purple form-review__btn" type="submit" data-testid='submit-modal-button'>Отправить отзыв</button>
                       </form>
                     </div>
                   </>
@@ -303,6 +303,7 @@ function ModalAddReview({isOpened, setIsOpened} : ModalAddReviewProps) : JSX.Ele
             }
             <button className="cross-btn" type="button" aria-label="Закрыть попап"
               onClick={handleCloseModalClick}
+              data-testid='close-modal-button'
             >
               <svg width={10} height={10} aria-hidden="true">
                 <use xlinkHref="#icon-close" />
