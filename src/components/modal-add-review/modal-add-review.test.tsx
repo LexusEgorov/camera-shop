@@ -28,6 +28,7 @@ const fakeStore = mockStore({
   }
 });
 describe('Component: ModalAddReview', () => {
+  global.scrollTo = jest.fn();
   it('should render correctly', () => {
     render(
       <Provider store={fakeStore}>

@@ -6,7 +6,7 @@ import { State } from '../types/types';
 import { Action } from 'redux';
 import { ThunkDispatch } from '@reduxjs/toolkit';
 import { FISH_PRODUCTS, FISH_PROMO, FISH_REVIEWS, FISH_REVIEW_POST } from '../fish/fish';
-import { APIRoute } from '../const';
+import { APIRoute, PAGINATION_OUTPUT_COUNT } from '../const';
 import { fetchCameraAction, fetchCamerasAction, fetchPromoAction, fetchReviewsAction, fetchSimilarAction, sendReviewAction } from './api-actions';
 
 describe('Async actions', () => {
@@ -22,6 +22,7 @@ describe('Async actions', () => {
   const fakePromo = FISH_PROMO;
 
   const fakeId = 1;
+  const fakePage = 2;
 
   const mockStore = configureMockStore<
     State,
@@ -31,12 +32,19 @@ describe('Async actions', () => {
 
   it('should dispatch loadCameras when GET /cameras', async () => {
     mockAPI
-      .onGet(APIRoute.Cameras)
-      .reply(200, fakeCameras);
+      .onGet(APIRoute.Cameras, {
+        params: {
+          '_limit': PAGINATION_OUTPUT_COUNT,
+          '_start': (fakePage - 1) * PAGINATION_OUTPUT_COUNT,
+        }
+      })
+      .reply(200, fakeCameras, {
+        'x-total-count': fakeCameras.length
+      });
 
     const store = mockStore();
 
-    await store.dispatch(fetchCamerasAction());
+    await store.dispatch(fetchCamerasAction(fakePage));
 
     const actions = store.getActions().map(({type}) => type);
 
