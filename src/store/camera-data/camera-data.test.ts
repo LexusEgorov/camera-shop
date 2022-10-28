@@ -19,6 +19,7 @@ describe('Reducer: cameraData', () => {
       currentCameraReviews: [] as Reviews,
       currentCameraSimilar: [] as Cameras,
       promo: {} as Promo,
+      camerasTotalCount: 0,
     };
   });
 
@@ -28,11 +29,12 @@ describe('Reducer: cameraData', () => {
   });
 
   describe('fetchCameras test', () => {
-    it('should update cameras to [<Camera>] if fetchCameras fulfilled', () => {
-      expect(cameraData.reducer(state, {type: fetchCamerasAction.fulfilled.type, payload: fakeCameras}))
+    it('should update cameras to [<Camera>], camerasTotalCount to [<Camera>].length if fetchCameras fulfilled', () => {
+      expect(cameraData.reducer(state, {type: fetchCamerasAction.fulfilled.type, payload: {data: fakeCameras, totalCount: fakeCameras.length}}))
         .toEqual({
           ...state,
           cameras: fakeCameras,
+          camerasTotalCount: fakeCameras.length,
         });
     });
   });

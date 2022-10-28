@@ -3,13 +3,11 @@ import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { NameSpace } from '../../const';
-import { FISH_PRODUCTS } from '../../fish/fish';
 import { Camera, Promo } from '../../types/types';
+import thunk from 'redux-thunk';
 import CatalogList from './catalog-list';
 
-const fakeProducts = FISH_PRODUCTS;
-
-const mockStore = configureMockStore();
+const mockStore = configureMockStore([thunk]);
 
 const fakeStore = mockStore({
   [NameSpace.App]: {
@@ -37,7 +35,7 @@ describe('Component: CatalogList', () => {
           <Routes>
             <Route
               path='/' element={
-                <CatalogList products={fakeProducts} currentPage={1} outputCount={9}/>
+                <CatalogList currentPage={1}/>
               }
             />
           </Routes>

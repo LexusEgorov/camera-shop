@@ -1,25 +1,35 @@
+import { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
-import { Cameras } from '../../types/types';
+import { PAGINATION_OUTPUT_COUNT } from '../../const';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { fetchCamerasAction } from '../../store/api-actions';
+import { getCameras, getCamerasCount } from '../../store/camera-data/selectors';
 import ProductCard from '../product-card/product-card';
 
 type CatalogListProps = {
-  products: Cameras,
   currentPage: number,
-  outputCount: number,
 }
 
-function CatalogList({products, currentPage, outputCount} : CatalogListProps) : JSX.Element {
-  const startIndex = (currentPage - 1) * outputCount;
-  const endIndex = startIndex + outputCount;
+function CatalogList({currentPage} : CatalogListProps) : JSX.Element {
+  const dispatch = useAppDispatch();
 
-  if(products.length > 0 && (startIndex >= products.length || startIndex < 0)){
+  useEffect(() => {
+    dispatch(fetchCamerasAction(currentPage));
+  }, [currentPage, dispatch]);
+
+  const products = useAppSelector(getCameras);
+  const totalCamerasCount = useAppSelector(getCamerasCount);
+
+  const startIndex = (currentPage - 1) * PAGINATION_OUTPUT_COUNT;
+
+  if(products.length > 0 && (startIndex >= totalCamerasCount || startIndex < 0)){
     return <Navigate to='/*' />;
   }
 
   return (
     <div className="cards catalog__cards fade-in" data-testid='catalog-list'>
       {
-        products.slice(startIndex, endIndex).map((product) => <ProductCard product={product} key={product.id}/>)
+        products.map((product) => <ProductCard product={product} key={product.id}/>)
       }
     </div>
   );

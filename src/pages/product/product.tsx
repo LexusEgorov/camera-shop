@@ -8,7 +8,7 @@ import ProductSimilar from '../../components/product-similar/product-similar';
 import UpButton from '../../components/up-button/up-button';
 import { Tab } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { fetchCameraAction, fetchCamerasAction, fetchReviewsAction, fetchSimilarAction } from '../../store/api-actions';
+import { fetchCameraAction, fetchReviewsAction, fetchSimilarAction } from '../../store/api-actions';
 import { getIsServerError } from '../../store/app-process/selectors';
 import { setCurrent } from '../../store/camera-data/camera-data';
 import { getCamera, getSimilar } from '../../store/camera-data/selectors';
@@ -32,7 +32,6 @@ function Product() : JSX.Element {
 
   useEffect(() => {
     if(!product.id){
-      dispatch(fetchCamerasAction());
       dispatch(fetchCameraAction(productId));
     }
   }, [dispatch, product.id, productId]);

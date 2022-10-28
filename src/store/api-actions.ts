@@ -1,17 +1,26 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
-import { APIRoute } from '../const';
-import { AppDispatch, Camera, Cameras, Promo, Review, ReviewPost, Reviews, State } from '../types/types';
+import { APIRoute, PAGINATION_OUTPUT_COUNT } from '../const';
+import { AppDispatch, Camera, Cameras, CamerasResponse, Promo, Review, ReviewPost, Reviews, State } from '../types/types';
 
-export const fetchCamerasAction = createAsyncThunk<Cameras, undefined, {
+export const fetchCamerasAction = createAsyncThunk<CamerasResponse, number, {
   dispatch: AppDispatch,
   state: State,
   extra: AxiosInstance,
 }>(
   'camera/get-all',
-  async (_arg, {extra: api}) => {
-    const {data} = await api.get<Cameras>(APIRoute.Cameras);
-    return data;
+  async (page, {extra: api}) => {
+    const startIndex = (page - 1) * PAGINATION_OUTPUT_COUNT;
+    const response = await api.get<Cameras>(APIRoute.Cameras, {
+      params: {
+        '_limit': PAGINATION_OUTPUT_COUNT,
+        '_start': startIndex,
+      }
+    });
+    return {
+      data: response.data,
+      totalCount: Number(response.headers['x-total-count']),
+    };
   }
 );
 

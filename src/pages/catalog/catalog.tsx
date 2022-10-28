@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import Banner from '../../components/banner/banner';
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
@@ -8,28 +8,30 @@ import CatalogSort from '../../components/catalog-sort/catalog-sort';
 import Pagination from '../../components/pagination/pagination';
 import { PAGINATION_OUTPUT_COUNT } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { fetchPromoAction } from '../../store/api-actions';
 import { resetError } from '../../store/app-process/app-process';
 import { getIsCamerasLoading, getIsPromoLoading } from '../../store/app-process/selectors';
 import { clearCurrent } from '../../store/camera-data/camera-data';
-import { getCameras, getPromo } from '../../store/camera-data/selectors';
+import { getCamerasCount, getPromo } from '../../store/camera-data/selectors';
 import './style.css';
 
 function Catalog() : JSX.Element {
   const dispatch = useAppDispatch();
+  const currentPage = Number(useParams().page);
+  const promo = useAppSelector(getPromo);
 
   useEffect(() => {
     dispatch(resetError());
     dispatch(clearCurrent());
+    dispatch(fetchPromoAction());
   }, [dispatch]);
 
   const isPromoLoading = useAppSelector(getIsPromoLoading);
   const isCamerasLoading = useAppSelector(getIsCamerasLoading);
 
-  const products = useAppSelector(getCameras);
-  const promo = useAppSelector(getPromo);
+  const productsCount = useAppSelector(getCamerasCount);
 
-  const currentPage = Number(useParams().page);
-  const pagesCount = Math.ceil(products.length / PAGINATION_OUTPUT_COUNT);
+  const pagesCount = useMemo(() => Math.ceil(productsCount / PAGINATION_OUTPUT_COUNT), [productsCount]);
 
   return (
     <>
@@ -44,11 +46,9 @@ function Catalog() : JSX.Element {
             <CatalogFilter />
             <div className="catalog__content">
               <CatalogSort />
+              <CatalogList currentPage={currentPage}/>
               {
-                !isCamerasLoading && products[0] && <CatalogList products={products} currentPage={currentPage} outputCount={PAGINATION_OUTPUT_COUNT}/>
-              }
-              {
-                !isCamerasLoading && products[0] && <Pagination pagesCount={pagesCount} currentPage={currentPage}/>
+                !isCamerasLoading && <Pagination pagesCount={pagesCount} currentPage={currentPage}/>
               }
             </div>
           </div>

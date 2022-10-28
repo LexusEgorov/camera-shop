@@ -9,6 +9,7 @@ const initialState : CameraData = {
   currentCameraReviews: [],
   currentCameraSimilar: [],
   promo: {} as Promo,
+  camerasTotalCount: 0,
 };
 
 export const cameraData = createSlice({
@@ -22,17 +23,15 @@ export const cameraData = createSlice({
     },
     setCurrent: (state, action) => {
       const product = state.cameras.find((camera) => camera.id === action.payload);
-      if(product){
-        state.currentCamera = product;
-      } else {
-        state.currentCamera = {} as Camera;
-      }
+      state.currentCamera = product ? product : {} as Camera;
     }
   },
   extraReducers(builder) {
     builder
       .addCase(fetchCamerasAction.fulfilled, (state, action) => {
-        state.cameras = action.payload;
+        const {data, totalCount} = action.payload;
+        state.cameras = data;
+        state.camerasTotalCount = totalCount;
       })
       .addCase(fetchPromoAction.fulfilled, (state, action) => {
         state.promo = action.payload;

@@ -10,3 +10,5 @@ export const getCamera = (state: State) : Camera => state[NameSpace.CameraData].
 export const getReviews = (state: State) : Reviews => state[NameSpace.CameraData].currentCameraReviews;
 
 export const getSimilar = (state: State) : Cameras => state[NameSpace.CameraData].currentCameraSimilar;
+
+export const getCamerasCount = (state: State) : number => state[NameSpace.CameraData].camerasTotalCount;

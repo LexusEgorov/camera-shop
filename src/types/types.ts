@@ -54,6 +54,11 @@ export type ReviewPost = {
 export type Cameras = Camera[];
 export type Reviews = Review[];
 
+export type CamerasResponse = {
+  data: Cameras,
+  totalCount: number,
+}
+
 export type IsLoading = boolean;
 export type IsServerError = boolean;
 
@@ -80,4 +85,5 @@ export type CameraData = {
   currentCameraReviews: Reviews,
   currentCameraSimilar: Cameras,
   promo: Promo,
+  camerasTotalCount: number,
 }
