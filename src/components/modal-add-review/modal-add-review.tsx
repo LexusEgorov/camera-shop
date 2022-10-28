@@ -42,7 +42,6 @@ function ModalAddReview({isOpened, setIsOpened} : ModalAddReviewProps) : JSX.Ele
   const {id} = useAppSelector(getCamera);
   const dispatch = useAppDispatch();
   const formRef = useRef<HTMLFormElement | null>(null);
-  const rateRef = useRef<HTMLDivElement | null>(null);
 
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -72,9 +71,6 @@ function ModalAddReview({isOpened, setIsOpened} : ModalAddReviewProps) : JSX.Ele
     setIsCommentError(false);
 
     formRef.current?.reset();
-    rateRef.current?.querySelectorAll('input').forEach((input) => {
-      input.checked = false;
-    });
   };
 
   const handleRateChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
@@ -241,7 +237,7 @@ function ModalAddReview({isOpened, setIsOpened} : ModalAddReviewProps) : JSX.Ele
                               </svg>
                             </legend>
                             <div className="rate__bar">
-                              <div className="rate__group" ref={rateRef}>
+                              <div className="rate__group">
                                 {
                                   RATINGS.map((rating) => (
                                     <Fragment key={rating.rate}>
@@ -252,6 +248,7 @@ function ModalAddReview({isOpened, setIsOpened} : ModalAddReviewProps) : JSX.Ele
                                         type="radio"
                                         defaultValue={rating.rate}
                                         onChange={handleRateChange}
+                                        checked={rate === rating.rate}
                                       />
                                       <label className="rate__label" htmlFor={`star-${rating.rate}`} title={rating.title} />
                                     </Fragment>
