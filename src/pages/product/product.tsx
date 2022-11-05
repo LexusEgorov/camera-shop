@@ -10,7 +10,7 @@ import { Tab } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { fetchCameraAction, fetchReviewsAction, fetchSimilarAction } from '../../store/api-actions';
 import { getIsServerError } from '../../store/app-process/selectors';
-import { setCurrent } from '../../store/camera-data/camera-data';
+import { clearSearched, setCurrent } from '../../store/camera-data/camera-data';
 import { getCamera, getSimilar } from '../../store/camera-data/selectors';
 
 function Product() : JSX.Element {
@@ -24,6 +24,7 @@ function Product() : JSX.Element {
     dispatch(setCurrent(productId));
     dispatch(fetchSimilarAction(productId));
     dispatch(fetchReviewsAction(productId));
+    dispatch(clearSearched());
   }, [dispatch, productId]);
 
   const [isModalOpened, setIsModalOpened] = useState(false);
