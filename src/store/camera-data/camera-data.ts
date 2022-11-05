@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { NameSpace } from '../../const';
 import { Camera, CameraData, Promo } from '../../types/types';
-import { fetchCameraAction, fetchCamerasAction, fetchPromoAction, fetchReviewsAction, fetchSimilarAction, sendReviewAction } from '../api-actions';
+import { fetchCameraAction, fetchCamerasAction, fetchPromoAction, fetchReviewsAction, fetchSimilarAction, findLikeCamerasAction, sendReviewAction } from '../api-actions';
 
 const initialState : CameraData = {
   cameras: [],
@@ -10,6 +10,7 @@ const initialState : CameraData = {
   currentCameraSimilar: [],
   promo: {} as Promo,
   camerasTotalCount: 0,
+  searchedCameras: [],
 };
 
 export const cameraData = createSlice({
@@ -24,6 +25,9 @@ export const cameraData = createSlice({
     setCurrent: (state, action) => {
       const product = state.cameras.find((camera) => camera.id === action.payload);
       state.currentCamera = product ? product : {} as Camera;
+    },
+    clearSearched: (state) => {
+      state.searchedCameras = [];
     }
   },
   extraReducers(builder) {
@@ -55,8 +59,11 @@ export const cameraData = createSlice({
       })
       .addCase(sendReviewAction.fulfilled, (state, action) => {
         state.currentCameraReviews.unshift(action.payload);
+      })
+      .addCase(findLikeCamerasAction.fulfilled, (state, action) => {
+        state.searchedCameras = action.payload;
       });
   },
 });
 
-export const {clearCurrent, setCurrent} = cameraData.actions;
+export const {clearCurrent, setCurrent, clearSearched} = cameraData.actions;

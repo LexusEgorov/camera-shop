@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { AxiosInstance } from 'axios';
-import { APIRoute, PAGINATION_OUTPUT_COUNT } from '../const';
+import { AxiosInstance, AxiosResponse } from 'axios';
+import { APIRoute, PAGINATION_OUTPUT_COUNT, QueryParameter } from '../const';
 import { AppDispatch, Camera, Cameras, CamerasResponse, Promo, Review, ReviewPost, Reviews, State } from '../types/types';
 
 export const fetchCamerasAction = createAsyncThunk<CamerasResponse, number, {
@@ -10,11 +10,11 @@ export const fetchCamerasAction = createAsyncThunk<CamerasResponse, number, {
 }>(
   'camera/get-all',
   async (page, {extra: api}) => {
-    const startIndex = (page - 1) * PAGINATION_OUTPUT_COUNT;
-    const response = await api.get<Cameras>(APIRoute.Cameras, {
+    const startIndex : number = (page - 1) * PAGINATION_OUTPUT_COUNT;
+    const response : AxiosResponse = await api.get<Cameras>(APIRoute.Cameras, {
       params: {
-        '_limit': PAGINATION_OUTPUT_COUNT,
-        '_start': startIndex,
+        [QueryParameter.Limit]: PAGINATION_OUTPUT_COUNT,
+        [QueryParameter.Start]: startIndex,
       }
     });
     return {
@@ -77,9 +77,25 @@ export const sendReviewAction = createAsyncThunk<Review, ReviewPost, {
   state: State,
   extra: AxiosInstance,
 }>(
-  'films/send-review',
+  'camera/send-review',
   async ({cameraId, userName, advantage, disadvantage, rating, review}, {extra: api}) => {
     const {data} = await api.post(APIRoute.Reviews, ({cameraId, userName, advantage, disadvantage, rating, review}));
+    return data;
+  }
+);
+
+export const findLikeCamerasAction = createAsyncThunk<Cameras, string, {
+  dispatch: AppDispatch,
+  state: State,
+  extra: AxiosInstance,
+}>(
+  'camera/find-like',
+  async (name, {extra: api}) => {
+    const {data} = await api.get(APIRoute.Cameras, {
+      params: {
+        [QueryParameter.NameLike]: name,
+      }
+    });
     return data;
   }
 );
