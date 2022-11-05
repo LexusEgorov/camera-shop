@@ -20,6 +20,7 @@ describe('Reducer: cameraData', () => {
       currentCameraSimilar: [] as Cameras,
       promo: {} as Promo,
       camerasTotalCount: 0,
+      searchedCameras: [] as Cameras,
     };
   });
 

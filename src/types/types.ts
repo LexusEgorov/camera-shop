@@ -86,4 +86,5 @@ export type CameraData = {
   currentCameraSimilar: Cameras,
   promo: Promo,
   camerasTotalCount: number,
+  searchedCameras: Cameras,
 }

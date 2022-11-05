@@ -38,3 +38,9 @@ export enum Tab {
   Characteristics = 'characteristics',
   Description = 'description'
 }
+
+export enum QueryParameter {
+  Start = '_start',
+  Limit = '_limit',
+  NameLike = 'name_like',
+}
