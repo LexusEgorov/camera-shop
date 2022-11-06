@@ -5,9 +5,10 @@ import generator from '../../utils';
 
 type HeaderSearchListProps = {
   searchedCameras: Cameras,
+  resetSearch: () => void,
 }
 
-function HeaderSearchList({searchedCameras} : HeaderSearchListProps) : JSX.Element {
+function HeaderSearchList({searchedCameras, resetSearch} : HeaderSearchListProps) : JSX.Element {
   const tabIndexGenerator = generator();
 
   return(
@@ -16,7 +17,9 @@ function HeaderSearchList({searchedCameras} : HeaderSearchListProps) : JSX.Eleme
         searchedCameras.map(({name, id}) =>
           (
             <li className="form-search__select-item" tabIndex={tabIndexGenerator()} key={id}>
-              <Link to={`/product/${id}/${Tab.Description}`}>
+              <Link to={`/product/${id}/${Tab.Description}`}
+                onClick={resetSearch}
+              >
                 {name}
               </Link>
             </li>

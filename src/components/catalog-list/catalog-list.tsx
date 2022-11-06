@@ -14,7 +14,7 @@ function CatalogList({currentPage} : CatalogListProps) : JSX.Element {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fetchCamerasAction(currentPage));
+    dispatch(fetchCamerasAction({page: currentPage}));
   }, [currentPage, dispatch]);
 
   const products = useAppSelector(getCameras);

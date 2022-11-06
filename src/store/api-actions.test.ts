@@ -44,7 +44,7 @@ describe('Async actions', () => {
 
     const store = mockStore();
 
-    await store.dispatch(fetchCamerasAction(fakePage));
+    await store.dispatch(fetchCamerasAction({page: fakePage}));
 
     const actions = store.getActions().map(({type}) => type);
 

@@ -28,7 +28,7 @@ function HeaderSearchForm() : JSX.Element {
   };
 
   return (
-    <div className={`form-search ${searchedCameras.length !== 0 ? 'list-opened' : ''}`}>
+    <div className={`form-search ${searchedCameras.length !== 0 && searchValue !== '' ? 'list-opened' : ''}`}>
       <form>
         <label>
           <svg className="form-search__icon" width="16" height="16" aria-hidden="true">
@@ -43,7 +43,7 @@ function HeaderSearchForm() : JSX.Element {
             value={searchValue}
           />
         </label>
-        <HeaderSearchList searchedCameras={searchedCameras}/>
+        <HeaderSearchList searchedCameras={searchedCameras} resetSearch={handleSearchReset}/>
       </form>
       <button className="form-search__reset" type="reset"
         onClick={handleSearchReset}
