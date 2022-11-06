@@ -49,6 +49,12 @@ export type ReviewPost = {
   rating: number,
 }
 
+export type CamerasRequest = {
+  page: number,
+  sortBy?: string,
+  sortType?: string,
+}
+
 /*Псевдонимы типов*/
 
 export type Cameras = Camera[];

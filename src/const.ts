@@ -43,4 +43,17 @@ export enum QueryParameter {
   Start = '_start',
   Limit = '_limit',
   NameLike = 'name_like',
+  Sort = '_sort',
+  Order = '_order',
+}
+
+export enum SortBy {
+  Price = 'price',
+  Rating = 'rating',
+  NotSorted = 'not_sorted',
+}
+
+export enum SortType {
+  Asc = 'asc',
+  Desc = 'desc',
 }

@@ -1,0 +1,11 @@
+.catalog-sort__btn-text input[type="radio"]:checked + label {
+  color: #ffffff;
+  background-color: #7575e2 !important;
+  pointer-events: none;
+}
+
+.catalog-sort__btn input[type="radio"]:checked + label {
+  color: #ffffff;
+  background-color: #7575e2 !important;
+  pointer-events: none;
+}

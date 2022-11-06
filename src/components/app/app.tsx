@@ -23,7 +23,8 @@ function App(): JSX.Element {
     <Router>
       <Routes>
         <Route path={AppRoute.Root} element={<Layout />}>
-          <Route path={AppRoute.Catalog} element={<Catalog />}/>
+          <Route path={AppRoute.Catalog} element={<Catalog />}>
+          </Route>
           <Route path={AppRoute.Product} element={<Product />} />
         </Route>
         <Route path={AppRoute.AnyPage} element={<NotFound />} />
