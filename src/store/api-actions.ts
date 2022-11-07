@@ -9,14 +9,14 @@ export const fetchCamerasAction = createAsyncThunk<CamerasResponse, CamerasReque
   extra: AxiosInstance,
 }>(
   'camera/get-all',
-  async ({page, sortBy, sortType}, {extra: api}) => {
+  async ({page, queryParams}, {extra: api}) => {
     const startIndex : number = (page - 1) * PAGINATION_OUTPUT_COUNT;
     const response : AxiosResponse = await api.get<Cameras>(APIRoute.Cameras, {
       params: {
         [QueryParameter.Limit]: PAGINATION_OUTPUT_COUNT,
         [QueryParameter.Start]: startIndex,
-        [QueryParameter.Sort]: sortBy ?? '',
-        [QueryParameter.Order]: sortType ?? '',
+        [QueryParameter.Sort]: queryParams?.get(QueryParameter.Sort),
+        [QueryParameter.Order]: queryParams?.get(QueryParameter.Order),
       }
     });
     return {

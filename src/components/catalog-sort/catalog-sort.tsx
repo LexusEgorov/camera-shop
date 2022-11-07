@@ -1,63 +1,54 @@
-import { useParams, useSearchParams } from 'react-router-dom';
-import { SortBy, SortType } from '../../const';
-import { useAppDispatch } from '../../hooks/hooks';
-import { fetchCamerasAction } from '../../store/api-actions';
+import { useEffect, useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { QueryParameter, SortBy, SortType } from '../../const';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { setSearchParams as setStoreSearchParams} from '../../store/app-process/app-process';
+import { getSearchParams } from '../../store/app-process/selectors';
 import './style.css';
 
 function CatalogSort() : JSX.Element {
   const dispatch = useAppDispatch();
-  const currentPage = Number(useParams().page);
+
+  const storeSearchParams = useAppSelector(getSearchParams);
+  const convertedStoreSearchParams = useMemo(() => new URLSearchParams(storeSearchParams), [storeSearchParams]);
+
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const sortBy = searchParams.get('sortBy') || SortBy.NotSorted;
-  const sortType = searchParams.get('sortType') || SortType.Asc;
+  const sortBy = searchParams.get(QueryParameter.Sort) || SortBy.NotSorted;
+  const sortType = searchParams.get(QueryParameter.Order) || SortType.Asc;
+
+  useEffect(() => {
+    if(searchParams.has(QueryParameter.Sort) || searchParams.has(QueryParameter.Order)){
+      dispatch(setStoreSearchParams(searchParams.toString()));
+    } else {
+      setSearchParams(convertedStoreSearchParams);
+    }
+  }, [convertedStoreSearchParams, dispatch, searchParams, setSearchParams]);
 
   const handlePriceCheck = () => {
-    dispatch(fetchCamerasAction({
-      page: currentPage,
-      sortBy: SortBy.Price,
-      sortType: sortType
-    }));
-    setSearchParams({
-      sortBy: SortBy.Price,
-      sortType: sortType
-    });
+    searchParams.set(QueryParameter.Sort, SortBy.Price);
+    if(!searchParams.has(QueryParameter.Order)){
+      searchParams.append(QueryParameter.Order, sortType);
+    }
+    setSearchParams(searchParams);
   };
 
   const handleRateCheck = () => {
-    dispatch(fetchCamerasAction({
-      page: currentPage,
-      sortBy: SortBy.Rating,
-      sortType: sortType
-    }));
-    setSearchParams({
-      sortBy: SortBy.Rating,
-      sortType: sortType
-    });
+    searchParams.set(QueryParameter.Sort, SortBy.Rating);
+    if(!searchParams.has(QueryParameter.Order)){
+      searchParams.append(QueryParameter.Order, sortType);
+    }
+    setSearchParams(searchParams);
   };
 
   const handleAscCheck = () => {
-    dispatch(fetchCamerasAction({
-      page: currentPage,
-      sortBy: sortBy,
-      sortType: SortType.Asc,
-    }));
-    setSearchParams({
-      sortBy: sortBy,
-      sortType: SortType.Asc
-    });
+    searchParams.set(QueryParameter.Order, SortType.Asc);
+    setSearchParams(searchParams);
   };
 
   const handleDescCheck = () => {
-    dispatch(fetchCamerasAction({
-      page: currentPage,
-      sortBy: sortBy,
-      sortType: SortType.Desc,
-    }));
-    setSearchParams({
-      sortBy: sortBy,
-      sortType: SortType.Desc
-    });
+    searchParams.set(QueryParameter.Order, SortType.Desc);
+    setSearchParams(searchParams);
   };
 
   return (

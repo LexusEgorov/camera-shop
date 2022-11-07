@@ -11,6 +11,7 @@ const initialState : AppProcess = {
   isSimilarLoading: false,
   isReviewsLoading: false,
   isServerError: false,
+  searchParams: '',
 };
 
 let cameraToast : Id;
@@ -26,6 +27,9 @@ export const appProcess = createSlice({
   reducers: {
     resetError: (state) => {
       state.isServerError = false;
+    },
+    setSearchParams: (state, action) => {
+      state.searchParams = action.payload;
     }
   },
   extraReducers(builder) {
@@ -114,4 +118,4 @@ export const appProcess = createSlice({
   },
 });
 
-export const {resetError} = appProcess.actions;
+export const {resetError, setSearchParams} = appProcess.actions;
