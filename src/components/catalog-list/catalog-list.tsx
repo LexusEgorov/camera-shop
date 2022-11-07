@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useSearchParams } from 'react-router-dom';
 import { PAGINATION_OUTPUT_COUNT } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { fetchCamerasAction } from '../../store/api-actions';
@@ -12,10 +12,11 @@ type CatalogListProps = {
 
 function CatalogList({currentPage} : CatalogListProps) : JSX.Element {
   const dispatch = useAppDispatch();
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
-    dispatch(fetchCamerasAction({page: currentPage}));
-  }, [currentPage, dispatch]);
+    dispatch(fetchCamerasAction({page: currentPage, queryParams: searchParams}));
+  }, [currentPage, dispatch, searchParams]);
 
   const products = useAppSelector(getCameras);
   const totalCamerasCount = useAppSelector(getCamerasCount);

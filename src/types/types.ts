@@ -51,8 +51,7 @@ export type ReviewPost = {
 
 export type CamerasRequest = {
   page: number,
-  sortBy?: string,
-  sortType?: string,
+  queryParams?: URLSearchParams,
 }
 
 /*Псевдонимы типов*/
@@ -82,7 +81,8 @@ export type AppProcess = {
   isCameraLoading: IsLoading,
   isSimilarLoading: IsLoading,
   isReviewsLoading: IsLoading,
-  isServerError: IsServerError
+  isServerError: IsServerError,
+  searchParams: string,
 }
 
 export type CameraData = {

@@ -13,6 +13,7 @@ describe('Reducer: app', () => {
       isSimilarLoading: false,
       isReviewsLoading: false,
       isServerError: false,
+      searchParams: '',
     };
   });
 
