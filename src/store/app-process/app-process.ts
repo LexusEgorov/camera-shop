@@ -12,6 +12,8 @@ const initialState : AppProcess = {
   isReviewsLoading: false,
   isServerError: false,
   searchParams: '',
+  filterParams: '',
+  sortParams: '',
 };
 
 let cameraToast : Id;
@@ -30,6 +32,12 @@ export const appProcess = createSlice({
     },
     setSearchParams: (state, action) => {
       state.searchParams = action.payload;
+    },
+    setFilterParams: (state, action) => {
+      state.filterParams = action.payload;
+    },
+    setSortParams: (state, action) => {
+      state.sortParams = action.payload;
     }
   },
   extraReducers(builder) {
@@ -118,4 +126,4 @@ export const appProcess = createSlice({
   },
 });
 
-export const {resetError, setSearchParams} = appProcess.actions;
+export const {resetError, setSearchParams, setFilterParams, setSortParams} = appProcess.actions;

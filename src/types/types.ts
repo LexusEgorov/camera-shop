@@ -54,6 +54,10 @@ export type CamerasRequest = {
   queryParams?: URLSearchParams,
 }
 
+export type ParamsRequest = {
+  queryParams: URLSearchParams,
+}
+
 /*Псевдонимы типов*/
 
 export type Cameras = Camera[];
@@ -83,6 +87,8 @@ export type AppProcess = {
   isReviewsLoading: IsLoading,
   isServerError: IsServerError,
   searchParams: string,
+  filterParams: string,
+  sortParams: string,
 }
 
 export type CameraData = {
@@ -94,3 +100,11 @@ export type CameraData = {
   camerasTotalCount: number,
   searchedCameras: Cameras,
 }
+
+export type FilterData = {
+  minPrice: number,
+  maxPrice: number,
+  category: string[],
+  type: string[],
+  level: string[],
+};

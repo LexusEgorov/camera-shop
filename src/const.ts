@@ -25,6 +25,7 @@ export enum AppRoute {
 export enum NameSpace {
   App = 'APP',
   CameraData = 'CAMERA_DATA',
+  FilterData = 'FILTER_DATA'
 }
 
 export enum APIRoute {
@@ -45,6 +46,11 @@ export enum QueryParameter {
   NameLike = 'name_like',
   Sort = '_sort',
   Order = '_order',
+  PriceMin = 'price_gte',
+  PriceMax = 'price_lte',
+  Category = 'category',
+  Type = 'type',
+  Level = 'level',
 }
 
 export enum SortBy {
@@ -56,4 +62,28 @@ export enum SortBy {
 export enum SortType {
   Asc = 'asc',
   Desc = 'desc',
+}
+
+export enum FilterType {
+  Photo = 'photocamera',
+  Video = 'videocamera',
+  Digital = 'digital',
+  Film = 'film',
+  Snapshot = 'snapshot',
+  Collection = 'collection',
+  Zero = 'zero',
+  NonProfessional = 'non-professional',
+  Professional = 'professional',
+}
+
+export enum FilterValue {
+  Photo = 'Фотоаппарат',
+  Video = 'Видеокамера',
+  Digital = 'Цифровая',
+  Film = 'Плёночная',
+  Snapshot = 'Моментальная',
+  Collection = 'Коллекционная',
+  Zero = 'Нулевой',
+  NonProfessional = 'Любительский',
+  Professional = 'Профессиональный',
 }

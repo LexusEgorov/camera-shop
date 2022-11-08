@@ -2,8 +2,8 @@ import { useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { QueryParameter, SortBy, SortType } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { setSearchParams as setStoreSearchParams} from '../../store/app-process/app-process';
-import { getSearchParams } from '../../store/app-process/selectors';
+import { setSearchParams as setStoreSearchParams, setSortParams} from '../../store/app-process/app-process';
+import { getSearchParams, getSortParams } from '../../store/app-process/selectors';
 import './style.css';
 
 function CatalogSort() : JSX.Element {
@@ -12,43 +12,59 @@ function CatalogSort() : JSX.Element {
   const storeSearchParams = useAppSelector(getSearchParams);
   const convertedStoreSearchParams = useMemo(() => new URLSearchParams(storeSearchParams), [storeSearchParams]);
 
+  const sortParams = useAppSelector(getSortParams);
+  const sortSearchParams = useMemo(() => new URLSearchParams(), []);
+
   const [searchParams, setSearchParams] = useSearchParams();
 
   const sortBy = searchParams.get(QueryParameter.Sort) || SortBy.NotSorted;
   const sortType = searchParams.get(QueryParameter.Order) || SortType.Asc;
 
   useEffect(() => {
-    if(searchParams.has(QueryParameter.Sort) || searchParams.has(QueryParameter.Order)){
-      dispatch(setStoreSearchParams(searchParams.toString()));
-    } else {
-      setSearchParams(convertedStoreSearchParams);
+    if(!searchParams.toString().includes(sortParams.toString())){
+      if(searchParams.has(QueryParameter.Sort) || searchParams.has(QueryParameter.Order)){
+        sortSearchParams.set(QueryParameter.Sort, searchParams.get(QueryParameter.Sort) ?? '');
+        dispatch(setSortParams(sortSearchParams.toString()));
+        dispatch(setStoreSearchParams(searchParams.toString()));
+      } else {
+        setSearchParams(convertedStoreSearchParams);
+      }
     }
-  }, [convertedStoreSearchParams, dispatch, searchParams, setSearchParams]);
+  }, [convertedStoreSearchParams, dispatch, searchParams, setSearchParams, sortParams, sortSearchParams]);
 
   const handlePriceCheck = () => {
     searchParams.set(QueryParameter.Sort, SortBy.Price);
+    sortSearchParams.set(QueryParameter.Sort, SortBy.Price);
+
     if(!searchParams.has(QueryParameter.Order)){
       searchParams.append(QueryParameter.Order, sortType);
     }
     setSearchParams(searchParams);
+    dispatch(setSortParams(sortSearchParams.toString()));
+    dispatch(setStoreSearchParams(searchParams.toString()));
   };
 
   const handleRateCheck = () => {
     searchParams.set(QueryParameter.Sort, SortBy.Rating);
+    sortSearchParams.set(QueryParameter.Sort, SortBy.Rating);
     if(!searchParams.has(QueryParameter.Order)){
       searchParams.append(QueryParameter.Order, sortType);
     }
     setSearchParams(searchParams);
+    dispatch(setSortParams(sortSearchParams.toString()));
+    dispatch(setStoreSearchParams(searchParams.toString()));
   };
 
   const handleAscCheck = () => {
     searchParams.set(QueryParameter.Order, SortType.Asc);
     setSearchParams(searchParams);
+    dispatch(setStoreSearchParams(searchParams.toString()));
   };
 
   const handleDescCheck = () => {
     searchParams.set(QueryParameter.Order, SortType.Desc);
     setSearchParams(searchParams);
+    dispatch(setStoreSearchParams(searchParams.toString()));
   };
 
   return (
