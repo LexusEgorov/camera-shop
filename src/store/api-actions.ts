@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance, AxiosResponse } from 'axios';
-import { APIRoute, PAGINATION_OUTPUT_COUNT, QueryParameter } from '../const';
-import { AppDispatch, Camera, Cameras, CamerasRequest, CamerasResponse, Promo, Review, ReviewPost, Reviews, State } from '../types/types';
+import { APIRoute, PAGINATION_OUTPUT_COUNT, QueryParameter, SortBy, SortType } from '../const';
+import { AppDispatch, Camera, Cameras, CamerasRequest, CamerasResponse, ParamsRequest, Promo, Review, ReviewPost, Reviews, State } from '../types/types';
 
 export const fetchCamerasAction = createAsyncThunk<CamerasResponse, CamerasRequest, {
   dispatch: AppDispatch,
@@ -11,18 +11,74 @@ export const fetchCamerasAction = createAsyncThunk<CamerasResponse, CamerasReque
   'camera/get-all',
   async ({page, queryParams}, {extra: api}) => {
     const startIndex : number = (page - 1) * PAGINATION_OUTPUT_COUNT;
-    const response : AxiosResponse = await api.get<Cameras>(APIRoute.Cameras, {
+    const response : AxiosResponse = await api.get<Cameras>(`${APIRoute.Cameras}?${queryParams?.toString()}`, {
       params: {
         [QueryParameter.Limit]: PAGINATION_OUTPUT_COUNT,
         [QueryParameter.Start]: startIndex,
-        [QueryParameter.Sort]: queryParams?.get(QueryParameter.Sort),
-        [QueryParameter.Order]: queryParams?.get(QueryParameter.Order),
       }
     });
     return {
       data: response.data,
       totalCount: Number(response.headers['x-total-count']),
     };
+  }
+);
+
+export const fetchMinPriceAction = createAsyncThunk<number, ParamsRequest, {
+  dispatch: AppDispatch,
+  state: State,
+  extra: AxiosInstance,
+}>(
+  'camera/get-min',
+  async ({queryParams}, {extra: api}) => {
+    const priceMax = queryParams?.get(QueryParameter.PriceMax);
+    const priceMin = queryParams?.get(QueryParameter.PriceMin);
+    queryParams.delete(QueryParameter.PriceMax);
+    queryParams.delete(QueryParameter.PriceMin);
+    queryParams.delete(QueryParameter.Sort);
+    queryParams.delete(QueryParameter.Order);
+    queryParams.delete(QueryParameter.Limit);
+    queryParams.delete(QueryParameter.Start);
+    const {data} : AxiosResponse = await api.get<Camera>(`${APIRoute.Cameras}?${queryParams?.toString()}`, {
+      params: {
+        [QueryParameter.Limit]: 1,
+        [QueryParameter.Start]: 0,
+        [QueryParameter.Sort]: SortBy.Price,
+        [QueryParameter.Order]: SortType.Asc,
+        [QueryParameter.PriceMax]: priceMax,
+        [QueryParameter.PriceMin]: priceMin,
+      }
+    });
+    return data[0].price;
+  }
+);
+
+export const fetchMaxPriceAction = createAsyncThunk<number, ParamsRequest, {
+  dispatch: AppDispatch,
+  state: State,
+  extra: AxiosInstance,
+}>(
+  'camera/get-max',
+  async ({queryParams}, {extra: api}) => {
+    const priceMax = queryParams?.get(QueryParameter.PriceMax);
+    const priceMin = queryParams?.get(QueryParameter.PriceMin);
+    queryParams.delete(QueryParameter.PriceMax);
+    queryParams.delete(QueryParameter.PriceMin);
+    queryParams.delete(QueryParameter.Sort);
+    queryParams.delete(QueryParameter.Order);
+    queryParams.delete(QueryParameter.Limit);
+    queryParams.delete(QueryParameter.Start);
+    const {data} : AxiosResponse = await api.get<Camera>(`${APIRoute.Cameras}?${queryParams?.toString()}`, {
+      params: {
+        [QueryParameter.Limit]: 1,
+        [QueryParameter.Start]: 0,
+        [QueryParameter.Sort]: SortBy.Price,
+        [QueryParameter.Order]: SortType.Desc,
+        [QueryParameter.PriceMax]: priceMax,
+        [QueryParameter.PriceMin]: priceMin,
+      }
+    });
+    return data[0].price;
   }
 );
 

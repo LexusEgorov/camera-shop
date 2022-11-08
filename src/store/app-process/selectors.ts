@@ -14,3 +14,7 @@ export const getIsReviewsLoading = (state: State) : IsLoading => state[NameSpace
 export const getIsServerError = (state: State) : IsServerError => state[NameSpace.App].isServerError;
 
 export const getSearchParams = (state: State) : string => state[NameSpace.App].searchParams;
+
+export const getFilterParams = (state: State) : string => state[NameSpace.App].filterParams;
+
+export const getSortParams = (state: State) : string => state[NameSpace.App].sortParams;

@@ -36,6 +36,8 @@ describe('Async actions', () => {
         params: {
           '_limit': PAGINATION_OUTPUT_COUNT,
           '_start': (fakePage - 1) * PAGINATION_OUTPUT_COUNT,
+          '_sort': '',
+          '_order': '',
         }
       })
       .reply(200, fakeCameras, {
