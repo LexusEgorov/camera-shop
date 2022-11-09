@@ -46,7 +46,7 @@ function Catalog() : JSX.Element {
             <CatalogFilter />
             <div className="catalog__content">
               <CatalogSort />
-              <CatalogList currentPage={currentPage}/>
+              <CatalogList currentPage={currentPage} />
               {
                 !isCamerasLoading && <Pagination pagesCount={pagesCount} currentPage={currentPage}/>
               }

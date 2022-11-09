@@ -1,7 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance, AxiosResponse } from 'axios';
-import { APIRoute, PAGINATION_OUTPUT_COUNT, QueryParameter, SortBy, SortType } from '../const';
+import { APIRoute, FilterValue, PAGINATION_OUTPUT_COUNT, QueryParameter, SortBy, SortType } from '../const';
 import { AppDispatch, Camera, Cameras, CamerasRequest, CamerasResponse, ParamsRequest, Promo, Review, ReviewPost, Reviews, State } from '../types/types';
+import { deleteParameter } from '../utils';
 
 export const fetchCamerasAction = createAsyncThunk<CamerasResponse, CamerasRequest, {
   dispatch: AppDispatch,
@@ -10,6 +11,10 @@ export const fetchCamerasAction = createAsyncThunk<CamerasResponse, CamerasReque
 }>(
   'camera/get-all',
   async ({page, queryParams}, {extra: api}) => {
+    if(queryParams?.getAll(QueryParameter.Category).length === 1 && queryParams?.get(QueryParameter.Category) === FilterValue.Video) {
+      queryParams = deleteParameter(queryParams, QueryParameter.Type, FilterValue.Snapshot);
+      queryParams = deleteParameter(queryParams, QueryParameter.Type, FilterValue.Film);
+    }
     const startIndex : number = (page - 1) * PAGINATION_OUTPUT_COUNT;
     const response : AxiosResponse = await api.get<Cameras>(`${APIRoute.Cameras}?${queryParams?.toString()}`, {
       params: {
@@ -31,6 +36,10 @@ export const fetchMinPriceAction = createAsyncThunk<number, ParamsRequest, {
 }>(
   'camera/get-min',
   async ({queryParams}, {extra: api}) => {
+    if(queryParams?.getAll(QueryParameter.Category).length === 1 && queryParams?.get(QueryParameter.Category) === FilterValue.Video) {
+      queryParams = deleteParameter(queryParams, QueryParameter.Type, FilterValue.Snapshot);
+      queryParams = deleteParameter(queryParams, QueryParameter.Type, FilterValue.Film);
+    }
     const priceMax = queryParams?.get(QueryParameter.PriceMax);
     const priceMin = queryParams?.get(QueryParameter.PriceMin);
     queryParams.delete(QueryParameter.PriceMax);
@@ -60,6 +69,10 @@ export const fetchMaxPriceAction = createAsyncThunk<number, ParamsRequest, {
 }>(
   'camera/get-max',
   async ({queryParams}, {extra: api}) => {
+    if(queryParams?.getAll(QueryParameter.Category).length === 1 && queryParams?.get(QueryParameter.Category) === FilterValue.Video) {
+      queryParams = deleteParameter(queryParams, QueryParameter.Type, FilterValue.Snapshot);
+      queryParams = deleteParameter(queryParams, QueryParameter.Type, FilterValue.Film);
+    }
     const priceMax = queryParams?.get(QueryParameter.PriceMax);
     const priceMin = queryParams?.get(QueryParameter.PriceMin);
     queryParams.delete(QueryParameter.PriceMax);
