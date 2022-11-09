@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Tab } from '../../const';
 import { Cameras } from '../../types/types';
-import generator from '../../utils';
+import { generator} from '../../utils';
 
 type HeaderSearchListProps = {
   searchedCameras: Cameras,
