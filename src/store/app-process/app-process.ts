@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { Id, toast } from 'react-toastify';
 import { NameSpace } from '../../const';
 import { AppProcess } from '../../types/types';
-import { fetchCameraAction, fetchCamerasAction, fetchPromoAction, fetchReviewsAction, fetchSimilarAction, sendReviewAction } from '../api-actions';
+import { fetchCameraAction, fetchCamerasAction, fetchPromoAction, fetchReviewsAction, fetchSimilarAction, findLikeCamerasAction, sendReviewAction } from '../api-actions';
 
 const initialState : AppProcess = {
   isCamerasLoading: false,
@@ -22,6 +22,7 @@ let promoToast : Id;
 let reviewsToast : Id;
 let similarToast : Id;
 let sendReviewToast : Id;
+let searchToast : Id | undefined;
 
 export const appProcess = createSlice({
   name: NameSpace.App,
@@ -75,6 +76,11 @@ export const appProcess = createSlice({
       .addCase(sendReviewAction.pending, () => {
         sendReviewToast = toast.loading('Отправляем отзыв');
       })
+      .addCase(findLikeCamerasAction.pending, () => {
+        if(!searchToast){
+          searchToast = toast.loading('Поиск камер');
+        }
+      })
       .addCase(fetchCameraAction.fulfilled, (state) => {
         toast.dismiss(cameraToast);
         state.isCameraLoading = false;
@@ -97,6 +103,10 @@ export const appProcess = createSlice({
       })
       .addCase(sendReviewAction.fulfilled, () => {
         toast.dismiss(sendReviewToast);
+      })
+      .addCase(findLikeCamerasAction.fulfilled, () => {
+        toast.dismiss(searchToast);
+        searchToast = undefined;
       })
       .addCase(fetchCameraAction.rejected, (state) => {
         toast.update(cameraToast, {render: 'Не удалось загрузить камеру', type: 'error', isLoading: false, autoClose: 1000});
@@ -122,6 +132,10 @@ export const appProcess = createSlice({
       })
       .addCase(sendReviewAction.rejected, () => {
         toast.update(sendReviewToast, {render: 'Не удалось отправить отзыв', type: 'error', isLoading: false, autoClose: 1000});
+      })
+      .addCase(findLikeCamerasAction.rejected, (state) => {
+        toast.dismiss(searchToast);
+        searchToast = undefined;
       });
   },
 });
