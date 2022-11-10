@@ -1,37 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { NameSpace } from '../../const';
 import { FilterData } from '../../types/types';
-import { fetchMaxPriceAction, fetchMinPriceAction } from '../api-actions';
+import { fetchMaxCatalogPriceAction, fetchMaxPriceAction, fetchMinCatalogPriceAction, fetchMinPriceAction } from '../api-actions';
 
 const initialState : FilterData = {
   minPrice: 0,
   maxPrice: 0,
-  category: [],
-  level: [],
-  type: [],
+  minCatalogPrice: 0,
+  maxCatalogPrice: 0,
 };
 
 export const filterData = createSlice({
   name: NameSpace.FilterData,
   initialState: initialState,
-  reducers: {
-    clearFilters: (state) => {
-      state.minPrice = 0;
-      state.maxPrice = 0;
-      state.level = [];
-      state.type = [];
-      state.category = [];
-    },
-    setLevel: (state, action) => {
-      state.level = action.payload;
-    },
-    setType: (state, action) => {
-      state.type = action.payload;
-    },
-    setCategory: (state, action) => {
-      state.category = action.payload;
-    }
-  },
+  reducers: {},
   extraReducers(builder) {
     builder
       .addCase(fetchMinPriceAction.fulfilled, (state, action) => {
@@ -39,8 +21,12 @@ export const filterData = createSlice({
       })
       .addCase(fetchMaxPriceAction.fulfilled, (state, action) => {
         state.maxPrice = action.payload;
+      })
+      .addCase(fetchMinCatalogPriceAction.fulfilled, (state, action) => {
+        state.minCatalogPrice = action.payload;
+      })
+      .addCase(fetchMaxCatalogPriceAction.fulfilled, (state, action) => {
+        state.maxCatalogPrice = action.payload;
       });
   },
 });
-
-export const {clearFilters, setCategory, setLevel, setType} = filterData.actions;

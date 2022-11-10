@@ -29,6 +29,44 @@ export const fetchCamerasAction = createAsyncThunk<CamerasResponse, CamerasReque
   }
 );
 
+export const fetchMinCatalogPriceAction = createAsyncThunk<number, undefined, {
+  dispatch: AppDispatch,
+  state: State,
+  extra: AxiosInstance,
+}>(
+  'camera/get-min-catalog',
+  async (_arg, {extra: api}) => {
+    const {data} : AxiosResponse = await api.get<Camera>(APIRoute.Cameras, {
+      params: {
+        [QueryParameter.Limit]: 1,
+        [QueryParameter.Start]: 0,
+        [QueryParameter.Sort]: SortBy.Price,
+        [QueryParameter.Order]: SortType.Asc,
+      }
+    });
+    return data[0].price;
+  }
+);
+
+export const fetchMaxCatalogPriceAction = createAsyncThunk<number, undefined, {
+  dispatch: AppDispatch,
+  state: State,
+  extra: AxiosInstance,
+}>(
+  'camera/get-max-catalog',
+  async (_arg, {extra: api}) => {
+    const {data} : AxiosResponse = await api.get<Camera>(APIRoute.Cameras, {
+      params: {
+        [QueryParameter.Limit]: 1,
+        [QueryParameter.Start]: 0,
+        [QueryParameter.Sort]: SortBy.Price,
+        [QueryParameter.Order]: SortType.Desc,
+      }
+    });
+    return data[0].price;
+  }
+);
+
 export const fetchMinPriceAction = createAsyncThunk<number, ParamsRequest, {
   dispatch: AppDispatch,
   state: State,
@@ -36,19 +74,20 @@ export const fetchMinPriceAction = createAsyncThunk<number, ParamsRequest, {
 }>(
   'camera/get-min',
   async ({queryParams}, {extra: api}) => {
-    if(queryParams?.getAll(QueryParameter.Category).length === 1 && queryParams?.get(QueryParameter.Category) === FilterValue.Video) {
-      queryParams = deleteParameter(queryParams, QueryParameter.Type, FilterValue.Snapshot);
-      queryParams = deleteParameter(queryParams, QueryParameter.Type, FilterValue.Film);
+    let params = new URLSearchParams(queryParams);
+    if(params.getAll(QueryParameter.Category).length === 1 && params.get(QueryParameter.Category) === FilterValue.Video) {
+      params = deleteParameter(params, QueryParameter.Type, FilterValue.Snapshot);
+      params = deleteParameter(params, QueryParameter.Type, FilterValue.Film);
     }
-    const priceMax = queryParams?.get(QueryParameter.PriceMax);
-    const priceMin = queryParams?.get(QueryParameter.PriceMin);
-    queryParams.delete(QueryParameter.PriceMax);
-    queryParams.delete(QueryParameter.PriceMin);
-    queryParams.delete(QueryParameter.Sort);
-    queryParams.delete(QueryParameter.Order);
-    queryParams.delete(QueryParameter.Limit);
-    queryParams.delete(QueryParameter.Start);
-    const {data} : AxiosResponse = await api.get<Camera>(`${APIRoute.Cameras}?${queryParams?.toString()}`, {
+    const priceMax = params.get(QueryParameter.PriceMax);
+    const priceMin = params.get(QueryParameter.PriceMin);
+    params.delete(QueryParameter.PriceMax);
+    params.delete(QueryParameter.PriceMin);
+    params.delete(QueryParameter.Sort);
+    params.delete(QueryParameter.Order);
+    params.delete(QueryParameter.Limit);
+    params.delete(QueryParameter.Start);
+    const {data} : AxiosResponse = await api.get<Camera>(`${APIRoute.Cameras}?${params.toString()}`, {
       params: {
         [QueryParameter.Limit]: 1,
         [QueryParameter.Start]: 0,
@@ -69,19 +108,20 @@ export const fetchMaxPriceAction = createAsyncThunk<number, ParamsRequest, {
 }>(
   'camera/get-max',
   async ({queryParams}, {extra: api}) => {
-    if(queryParams?.getAll(QueryParameter.Category).length === 1 && queryParams?.get(QueryParameter.Category) === FilterValue.Video) {
-      queryParams = deleteParameter(queryParams, QueryParameter.Type, FilterValue.Snapshot);
-      queryParams = deleteParameter(queryParams, QueryParameter.Type, FilterValue.Film);
+    let params = new URLSearchParams(queryParams);
+    if(params.getAll(QueryParameter.Category).length === 1 && params.get(QueryParameter.Category) === FilterValue.Video) {
+      params = deleteParameter(params, QueryParameter.Type, FilterValue.Snapshot);
+      params = deleteParameter(params, QueryParameter.Type, FilterValue.Film);
     }
-    const priceMax = queryParams?.get(QueryParameter.PriceMax);
-    const priceMin = queryParams?.get(QueryParameter.PriceMin);
-    queryParams.delete(QueryParameter.PriceMax);
-    queryParams.delete(QueryParameter.PriceMin);
-    queryParams.delete(QueryParameter.Sort);
-    queryParams.delete(QueryParameter.Order);
-    queryParams.delete(QueryParameter.Limit);
-    queryParams.delete(QueryParameter.Start);
-    const {data} : AxiosResponse = await api.get<Camera>(`${APIRoute.Cameras}?${queryParams?.toString()}`, {
+    const priceMax = params.get(QueryParameter.PriceMax);
+    const priceMin = params.get(QueryParameter.PriceMin);
+    params.delete(QueryParameter.PriceMax);
+    params.delete(QueryParameter.PriceMin);
+    params.delete(QueryParameter.Sort);
+    params.delete(QueryParameter.Order);
+    params.delete(QueryParameter.Limit);
+    params.delete(QueryParameter.Start);
+    const {data} : AxiosResponse = await api.get<Camera>(`${APIRoute.Cameras}?${params.toString()}`, {
       params: {
         [QueryParameter.Limit]: 1,
         [QueryParameter.Start]: 0,

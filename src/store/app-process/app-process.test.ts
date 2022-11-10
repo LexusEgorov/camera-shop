@@ -14,8 +14,6 @@ describe('Reducer: app', () => {
       isReviewsLoading: false,
       isServerError: false,
       searchParams: '',
-      filterParams: '',
-      sortParams: '',
     };
   });
 

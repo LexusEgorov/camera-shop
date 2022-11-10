@@ -87,8 +87,6 @@ export type AppProcess = {
   isReviewsLoading: IsLoading,
   isServerError: IsServerError,
   searchParams: string,
-  filterParams: string,
-  sortParams: string,
 }
 
 export type CameraData = {
@@ -104,7 +102,6 @@ export type CameraData = {
 export type FilterData = {
   minPrice: number,
   maxPrice: number,
-  category: string[],
-  type: string[],
-  level: string[],
+  minCatalogPrice: number,
+  maxCatalogPrice: number,
 };

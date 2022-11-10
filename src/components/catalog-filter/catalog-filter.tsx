@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { FilterType, FilterValue, QueryParameter } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { fetchMaxPriceAction, fetchMinPriceAction } from '../../store/api-actions';
+import { fetchMaxCatalogPriceAction, fetchMaxPriceAction, fetchMinCatalogPriceAction, fetchMinPriceAction } from '../../store/api-actions';
 import { setSearchParams as setStoreSearchParams} from '../../store/app-process/app-process';
-import { getMaxPrice, getMinPrice } from '../../store/filter-data/selectors';
+import { getMaxCatalogPrice, getMaxPrice, getMinCatalogPrice, getMinPrice } from '../../store/filter-data/selectors';
 import { updateParameter } from '../../utils';
 
 function CatalogFilter() : JSX.Element {
@@ -13,8 +13,11 @@ function CatalogFilter() : JSX.Element {
 
   const [searchParams] = useSearchParams();
 
-  const minCatalogPrice = useAppSelector(getMinPrice);
-  const maxCatalogPrice = useAppSelector(getMaxPrice);
+  const minCatalogPrice = useAppSelector(getMinCatalogPrice);
+  const maxCatalogPrice = useAppSelector(getMaxCatalogPrice);
+
+  const minCurrentPrice = useAppSelector(getMinPrice);
+  const maxCurrentPrice = useAppSelector(getMaxPrice);
 
   const priceMinQuery = searchParams.get(QueryParameter.PriceMin) || '';
   const priceMaxQuery = searchParams.get(QueryParameter.PriceMax) || '';
@@ -36,25 +39,31 @@ function CatalogFilter() : JSX.Element {
   const isNonProfessional = isQuery(searchParams, QueryParameter.Level, FilterValue.NonProfessional);
   const isProfessional = isQuery(searchParams, QueryParameter.Level, FilterValue.Professional);
 
+  useEffect(() => {
+    dispatch(fetchMinCatalogPriceAction());
+    dispatch(fetchMaxCatalogPriceAction());
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(fetchMinPriceAction({queryParams: searchParams}));
     dispatch(fetchMaxPriceAction({queryParams: searchParams}));
   }, [dispatch, searchParams]);
 
-  /*Должен срабатывать только при изменении минимальной и максимальной стоимости в каталоге*/
+  /*Должен срабатывать только при изменении минимальной стоимости в каталоге*/
   useEffect(() => {
     if(minPrice){
-      searchParams.set(QueryParameter.PriceMin, minCatalogPrice.toString());
-      setMinPrice(minCatalogPrice.toString());
-    }
-
-    if(maxPrice){
-      searchParams.set(QueryParameter.PriceMax, maxCatalogPrice.toString());
-      setMaxPrice(maxCatalogPrice.toString());
+      setMinPrice(minCurrentPrice.toString());
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [minCatalogPrice, maxCatalogPrice]);
+  }, [minCurrentPrice]);
+
+  /*Должен срабатывать только при изменении максимальной стоимости в каталоге*/
+  useEffect(() => {
+    if(maxPrice){
+      setMaxPrice(maxCurrentPrice.toString());
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [maxCurrentPrice]);
 
   const handleFilterChange = () => navigate('/catalog/1');
 
@@ -65,58 +74,45 @@ function CatalogFilter() : JSX.Element {
   const handleMinPriceBlur = () => {
     const value = Number(minPrice);
 
-    if(!value){
+    if(value < 0){
       searchParams.delete(QueryParameter.PriceMin);
       dispatch(setStoreSearchParams(searchParams.toString()));
-      handleFilterChange();
       return setMinPrice('');
     }
 
     if(value < minCatalogPrice){
       searchParams.set(QueryParameter.PriceMin, minCatalogPrice.toString());
       dispatch(setStoreSearchParams(searchParams.toString()));
-      handleFilterChange();
       return setMinPrice(minCatalogPrice.toString());
     }
-    if(value > maxCatalogPrice){
-      searchParams.set(QueryParameter.PriceMax, value.toString());
-      dispatch(setStoreSearchParams(searchParams.toString()));
-      handleFilterChange();
-      return setMaxPrice(value.toString());
-    }
 
-    searchParams.set(QueryParameter.PriceMin, value.toString());
+    searchParams.set(QueryParameter.PriceMin, minPrice);
     dispatch(setStoreSearchParams(searchParams.toString()));
-    handleFilterChange();
   };
 
   const handleMaxPriceBlur = () => {
-    const valueMax = Number(maxPrice);
-    const valueMin = Number(minPrice) > 0 ? Number(minPrice) : minCatalogPrice;
+    const value = Number(maxPrice);
 
-    if(!valueMax){
+    if(value < 0){
       searchParams.delete(QueryParameter.PriceMax);
       dispatch(setStoreSearchParams(searchParams.toString()));
-      handleFilterChange();
       return setMaxPrice('');
     }
 
-    if(valueMax < valueMin){
-      searchParams.set(QueryParameter.PriceMax, valueMin.toString());
-      dispatch(setStoreSearchParams(searchParams.toString()));
-      handleFilterChange();
-      return setMaxPrice(valueMin.toString());
-    }
-    if(valueMax > maxCatalogPrice){
+    if(value > maxCatalogPrice){
       searchParams.set(QueryParameter.PriceMax, maxCatalogPrice.toString());
       dispatch(setStoreSearchParams(searchParams.toString()));
-      handleFilterChange();
       return setMaxPrice(maxCatalogPrice.toString());
     }
 
-    searchParams.set(QueryParameter.PriceMax, valueMax.toString());
+    if(value < Number(minPrice)){
+      searchParams.set(QueryParameter.PriceMax, minPrice);
+      dispatch(setStoreSearchParams(searchParams.toString()));
+      return setMaxPrice(minPrice);
+    }
+
+    searchParams.set(QueryParameter.PriceMax, maxPrice);
     dispatch(setStoreSearchParams(searchParams.toString()));
-    handleFilterChange();
   };
 
   const handleCheckboxChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
@@ -159,6 +155,25 @@ function CatalogFilter() : JSX.Element {
         return dispatch(setStoreSearchParams(updatedParams.toString()));
       }
     }
+  };
+
+  const handleResetFilters = () => {
+    const sortBy = searchParams.get(QueryParameter.Sort);
+    const sortType = searchParams.get(QueryParameter.Order);
+
+    const updatedSearchParams = new URLSearchParams();
+
+    if(sortBy){
+      updatedSearchParams.set(QueryParameter.Sort, sortBy);
+    }
+
+    if(sortType){
+      updatedSearchParams.set(QueryParameter.Order, sortType);
+    }
+
+    setMinPrice('');
+    setMaxPrice('');
+    dispatch(setStoreSearchParams(updatedSearchParams.toString()));
   };
 
   return (
@@ -314,6 +329,7 @@ function CatalogFilter() : JSX.Element {
           <button
             className="btn catalog-filter__reset-btn"
             type="reset"
+            onClick={handleResetFilters}
           >
             Сбросить фильтры
           </button>

@@ -22,15 +22,19 @@ function CatalogList({currentPage} : CatalogListProps) : JSX.Element {
   /*Срабатывает только при изменении в хранилище*/
   useEffect(() => {
     setSearchParams(new URLSearchParams(storeSearchParams));
-  }, [setSearchParams, storeSearchParams]);
+  }, [storeSearchParams, searchParams, setSearchParams]);
 
   /*Срабатывает только при изменении URL и абсолютно не должен реагировать на хранилище*/
   useEffect(() => {
-    if(searchParams.toString() !== storeSearchParams && searchParams.toString() !== ''){
-      dispatch(setStoreSearchParams(searchParams.toString()));
+    if(searchParams.toString() !== storeSearchParams){
+      if(searchParams.toString() !== ''){
+        dispatch(setStoreSearchParams(searchParams.toString()));
+      } else {
+        setSearchParams(new URLSearchParams(storeSearchParams));
+      }
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, searchParams]);
+  }, [searchParams]);
 
   useEffect(() => {
     dispatch(fetchCamerasAction({page: currentPage, queryParams: searchParams}));
