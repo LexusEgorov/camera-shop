@@ -6,7 +6,7 @@ import { State } from '../types/types';
 import { Action } from 'redux';
 import { ThunkDispatch } from '@reduxjs/toolkit';
 import { FISH_PRODUCTS, FISH_PROMO, FISH_REVIEWS, FISH_REVIEW_POST } from '../fish/fish';
-import { APIRoute, PAGINATION_OUTPUT_COUNT } from '../const';
+import { APIRoute, PAGINATION_OUTPUT_COUNT, QueryParameter } from '../const';
 import { fetchCameraAction, fetchCamerasAction, fetchPromoAction, fetchReviewsAction, fetchSimilarAction, sendReviewAction } from './api-actions';
 
 describe('Async actions', () => {
@@ -34,10 +34,8 @@ describe('Async actions', () => {
     mockAPI
       .onGet(APIRoute.Cameras, {
         params: {
-          '_limit': PAGINATION_OUTPUT_COUNT,
-          '_start': (fakePage - 1) * PAGINATION_OUTPUT_COUNT,
-          '_sort': '',
-          '_order': '',
+          [QueryParameter.Limit]: PAGINATION_OUTPUT_COUNT,
+          [QueryParameter.Start]: (fakePage - 1) * PAGINATION_OUTPUT_COUNT,
         }
       })
       .reply(200, fakeCameras, {

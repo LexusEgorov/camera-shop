@@ -49,6 +49,7 @@ function CatalogFilter() : JSX.Element {
     dispatch(fetchMaxPriceAction({queryParams: searchParams}));
   }, [dispatch, searchParams]);
 
+
   /*Должен срабатывать только при изменении минимальной стоимости в каталоге*/
   useEffect(() => {
     if(minPrice){
@@ -193,6 +194,7 @@ function CatalogFilter() : JSX.Element {
                     value={minPrice}
                     onInput={handleMinPriceInput}
                     onBlur={handleMinPriceBlur}
+                    data-testid='filter-min-price'
                   />
                 </label>
               </div>
@@ -205,6 +207,7 @@ function CatalogFilter() : JSX.Element {
                     value={maxPrice}
                     onInput={handleMaxPriceInput}
                     onBlur={handleMaxPriceBlur}
+                    data-testid='filter-max-price'
                   />
                 </label>
               </div>
@@ -219,6 +222,7 @@ function CatalogFilter() : JSX.Element {
                   name="photocamera"
                   checked={isPhoto}
                   onChange={handleCheckboxChange}
+                  data-testid='filter-photo'
                 />
                 <span className="custom-checkbox__icon" />
                 <span className="custom-checkbox__label">Фотокамера</span>
