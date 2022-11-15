@@ -1,0 +1,15 @@
+{
+  "moduleNameMapper": {
+    "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/jest/mocks/fileMock.js",
+    "\\.(css)$": "identity-obj-proxy"
+  },
+  "setupFiles": ["<rootDir>/src/setupTests.ts"],
+  "testMatch": ["<rootDir>/src/**/*.test.ts"],
+  "verbose": false,
+  "testEnvironment": "jsdom",
+  "transformIgnorePatterns": ["node_modules", "^.+\\.module\\.(css)$"],
+  "modulePathIgnorePatterns": ["[/\\\\](build|docs|node_modules|scripts|dist)[/\\\\]"],
+  "transform": {
+    "^.+\\.(js|jsx|mjs|cjs|ts|tsx)$": "babel-jest"
+  }
+}

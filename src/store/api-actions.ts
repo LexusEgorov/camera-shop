@@ -16,7 +16,7 @@ export const fetchCamerasAction = createAsyncThunk<CamerasResponse, CamerasReque
       queryParams = deleteParameter(queryParams, QueryParameter.Type, FilterValue.Film);
     }
     const startIndex : number = (page - 1) * PAGINATION_OUTPUT_COUNT;
-    const response : AxiosResponse = await api.get<Cameras>(`${APIRoute.Cameras}?${queryParams?.toString()}`, {
+    const response : AxiosResponse = await api.get<Cameras>(`${APIRoute.Cameras}${queryParams?.toString() ? `?${queryParams.toString()}` : ''}`, {
       params: {
         [QueryParameter.Limit]: PAGINATION_OUTPUT_COUNT,
         [QueryParameter.Start]: startIndex,
