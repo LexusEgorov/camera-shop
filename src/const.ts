@@ -62,6 +62,7 @@ export enum SortBy {
 export enum SortType {
   Asc = 'asc',
   Desc = 'desc',
+  NotSorted = 'not_sorted',
 }
 
 export enum FilterType {

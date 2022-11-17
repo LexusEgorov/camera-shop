@@ -1,7 +1,7 @@
 import { FISH_PRODUCTS, FISH_PROMO, FISH_REVIEWS } from '../../fish/fish';
 import { Camera, CameraData, Cameras, Promo, Reviews } from '../../types/types';
-import { fetchCameraAction, fetchCamerasAction, fetchPromoAction, fetchReviewsAction, fetchSimilarAction, sendReviewAction } from '../api-actions';
-import { cameraData, clearCurrent, setCurrent } from './camera-data';
+import { fetchCameraAction, fetchCamerasAction, fetchPromoAction, fetchReviewsAction, fetchSimilarAction, findLikeCamerasAction, sendReviewAction } from '../api-actions';
+import { cameraData, clearCurrent, clearSearched, setCurrent } from './camera-data';
 
 describe('Reducer: cameraData', () => {
   let state: CameraData;
@@ -109,6 +109,27 @@ describe('Reducer: cameraData', () => {
         .toEqual({
           ...state,
           currentCameraReviews: [{...fakeReview}, ...state.currentCameraSimilar],
+        });
+    });
+  });
+
+  describe('clearSearched test', () => {
+    state = {...state, searchedCameras: fakeCameras};
+    it('should clear searchedCameras', () => {
+      expect(cameraData.reducer(state, {type: clearSearched.type}))
+        .toEqual({
+          ...state,
+          searchedCameras: [],
+        });
+    });
+  });
+
+  describe('findLikeCameras test', () => {
+    it('should add searched cameras', () => {
+      expect(cameraData.reducer(state, {type: findLikeCamerasAction.fulfilled.type, payload: fakeCameras}))
+        .toEqual({
+          ...state,
+          searchedCameras: fakeCameras,
         });
     });
   });

@@ -1,6 +1,6 @@
 import { AppProcess } from '../../types/types';
 import { fetchCameraAction, fetchCamerasAction, fetchPromoAction, fetchReviewsAction, fetchSimilarAction, sendReviewAction } from '../api-actions';
-import { appProcess, resetError } from './app-process';
+import { appProcess, resetError, setSearchParams } from './app-process';
 
 describe('Reducer: app', () => {
   let state: AppProcess;
@@ -181,6 +181,16 @@ describe('Reducer: app', () => {
         .toEqual({
           ...state,
           isServerError: false
+        });
+    });
+  });
+
+  describe('setSearchParams test', () => {
+    it('should update search params', () => {
+      expect(appProcess.reducer(state, {type: setSearchParams.type, payload: 'test'}))
+        .toEqual({
+          ...state,
+          searchParams: 'test',
         });
     });
   });

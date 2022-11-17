@@ -6,8 +6,8 @@ import { State } from '../types/types';
 import { Action } from 'redux';
 import { ThunkDispatch } from '@reduxjs/toolkit';
 import { FISH_PRODUCTS, FISH_PROMO, FISH_REVIEWS, FISH_REVIEW_POST } from '../fish/fish';
-import { APIRoute, PAGINATION_OUTPUT_COUNT, QueryParameter } from '../const';
-import { fetchCameraAction, fetchCamerasAction, fetchPromoAction, fetchReviewsAction, fetchSimilarAction, sendReviewAction } from './api-actions';
+import { APIRoute } from '../const';
+import { fetchCameraAction, fetchCamerasAction, fetchMaxCatalogPriceAction, fetchMaxPriceAction, fetchMinCatalogPriceAction, fetchMinPriceAction, fetchPromoAction, fetchReviewsAction, fetchSimilarAction, findLikeCamerasAction, sendReviewAction } from './api-actions';
 
 describe('Async actions', () => {
   const api = createAPI();
@@ -32,12 +32,7 @@ describe('Async actions', () => {
 
   it('should dispatch loadCameras when GET /cameras', async () => {
     mockAPI
-      .onGet(APIRoute.Cameras, {
-        params: {
-          [QueryParameter.Limit]: PAGINATION_OUTPUT_COUNT,
-          [QueryParameter.Start]: (fakePage - 1) * PAGINATION_OUTPUT_COUNT,
-        }
-      })
+      .onGet(APIRoute.Cameras)
       .reply(200, fakeCameras, {
         'x-total-count': fakeCameras.length
       });
@@ -136,6 +131,90 @@ describe('Async actions', () => {
     expect(actions).toEqual([
       sendReviewAction.pending.type,
       sendReviewAction.fulfilled.type,
+    ]);
+  });
+
+  it('should dispatch minCatalog when GET /cameras', async () => {
+    mockAPI
+      .onGet(APIRoute.Cameras)
+      .reply(200, fakeCameras);
+
+    const store = mockStore();
+
+    await store.dispatch(fetchMinCatalogPriceAction());
+
+    const actions = store.getActions().map(({type}) => type);
+
+    expect(actions).toEqual([
+      fetchMinCatalogPriceAction.pending.type,
+      fetchMinCatalogPriceAction.fulfilled.type,
+    ]);
+  });
+
+  it('should dispatch maxCatalog when GET /cameras', async () => {
+    mockAPI
+      .onGet(APIRoute.Cameras)
+      .reply(200, fakeCameras);
+
+    const store = mockStore();
+
+    await store.dispatch(fetchMaxCatalogPriceAction());
+
+    const actions = store.getActions().map(({type}) => type);
+
+    expect(actions).toEqual([
+      fetchMaxCatalogPriceAction.pending.type,
+      fetchMaxCatalogPriceAction.fulfilled.type,
+    ]);
+  });
+
+  it('should dispatch maxPrice when GET /cameras', async () => {
+    mockAPI
+      .onGet(`${APIRoute.Cameras}?`)
+      .reply(200, fakeCameras);
+
+    const store = mockStore();
+
+    await store.dispatch(fetchMaxPriceAction({queryParams: new URLSearchParams()}));
+
+    const actions = store.getActions().map(({type}) => type);
+
+    expect(actions).toEqual([
+      fetchMaxPriceAction.pending.type,
+      fetchMaxPriceAction.fulfilled.type,
+    ]);
+  });
+  it('should dispatch minPrice when GET /cameras', async () => {
+    mockAPI
+      .onGet(`${APIRoute.Cameras}?`)
+      .reply(200, fakeCameras);
+
+    const store = mockStore();
+
+    await store.dispatch(fetchMinPriceAction({queryParams: new URLSearchParams()}));
+
+    const actions = store.getActions().map(({type}) => type);
+
+    expect(actions).toEqual([
+      fetchMinPriceAction.pending.type,
+      fetchMinPriceAction.fulfilled.type,
+    ]);
+  });
+
+  it('should dispatch findLike when GET /cameras?name_like', async () => {
+    mockAPI
+      .onGet(APIRoute.Cameras)
+      .reply(200, fakeCameras);
+
+    const store = mockStore();
+
+    await store.dispatch(findLikeCamerasAction('test'));
+
+    const actions = store.getActions().map(({type}) => type);
+
+    expect(actions).toEqual([
+      findLikeCamerasAction.pending.type,
+      findLikeCamerasAction.fulfilled.type,
     ]);
   });
 });

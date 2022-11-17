@@ -4,6 +4,7 @@ import { FilterType, FilterValue, QueryParameter } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { fetchMaxCatalogPriceAction, fetchMaxPriceAction, fetchMinCatalogPriceAction, fetchMinPriceAction } from '../../store/api-actions';
 import { setSearchParams as setStoreSearchParams} from '../../store/app-process/app-process';
+import { getCamerasCount } from '../../store/camera-data/selectors';
 import { getMaxCatalogPrice, getMaxPrice, getMinCatalogPrice, getMinPrice } from '../../store/filter-data/selectors';
 import { updateParameter } from '../../utils';
 
@@ -11,6 +12,7 @@ function CatalogFilter() : JSX.Element {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
+  const totalCount = useAppSelector(getCamerasCount);
   const [searchParams] = useSearchParams();
 
   const minCatalogPrice = useAppSelector(getMinCatalogPrice);
@@ -50,17 +52,17 @@ function CatalogFilter() : JSX.Element {
   }, [dispatch, searchParams]);
 
 
-  /*Должен срабатывать только при изменении минимальной стоимости в каталоге*/
+  /*Должен срабатывать только при изменении минимальной стоимости из данных сервера*/
   useEffect(() => {
-    if(minPrice){
+    if(minPrice && totalCount !== 0){
       setMinPrice(minCurrentPrice.toString());
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [minCurrentPrice]);
 
-  /*Должен срабатывать только при изменении максимальной стоимости в каталоге*/
+  /*Должен срабатывать только при изменении максимальной стоимости из данных сервера*/
   useEffect(() => {
-    if(maxPrice){
+    if(maxPrice && totalCount !== 0){
       setMaxPrice(maxCurrentPrice.toString());
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -85,6 +87,13 @@ function CatalogFilter() : JSX.Element {
       searchParams.set(QueryParameter.PriceMin, minCatalogPrice.toString());
       dispatch(setStoreSearchParams(searchParams.toString()));
       return setMinPrice(minCatalogPrice.toString());
+    }
+
+    if(maxPrice && value > Number(maxPrice)){
+      searchParams.set(QueryParameter.PriceMin, value.toString());
+      searchParams.set(QueryParameter.PriceMax, value.toString());
+      dispatch(setStoreSearchParams(searchParams.toString()));
+      return setMaxPrice(value.toString());
     }
 
     searchParams.set(QueryParameter.PriceMin, minPrice);
@@ -235,6 +244,7 @@ function CatalogFilter() : JSX.Element {
                   name="videocamera"
                   checked={isVideo}
                   onChange={handleCheckboxChange}
+                  data-testid='filter-video'
                 />
                 <span className="custom-checkbox__icon" />
                 <span className="custom-checkbox__label">Видеокамера</span>
@@ -250,6 +260,7 @@ function CatalogFilter() : JSX.Element {
                   name="digital"
                   checked={isDigital}
                   onChange={handleCheckboxChange}
+                  data-testid='filter-digital'
                 />
                 <span className="custom-checkbox__icon" />
                 <span className="custom-checkbox__label">Цифровая</span>
@@ -263,6 +274,7 @@ function CatalogFilter() : JSX.Element {
                   disabled={isVideo && !isPhoto}
                   checked={isFilm}
                   onChange={handleCheckboxChange}
+                  data-testid='filter-film'
                 />
                 <span className="custom-checkbox__icon" />
                 <span className="custom-checkbox__label">Плёночная</span>
@@ -276,6 +288,7 @@ function CatalogFilter() : JSX.Element {
                   disabled={isVideo && !isPhoto}
                   checked={isSnapshot}
                   onChange={handleCheckboxChange}
+                  data-testid='filter-snapshot'
                 />
                 <span className="custom-checkbox__icon" />
                 <span className="custom-checkbox__label">Моментальная</span>
@@ -288,6 +301,7 @@ function CatalogFilter() : JSX.Element {
                   name="collection"
                   checked={isCollection}
                   onChange={handleCheckboxChange}
+                  data-testid='filter-collection'
                 />
                 <span className="custom-checkbox__icon" />
                 <span className="custom-checkbox__label">Коллекционная</span>
@@ -303,6 +317,7 @@ function CatalogFilter() : JSX.Element {
                   name="zero"
                   checked={isZero}
                   onChange={handleCheckboxChange}
+                  data-testid='filter-zero'
                 />
                 <span className="custom-checkbox__icon" /><span className="custom-checkbox__label">Нулевой</span>
               </label>
@@ -314,6 +329,7 @@ function CatalogFilter() : JSX.Element {
                   name="non-professional"
                   checked={isNonProfessional}
                   onChange={handleCheckboxChange}
+                  data-testid='filter-non-professional'
                 />
                 <span className="custom-checkbox__icon" /><span className="custom-checkbox__label">Любительский</span>
               </label>
@@ -325,6 +341,7 @@ function CatalogFilter() : JSX.Element {
                   name="professional"
                   checked={isProfessional}
                   onChange={handleCheckboxChange}
+                  data-testid='filter-professional'
                 />
                 <span className="custom-checkbox__icon" /><span className="custom-checkbox__label">Профессиональный</span>
               </label>
@@ -334,6 +351,7 @@ function CatalogFilter() : JSX.Element {
             className="btn catalog-filter__reset-btn"
             type="reset"
             onClick={handleResetFilters}
+            data-testid='filter-reset'
           >
             Сбросить фильтры
           </button>

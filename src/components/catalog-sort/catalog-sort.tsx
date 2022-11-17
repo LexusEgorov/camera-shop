@@ -9,13 +9,13 @@ function CatalogSort() : JSX.Element {
   const [searchParams] = useSearchParams();
 
   const sortBy = searchParams.get(QueryParameter.Sort) || SortBy.NotSorted;
-  const sortType = searchParams.get(QueryParameter.Order) || SortType.Asc;
+  const sortType = searchParams.get(QueryParameter.Order) || SortType.NotSorted;
 
   const handlePriceCheck = () => {
     searchParams.set(QueryParameter.Sort, SortBy.Price);
 
     if(!searchParams.has(QueryParameter.Order)){
-      searchParams.append(QueryParameter.Order, sortType);
+      searchParams.append(QueryParameter.Order, SortType.Asc);
     }
 
     dispatch(setStoreSearchParams(searchParams.toString()));
@@ -25,21 +25,27 @@ function CatalogSort() : JSX.Element {
     searchParams.set(QueryParameter.Sort, SortBy.Rating);
 
     if(!searchParams.has(QueryParameter.Order)){
-      searchParams.append(QueryParameter.Order, sortType);
+      searchParams.append(QueryParameter.Order, SortType.Asc);
     }
 
     dispatch(setStoreSearchParams(searchParams.toString()));
   };
 
   const handleAscCheck = () => {
-    searchParams.set(QueryParameter.Order, SortType.Asc);
+    if(!searchParams.has(QueryParameter.Sort)){
+      searchParams.append(QueryParameter.Sort, SortBy.Price);
+    }
 
+    searchParams.set(QueryParameter.Order, SortType.Asc);
     dispatch(setStoreSearchParams(searchParams.toString()));
   };
 
   const handleDescCheck = () => {
-    searchParams.set(QueryParameter.Order, SortType.Desc);
+    if(!searchParams.has(QueryParameter.Sort)){
+      searchParams.append(QueryParameter.Sort, SortBy.Price);
+    }
 
+    searchParams.set(QueryParameter.Order, SortType.Desc);
     dispatch(setStoreSearchParams(searchParams.toString()));
   };
 

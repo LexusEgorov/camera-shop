@@ -79,6 +79,20 @@ describe('Component: CatalogSort', () => {
     fireEvent.click(screen.getByTestId('sort-order-desc'));
 
     expect(dispatch).toHaveBeenCalledTimes(1);
-    expect(fakeSetStoreSearchParams).toHaveBeenCalledWith('_order=desc');
+    expect(fakeSetStoreSearchParams).toHaveBeenCalledWith('_sort=price&_order=desc');
+  });
+
+  it('should dispatch searchParams to store when asc is checked', () => {
+    const dispatch = jest.fn();
+    fakeDispatch.mockReturnValue(dispatch);
+
+    const fakeSetStoreSearchParams = jest.spyOn(appProcessActions, 'setSearchParams');
+
+    render(fakeApp);
+
+    fireEvent.click(screen.getByTestId('sort-order-asc'));
+
+    expect(dispatch).toHaveBeenCalledTimes(1);
+    expect(fakeSetStoreSearchParams).toHaveBeenCalledWith('_sort=price&_order=asc');
   });
 });

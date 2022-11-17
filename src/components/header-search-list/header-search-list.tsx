@@ -12,7 +12,7 @@ function HeaderSearchList({searchedCameras, resetSearch} : HeaderSearchListProps
   const tabIndexGenerator = generator();
 
   return(
-    <ul className="form-search__select-list">
+    <ul className="form-search__select-list" data-testid='header-search-list'>
       {
         searchedCameras.map(({name, id}) =>
           (
