@@ -8,7 +8,7 @@ import CatalogSort from '../../components/catalog-sort/catalog-sort';
 import Pagination from '../../components/pagination/pagination';
 import { PAGINATION_OUTPUT_COUNT } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { fetchPromoAction } from '../../store/api-actions';
+import { fetchMaxCatalogPriceAction, fetchMinCatalogPriceAction, fetchPromoAction } from '../../store/api-actions';
 import { resetError } from '../../store/app-process/app-process';
 import { getIsCamerasLoading, getIsPromoLoading } from '../../store/app-process/selectors';
 import { clearCurrent } from '../../store/camera-data/camera-data';
@@ -24,6 +24,8 @@ function Catalog() : JSX.Element {
     dispatch(resetError());
     dispatch(clearCurrent());
     dispatch(fetchPromoAction());
+    dispatch(fetchMinCatalogPriceAction());
+    dispatch(fetchMaxCatalogPriceAction());
   }, [dispatch]);
 
   const isPromoLoading = useAppSelector(getIsPromoLoading);

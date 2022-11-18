@@ -37,7 +37,10 @@ function CatalogList({currentPage} : CatalogListProps) : JSX.Element {
   }, [searchParams]);
 
   useEffect(() => {
-    dispatch(fetchCamerasAction({page: currentPage, queryParams: searchParams}));
+    if(searchParams.toString() === storeSearchParams){
+      dispatch(fetchCamerasAction({page: currentPage, queryParams: searchParams}));
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage, dispatch, searchParams]);
 
   const products = useAppSelector(getCameras);

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { FilterType, FilterValue, QueryParameter } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { fetchMaxCatalogPriceAction, fetchMaxPriceAction, fetchMinCatalogPriceAction, fetchMinPriceAction } from '../../store/api-actions';
+import { fetchMaxPriceAction, fetchMinPriceAction } from '../../store/api-actions';
 import { setSearchParams as setStoreSearchParams} from '../../store/app-process/app-process';
 import { getCamerasCount } from '../../store/camera-data/selectors';
 import { getMaxCatalogPrice, getMaxPrice, getMinCatalogPrice, getMinPrice } from '../../store/filter-data/selectors';
@@ -41,16 +41,6 @@ function CatalogFilter() : JSX.Element {
   const isNonProfessional = isQuery(searchParams, QueryParameter.Level, FilterValue.NonProfessional);
   const isProfessional = isQuery(searchParams, QueryParameter.Level, FilterValue.Professional);
 
-  useEffect(() => {
-    dispatch(fetchMinCatalogPriceAction());
-    dispatch(fetchMaxCatalogPriceAction());
-  }, [dispatch]);
-
-  useEffect(() => {
-    dispatch(fetchMinPriceAction({queryParams: searchParams}));
-    dispatch(fetchMaxPriceAction({queryParams: searchParams}));
-  }, [dispatch, searchParams]);
-
   /*Должен срабатывать только при изменении минимальной стоимости из данных сервера*/
   useEffect(() => {
     if(minPrice && totalCount !== 0){
@@ -67,7 +57,11 @@ function CatalogFilter() : JSX.Element {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [maxCurrentPrice]);
 
-  const handleFilterChange = () => navigate('/catalog/1');
+  const handleFilterChange = () => {
+    navigate('/catalog/1');
+    dispatch(fetchMinPriceAction({queryParams: searchParams}));
+    dispatch(fetchMaxPriceAction({queryParams: searchParams}));
+  };
 
   const handleMinPriceInput = (evt: React.FormEvent<HTMLInputElement>) => setMinPrice(evt.currentTarget.value);
 
@@ -79,12 +73,14 @@ function CatalogFilter() : JSX.Element {
     if(value < 0){
       searchParams.delete(QueryParameter.PriceMin);
       dispatch(setStoreSearchParams(searchParams.toString()));
+      handleFilterChange();
       return setMinPrice('');
     }
 
     if(value < minCatalogPrice){
       searchParams.set(QueryParameter.PriceMin, minCatalogPrice.toString());
       dispatch(setStoreSearchParams(searchParams.toString()));
+      handleFilterChange();
       return setMinPrice(minCatalogPrice.toString());
     }
 
@@ -95,6 +91,7 @@ function CatalogFilter() : JSX.Element {
         setMaxPrice(maxCatalogPrice.toString());
       }
       dispatch(setStoreSearchParams(searchParams.toString()));
+      handleFilterChange();
       return setMinPrice(maxCatalogPrice.toString());
     }
 
@@ -102,11 +99,13 @@ function CatalogFilter() : JSX.Element {
       searchParams.set(QueryParameter.PriceMin, value.toString());
       searchParams.set(QueryParameter.PriceMax, value.toString());
       dispatch(setStoreSearchParams(searchParams.toString()));
+      handleFilterChange();
       return setMaxPrice(value.toString());
     }
 
     searchParams.set(QueryParameter.PriceMin, minPrice);
     dispatch(setStoreSearchParams(searchParams.toString()));
+    handleFilterChange();
   };
 
   const handleMaxPriceBlur = () => {
@@ -115,71 +114,78 @@ function CatalogFilter() : JSX.Element {
     if(value < 0){
       searchParams.delete(QueryParameter.PriceMax);
       dispatch(setStoreSearchParams(searchParams.toString()));
+      handleFilterChange();
       return setMaxPrice('');
     }
 
     if(value < Number(minPrice)){
       searchParams.set(QueryParameter.PriceMax, minPrice);
       dispatch(setStoreSearchParams(searchParams.toString()));
+      handleFilterChange();
       return setMaxPrice(minPrice);
     }
 
     if(value < minCatalogPrice){
       searchParams.set(QueryParameter.PriceMax, minCatalogPrice.toString());
       dispatch(setStoreSearchParams(searchParams.toString()));
+      handleFilterChange();
       return setMaxPrice(minCatalogPrice.toString());
     }
 
     if(value > maxCatalogPrice){
       searchParams.set(QueryParameter.PriceMax, maxCatalogPrice.toString());
       dispatch(setStoreSearchParams(searchParams.toString()));
+      handleFilterChange();
       return setMaxPrice(maxCatalogPrice.toString());
     }
 
     searchParams.set(QueryParameter.PriceMax, maxPrice);
     dispatch(setStoreSearchParams(searchParams.toString()));
+    handleFilterChange();
   };
 
   const handleCheckboxChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    handleFilterChange();
+    let updatedParams = new URLSearchParams();
     switch (evt.target.name) {
       case FilterType.Photo : {
-        const updatedParams = updateParameter(isPhoto, searchParams, QueryParameter.Category, FilterValue.Photo);
-        return dispatch(setStoreSearchParams(updatedParams.toString()));
+        updatedParams = updateParameter(isPhoto, searchParams, QueryParameter.Category, FilterValue.Photo);
+        break;
       }
       case FilterType.Video : {
-        const updatedParams = updateParameter(isVideo, searchParams, QueryParameter.Category, FilterValue.Video);
-        return dispatch(setStoreSearchParams(updatedParams.toString()));
+        updatedParams = updateParameter(isVideo, searchParams, QueryParameter.Category, FilterValue.Video);
+        break;
       }
       case FilterType.Digital : {
-        const updatedParams = updateParameter(isDigital, searchParams, QueryParameter.Type, FilterValue.Digital);
-        return dispatch(setStoreSearchParams(updatedParams.toString()));
+        updatedParams = updateParameter(isDigital, searchParams, QueryParameter.Type, FilterValue.Digital);
+        break;
       }
       case FilterType.Film : {
-        const updatedParams = updateParameter(isFilm, searchParams, QueryParameter.Type, FilterValue.Film);
-        return dispatch(setStoreSearchParams(updatedParams.toString()));
+        updatedParams = updateParameter(isFilm, searchParams, QueryParameter.Type, FilterValue.Film);
+        break;
       }
       case FilterType.Snapshot : {
-        const updatedParams = updateParameter(isSnapshot, searchParams, QueryParameter.Type, FilterValue.Snapshot);
-        return dispatch(setStoreSearchParams(updatedParams.toString()));
+        updatedParams = updateParameter(isSnapshot, searchParams, QueryParameter.Type, FilterValue.Snapshot);
+        break;
       }
       case FilterType.Collection : {
-        const updatedParams = updateParameter(isCollection, searchParams, QueryParameter.Type, FilterValue.Collection);
-        return dispatch(setStoreSearchParams(updatedParams.toString()));
+        updatedParams = updateParameter(isCollection, searchParams, QueryParameter.Type, FilterValue.Collection);
+        break;
       }
       case FilterType.Zero : {
-        const updatedParams = updateParameter(isZero, searchParams, QueryParameter.Level, FilterValue.Zero);
-        return dispatch(setStoreSearchParams(updatedParams.toString()));
+        updatedParams = updateParameter(isZero, searchParams, QueryParameter.Level, FilterValue.Zero);
+        break;
       }
       case FilterType.NonProfessional : {
-        const updatedParams = updateParameter(isNonProfessional, searchParams, QueryParameter.Level, FilterValue.NonProfessional);
-        return dispatch(setStoreSearchParams(updatedParams.toString()));
+        updatedParams = updateParameter(isNonProfessional, searchParams, QueryParameter.Level, FilterValue.NonProfessional);
+        break;
       }
       case FilterType.Professional : {
-        const updatedParams = updateParameter(isProfessional, searchParams, QueryParameter.Level, FilterValue.Professional);
-        return dispatch(setStoreSearchParams(updatedParams.toString()));
+        updatedParams = updateParameter(isProfessional, searchParams, QueryParameter.Level, FilterValue.Professional);
+        break;
       }
     }
+    handleFilterChange();
+    dispatch(setStoreSearchParams(updatedParams.toString()));
   };
 
   const handleResetFilters = () => {
