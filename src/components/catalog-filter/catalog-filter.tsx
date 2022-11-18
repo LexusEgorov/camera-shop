@@ -89,6 +89,12 @@ function CatalogFilter() : JSX.Element {
       return setMinPrice(minCatalogPrice.toString());
     }
 
+    if(value > maxCatalogPrice){
+      searchParams.set(QueryParameter.PriceMin, maxCatalogPrice.toString());
+      dispatch(setStoreSearchParams(searchParams.toString()));
+      return setMinPrice(maxCatalogPrice.toString());
+    }
+
     if(maxPrice && value > Number(maxPrice)){
       searchParams.set(QueryParameter.PriceMin, value.toString());
       searchParams.set(QueryParameter.PriceMax, value.toString());
@@ -109,16 +115,22 @@ function CatalogFilter() : JSX.Element {
       return setMaxPrice('');
     }
 
-    if(value > maxCatalogPrice){
-      searchParams.set(QueryParameter.PriceMax, maxCatalogPrice.toString());
-      dispatch(setStoreSearchParams(searchParams.toString()));
-      return setMaxPrice(maxCatalogPrice.toString());
-    }
-
     if(value < Number(minPrice)){
       searchParams.set(QueryParameter.PriceMax, minPrice);
       dispatch(setStoreSearchParams(searchParams.toString()));
       return setMaxPrice(minPrice);
+    }
+
+    if(value < minCatalogPrice){
+      searchParams.set(QueryParameter.PriceMax, minCatalogPrice.toString());
+      dispatch(setStoreSearchParams(searchParams.toString()));
+      return setMaxPrice(minCatalogPrice.toString());
+    }
+
+    if(value > maxCatalogPrice){
+      searchParams.set(QueryParameter.PriceMax, maxCatalogPrice.toString());
+      dispatch(setStoreSearchParams(searchParams.toString()));
+      return setMaxPrice(maxCatalogPrice.toString());
     }
 
     searchParams.set(QueryParameter.PriceMax, maxPrice);
