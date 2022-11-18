@@ -51,7 +51,6 @@ function CatalogFilter() : JSX.Element {
     dispatch(fetchMaxPriceAction({queryParams: searchParams}));
   }, [dispatch, searchParams]);
 
-
   /*Должен срабатывать только при изменении минимальной стоимости из данных сервера*/
   useEffect(() => {
     if(minPrice && totalCount !== 0){
@@ -91,6 +90,10 @@ function CatalogFilter() : JSX.Element {
 
     if(value > maxCatalogPrice){
       searchParams.set(QueryParameter.PriceMin, maxCatalogPrice.toString());
+      if(maxPrice && value > Number(maxPrice)){
+        searchParams.set(QueryParameter.PriceMax, maxCatalogPrice.toString());
+        setMaxPrice(maxCatalogPrice.toString());
+      }
       dispatch(setStoreSearchParams(searchParams.toString()));
       return setMinPrice(maxCatalogPrice.toString());
     }
