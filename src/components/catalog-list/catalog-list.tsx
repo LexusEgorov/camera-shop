@@ -8,6 +8,7 @@ import { getCameras, getCamerasCount } from '../../store/camera-data/selectors';
 import { setSearchParams as setStoreSearchParams} from '../../store/app-process/app-process';
 import ProductCard from '../product-card/product-card';
 import EmptyFilter from '../empty-filter/empty-filter';
+import { getMinPrice } from '../../store/filter-data/selectors';
 
 type CatalogListProps = {
   currentPage: number,
@@ -16,6 +17,7 @@ type CatalogListProps = {
 function CatalogList({currentPage} : CatalogListProps) : JSX.Element {
   const dispatch = useAppDispatch();
   const storeSearchParams = useAppSelector(getSearchParams);
+  const minCurrentPrice = useAppSelector(getMinPrice);
 
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -37,7 +39,7 @@ function CatalogList({currentPage} : CatalogListProps) : JSX.Element {
   }, [searchParams]);
 
   useEffect(() => {
-    if(searchParams.toString() === storeSearchParams){
+    if(searchParams.toString() === storeSearchParams || minCurrentPrice < 0){
       dispatch(fetchCamerasAction({page: currentPage, queryParams: searchParams}));
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps

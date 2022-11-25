@@ -18,6 +18,9 @@ const fakeStore = mockStore({
   [NameSpace.CameraData]: {
     cameras: [],
     promo: {} as Promo,
+  },
+  [NameSpace.FilterData]: {
+    minPrice: -1,
   }
 });
 

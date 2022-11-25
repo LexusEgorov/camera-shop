@@ -4,8 +4,8 @@ import { FilterData } from '../../types/types';
 import { fetchMaxCatalogPriceAction, fetchMaxPriceAction, fetchMinCatalogPriceAction, fetchMinPriceAction } from '../api-actions';
 
 const initialState : FilterData = {
-  minPrice: 0,
-  maxPrice: 0,
+  minPrice: -1,
+  maxPrice: -1,
   minCatalogPrice: 0,
   maxCatalogPrice: 0,
 };

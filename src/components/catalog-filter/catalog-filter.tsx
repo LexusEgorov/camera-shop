@@ -70,7 +70,7 @@ function CatalogFilter() : JSX.Element {
   const handleMinPriceBlur = () => {
     const value = Number(minPrice);
 
-    if(value < 0){
+    if(value < 0 || minPrice === ''){
       searchParams.delete(QueryParameter.PriceMin);
       dispatch(setStoreSearchParams(searchParams.toString()));
       handleFilterChange();
@@ -111,7 +111,7 @@ function CatalogFilter() : JSX.Element {
   const handleMaxPriceBlur = () => {
     const value = Number(maxPrice);
 
-    if(value < 0){
+    if(value < 0 || maxPrice === ''){
       searchParams.delete(QueryParameter.PriceMax);
       dispatch(setStoreSearchParams(searchParams.toString()));
       handleFilterChange();
@@ -220,7 +220,7 @@ function CatalogFilter() : JSX.Element {
                   <input
                     type="number"
                     name="price"
-                    placeholder={minCatalogPrice.toString()}
+                    placeholder={minCurrentPrice < 0 ? minCatalogPrice.toString() : minCurrentPrice.toString()}
                     value={minPrice}
                     onInput={handleMinPriceInput}
                     onBlur={handleMinPriceBlur}
@@ -233,7 +233,7 @@ function CatalogFilter() : JSX.Element {
                   <input
                     type="number"
                     name="priceUp"
-                    placeholder={maxCatalogPrice.toString()}
+                    placeholder={maxCurrentPrice < 0 ? maxCatalogPrice.toString() : maxCurrentPrice.toString()}
                     value={maxPrice}
                     onInput={handleMaxPriceInput}
                     onBlur={handleMaxPriceBlur}

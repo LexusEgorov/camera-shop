@@ -7,9 +7,9 @@ describe('Reducer: filterData', () => {
 
   beforeEach(() => {
     state = {
-      minPrice: 0,
+      minPrice: -1,
       minCatalogPrice: 0,
-      maxPrice: 0,
+      maxPrice: -1,
       maxCatalogPrice: 0,
     };
   });
