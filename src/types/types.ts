@@ -105,3 +105,7 @@ export type FilterData = {
   minCatalogPrice: number,
   maxCatalogPrice: number,
 };
+
+export type ShoppingCartData = {
+  products: Cameras;
+}

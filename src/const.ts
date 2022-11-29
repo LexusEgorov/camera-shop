@@ -25,7 +25,8 @@ export enum AppRoute {
 export enum NameSpace {
   App = 'APP',
   CameraData = 'CAMERA_DATA',
-  FilterData = 'FILTER_DATA'
+  FilterData = 'FILTER_DATA',
+  ShoppingCartData = 'SHOPPING_CART_DATA',
 }
 
 export enum APIRoute {
