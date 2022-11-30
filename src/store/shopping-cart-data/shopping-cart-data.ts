@@ -20,6 +20,8 @@ export const shoppingCartData = createSlice({
       if(deleteIndex !== NOT_FOUND){
         state.products = [...state.products.slice(0, deleteIndex), ...state.products.slice(deleteIndex + 1)];
       }
-    }
+    },
   },
 });
+
+export const {addProduct, deleteProduct} = shoppingCartData.actions;
