@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
 import ModalAddReview from '../../components/modal-add-review/modal-add-review';
+import ModalAddToCart from '../../components/modal-add-to-cart/modal-add-to-cart';
 import ProductCardRating from '../../components/product-card-rating/product-card-rating';
 import ProductReview from '../../components/product-review/product-review';
 import ProductSimilar from '../../components/product-similar/product-similar';
@@ -27,7 +28,8 @@ function Product() : JSX.Element {
     dispatch(clearSearched());
   }, [dispatch, productId]);
 
-  const [isModalOpened, setIsModalOpened] = useState(false);
+  const [isModalReviewOpened, setIsModalReviewOpened] = useState(false);
+  const [isModalCartOpened, setIsModalCartOpened] = useState(false);
 
   const product = useAppSelector(getCamera);
 
@@ -106,7 +108,11 @@ function Product() : JSX.Element {
               <h1 className="title title--h3">{name}</h1>
               <ProductCardRating rating={rating} reviewCount={reviewCount} blockClass='rate product__rate' />
               <p className="product__price"><span className="visually-hidden">Цена:</span>{price} ₽</p>
-              <button className="btn btn--purple" type="button">
+              <button
+                className="btn btn--purple"
+                type="button"
+                onClick={() => setIsModalCartOpened(true)}
+              >
                 <svg width={24} height={16} aria-hidden="true">
                   <use xlinkHref="#icon-add-basket" />
                 </svg>
@@ -128,9 +134,12 @@ function Product() : JSX.Element {
       {
         similarProducts.length > 0 && <ProductSimilar productsSimilar={similarProducts}/>
       }
-      <ProductReview setIsModalOpened={setIsModalOpened}/>
+      <ProductReview setIsModalOpened={setIsModalReviewOpened}/>
       <UpButton />
-      <ModalAddReview isOpened={isModalOpened} setIsOpened={setIsModalOpened}/>
+      <ModalAddReview isOpened={isModalReviewOpened} setIsOpened={setIsModalReviewOpened}/>
+      {
+        product.id && <ModalAddToCart isOpened={isModalCartOpened} setIsOpened={setIsModalCartOpened} camera={product}/>
+      }
     </>
   );
 }
