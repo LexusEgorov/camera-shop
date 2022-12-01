@@ -1,16 +1,20 @@
 import { Link } from 'react-router-dom';
 import { Tab } from '../../const';
-import { useAppDispatch } from '../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { setCurrent } from '../../store/camera-data/camera-data';
+import { getCartHasProduct } from '../../store/shopping-cart-data/selectors';
 import { Camera } from '../../types/types';
+import AddToCartButton from '../add-to-cart-button/add-to-cart-button';
 import ProductCardRating from '../product-card-rating/product-card-rating';
 
 type ProductCardProps = {
   product: Camera;
   isActive?: boolean;
+  openModal: React.Dispatch<React.SetStateAction<boolean>>,
+  setCamera: React.Dispatch<React.SetStateAction<Camera>>,
 };
 
-function ProductCard({product, isActive} : ProductCardProps) : JSX.Element {
+function ProductCard({product, isActive, openModal, setCamera} : ProductCardProps) : JSX.Element {
   const dispatch = useAppDispatch();
 
   const {
@@ -24,6 +28,8 @@ function ProductCard({product, isActive} : ProductCardProps) : JSX.Element {
     reviewCount,
     rating,
   } = product;
+
+  const isAdded = useAppSelector(getCartHasProduct(id));
 
   const handleShowCameraClick = () => dispatch(setCurrent(id));
 
@@ -41,7 +47,7 @@ function ProductCard({product, isActive} : ProductCardProps) : JSX.Element {
         <p className="product-card__price"><span className="visually-hidden">Цена:</span> {price} ₽</p>
       </div>
       <div className="product-card__buttons">
-        <button className="btn btn--purple product-card__btn" type="button">Купить</button>
+        <AddToCartButton isAdded={isAdded} currentCamera={product} setCamera={setCamera} openModal={openModal}/>
         <Link className="btn btn--transparent" to={`/product/${id}/${Tab.Description}`}
           onClick={handleShowCameraClick}
         >

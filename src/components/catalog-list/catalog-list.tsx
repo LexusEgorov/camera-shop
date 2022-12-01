@@ -61,7 +61,7 @@ function CatalogList({currentPage} : CatalogListProps) : JSX.Element {
   return (
     <div className="cards catalog__cards fade-in" data-testid='catalog-list'>
       {
-        products.map((product) => <ProductCard product={product} key={product.id}/>)
+        products.map((product) => <ProductCard product={product} key={product.id} />)
       }
     </div>
   );

@@ -1,14 +1,21 @@
+import { Camera } from '../../types/types';
+
 type AddToCartButtonProps = {
   isAdded: boolean,
-  onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined,
+  currentCamera: Camera,
+  openModal: React.Dispatch<React.SetStateAction<boolean>>,
+  setCamera: React.Dispatch<React.SetStateAction<Camera>>,
 }
 
-function AddToCartButton({isAdded, onClick} : AddToCartButtonProps) : JSX.Element {
+function AddToCartButton({isAdded, currentCamera, openModal, setCamera} : AddToCartButtonProps) : JSX.Element {
   return (
     <button
-      className={`btn ${isAdded ? 'btn--purple-border' : 'btn--purple'}`}
+      className={`btn product-card__btn ${isAdded ? 'btn--purple-border' : 'btn--purple'}`}
       type="button"
-      onClick={onClick}
+      onClick={() => {
+        setCamera(currentCamera);
+        openModal(true);
+      }}
     >
       {
         isAdded ?
@@ -17,12 +24,7 @@ function AddToCartButton({isAdded, onClick} : AddToCartButtonProps) : JSX.Elemen
               <use xlinkHref="#icon-basket"></use>
             </svg>В корзине
           </> :
-          <>
-            <svg width={24} height={16} aria-hidden="true">
-              <use xlinkHref="#icon-add-basket" />
-            </svg>
-            Добавить в корзину
-          </>
+          <>Купить</>
       }
     </button>
   );
