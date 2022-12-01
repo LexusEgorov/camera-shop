@@ -36,7 +36,7 @@ describe('Component: ProductCard', () => {
           <Routes>
             <Route
               path='/' element={
-                <ProductCard product={fakeProduct}/>
+                <ProductCard product={fakeProduct} openModal={jest.fn()} setCamera={jest.fn()}/>
               }
             />
           </Routes>

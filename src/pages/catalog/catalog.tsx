@@ -1,10 +1,11 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Banner from '../../components/banner/banner';
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
 import CatalogFilter from '../../components/catalog-filter/catalog-filter';
 import CatalogList from '../../components/catalog-list/catalog-list';
 import CatalogSort from '../../components/catalog-sort/catalog-sort';
+import ModalAddToCart from '../../components/modal-add-to-cart/modal-add-to-cart';
 import Pagination from '../../components/pagination/pagination';
 import { PAGINATION_OUTPUT_COUNT } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
@@ -13,6 +14,7 @@ import { resetError } from '../../store/app-process/app-process';
 import { getIsCamerasLoading, getIsPromoLoading } from '../../store/app-process/selectors';
 import { clearCurrent } from '../../store/camera-data/camera-data';
 import { getCamerasCount, getPromo } from '../../store/camera-data/selectors';
+import { Camera } from '../../types/types';
 import './style.css';
 
 function Catalog() : JSX.Element {
@@ -31,6 +33,9 @@ function Catalog() : JSX.Element {
   const isPromoLoading = useAppSelector(getIsPromoLoading);
   const isCamerasLoading = useAppSelector(getIsCamerasLoading);
 
+  const [isModalCartOpened, setIsModalCartOpened] = useState(false);
+  const [choosenCamera, setChoosenCamera] = useState(undefined as unknown as Camera);
+
   const productsCount = useAppSelector(getCamerasCount);
 
   const pagesCount = useMemo(() => Math.ceil(productsCount / PAGINATION_OUTPUT_COUNT), [productsCount]);
@@ -48,7 +53,7 @@ function Catalog() : JSX.Element {
             <CatalogFilter />
             <div className="catalog__content">
               <CatalogSort />
-              <CatalogList currentPage={currentPage} />
+              <CatalogList currentPage={currentPage} openModal={setIsModalCartOpened} setCamera={setChoosenCamera} />
               {
                 !isCamerasLoading && <Pagination pagesCount={pagesCount} currentPage={currentPage}/>
               }
@@ -56,6 +61,9 @@ function Catalog() : JSX.Element {
           </div>
         </div>
       </section>
+      {
+        choosenCamera && <ModalAddToCart isOpened={isModalCartOpened} setIsOpened={setIsModalCartOpened} camera={choosenCamera}/>
+      }
     </>
   );
 }

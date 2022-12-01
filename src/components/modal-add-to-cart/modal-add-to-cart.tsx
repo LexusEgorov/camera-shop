@@ -30,7 +30,7 @@ function ModalAddToCart({isOpened, setIsOpened, camera} : ModalAddToCartProps) :
   const [isSuccess, setIsSuccess] = useState(false);
 
   const handleAddToShoppingCart = () => {
-    dispatch(addProduct(camera));
+    dispatch(addProduct(camera.id));
     setIsSuccess(true);
   };
 

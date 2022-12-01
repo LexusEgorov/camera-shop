@@ -9,12 +9,15 @@ import { setSearchParams as setStoreSearchParams} from '../../store/app-process/
 import ProductCard from '../product-card/product-card';
 import EmptyFilter from '../empty-filter/empty-filter';
 import { getMinPrice } from '../../store/filter-data/selectors';
+import { Camera } from '../../types/types';
 
 type CatalogListProps = {
   currentPage: number,
+  openModal: React.Dispatch<React.SetStateAction<boolean>>,
+  setCamera: React.Dispatch<React.SetStateAction<Camera>>,
 }
 
-function CatalogList({currentPage} : CatalogListProps) : JSX.Element {
+function CatalogList({currentPage, openModal, setCamera} : CatalogListProps) : JSX.Element {
   const dispatch = useAppDispatch();
   const storeSearchParams = useAppSelector(getSearchParams);
   const minCurrentPrice = useAppSelector(getMinPrice);
@@ -61,7 +64,7 @@ function CatalogList({currentPage} : CatalogListProps) : JSX.Element {
   return (
     <div className="cards catalog__cards fade-in" data-testid='catalog-list'>
       {
-        products.map((product) => <ProductCard product={product} key={product.id} />)
+        products.map((product) => <ProductCard product={product} key={product.id} openModal={openModal} setCamera={setCamera} />)
       }
     </div>
   );

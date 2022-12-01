@@ -30,6 +30,7 @@ function Product() : JSX.Element {
   }, [dispatch, productId]);
 
   const [isModalReviewOpened, setIsModalReviewOpened] = useState(false);
+
   const [isModalCartOpened, setIsModalCartOpened] = useState(false);
   const [choosenCamera, setChoosenCamera] = useState(undefined as unknown as Camera);
 

@@ -30,7 +30,7 @@ const fakeApp = (
       <Routes>
         <Route
           path='/' element={
-            <CatalogList currentPage={1} />
+            <CatalogList currentPage={1} openModal={jest.fn()} setCamera={jest.fn()}/>
           }
         />
       </Routes>
