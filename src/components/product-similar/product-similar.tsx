@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Cameras } from '../../types/types';
+import { Camera, Cameras } from '../../types/types';
 import ProductCard from '../product-card/product-card';
 import './style.css';
 
@@ -8,9 +8,11 @@ const SLIDER_END = 2;
 
 type ProductSimilarProps = {
   productsSimilar: Cameras,
+  openModal: React.Dispatch<React.SetStateAction<boolean>>,
+  setCamera: React.Dispatch<React.SetStateAction<Camera>>,
 }
 
-function ProductSimilar({productsSimilar} : ProductSimilarProps) : JSX.Element | null {
+function ProductSimilar({productsSimilar, openModal, setCamera} : ProductSimilarProps) : JSX.Element | null {
   const [leftProductIndex, setLeftProductIndex] = useState(SLIDER_START);
   const [rightProductIndex, setRightProductIndex] = useState(SLIDER_END);
 
@@ -42,7 +44,7 @@ function ProductSimilar({productsSimilar} : ProductSimilarProps) : JSX.Element |
             <div className="product-similar__slider-list">
               {
                 productsSimilar.map((product, index) => (
-                  index >= leftProductIndex && index <= rightProductIndex && <ProductCard isActive product={product} key={product.id}/>
+                  index >= leftProductIndex && index <= rightProductIndex && <ProductCard isActive product={product} key={product.id} setCamera={setCamera} openModal={openModal}/>
                 ))
               }
             </div>

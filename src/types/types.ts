@@ -106,6 +106,11 @@ export type FilterData = {
   maxCatalogPrice: number,
 };
 
+export type ShoppingCartItem = {
+  id: number,
+  count: number,
+}
+
 export type ShoppingCartData = {
-  products: Cameras;
+  products: ShoppingCartItem[];
 }

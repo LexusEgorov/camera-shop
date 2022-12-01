@@ -36,7 +36,7 @@ describe('Component: ProductSimilar', () => {
           <Routes>
             <Route
               path='/' element={
-                <ProductSimilar productsSimilar={fakeSimilarProducts}/>
+                <ProductSimilar productsSimilar={fakeSimilarProducts} openModal={jest.fn()} setCamera={jest.fn()}/>
               }
             />
           </Routes>
@@ -54,7 +54,7 @@ describe('Component: ProductSimilar', () => {
           <Routes>
             <Route
               path='/' element={
-                <ProductSimilar productsSimilar={[]}/>
+                <ProductSimilar productsSimilar={[]} openModal={jest.fn()} setCamera={jest.fn()}/>
               }
             />
           </Routes>

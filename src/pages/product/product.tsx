@@ -13,6 +13,7 @@ import { fetchCameraAction, fetchReviewsAction, fetchSimilarAction } from '../..
 import { getIsServerError } from '../../store/app-process/selectors';
 import { clearSearched, setCurrent } from '../../store/camera-data/camera-data';
 import { getCamera, getSimilar } from '../../store/camera-data/selectors';
+import { Camera } from '../../types/types';
 
 function Product() : JSX.Element {
   const dispatch = useAppDispatch();
@@ -29,7 +30,9 @@ function Product() : JSX.Element {
   }, [dispatch, productId]);
 
   const [isModalReviewOpened, setIsModalReviewOpened] = useState(false);
+
   const [isModalCartOpened, setIsModalCartOpened] = useState(false);
+  const [choosenCamera, setChoosenCamera] = useState(undefined as unknown as Camera);
 
   const product = useAppSelector(getCamera);
 
@@ -111,7 +114,10 @@ function Product() : JSX.Element {
               <button
                 className="btn btn--purple"
                 type="button"
-                onClick={() => setIsModalCartOpened(true)}
+                onClick={() => {
+                  setIsModalCartOpened(true);
+                  setChoosenCamera(product);
+                }}
               >
                 <svg width={24} height={16} aria-hidden="true">
                   <use xlinkHref="#icon-add-basket" />
@@ -132,13 +138,13 @@ function Product() : JSX.Element {
         </section>
       </div>
       {
-        similarProducts.length > 0 && <ProductSimilar productsSimilar={similarProducts}/>
+        similarProducts.length > 0 && <ProductSimilar productsSimilar={similarProducts} openModal={setIsModalCartOpened} setCamera={setChoosenCamera}/>
       }
       <ProductReview setIsModalOpened={setIsModalReviewOpened}/>
       <UpButton />
       <ModalAddReview isOpened={isModalReviewOpened} setIsOpened={setIsModalReviewOpened}/>
       {
-        product.id && <ModalAddToCart isOpened={isModalCartOpened} setIsOpened={setIsModalCartOpened} camera={product}/>
+        choosenCamera && <ModalAddToCart isOpened={isModalCartOpened} setIsOpened={setIsModalCartOpened} camera={choosenCamera}/>
       }
     </>
   );

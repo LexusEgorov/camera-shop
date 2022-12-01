@@ -13,7 +13,15 @@ export const shoppingCartData = createSlice({
   initialState: initialState,
   reducers: {
     addProduct: (state, action) => {
-      state.products.push(action.payload);
+      const findIndex = state.products.findIndex((product) => product.id === action.payload);
+      if(findIndex !== NOT_FOUND){
+        state.products[findIndex].count++;
+      } else {
+        state.products.push({
+          id: action.payload,
+          count: 1,
+        });
+      }
     },
     deleteProduct: (state, action) => {
       const deleteIndex = state.products.findIndex((camera) => camera.id === action.payload);
