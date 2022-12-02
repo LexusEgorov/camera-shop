@@ -3,7 +3,7 @@ import { Navigate, useSearchParams } from 'react-router-dom';
 import { PAGINATION_OUTPUT_COUNT } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { fetchCamerasAction } from '../../store/api-actions';
-import { getSearchParams } from '../../store/app-process/selectors';
+import { getIsCamerasLoading, getSearchParams } from '../../store/app-process/selectors';
 import { getCameras, getCamerasCount } from '../../store/camera-data/selectors';
 import { setSearchParams as setStoreSearchParams} from '../../store/app-process/app-process';
 import ProductCard from '../product-card/product-card';
@@ -19,6 +19,7 @@ type CatalogListProps = {
 
 function CatalogList({currentPage, openModal, setCamera} : CatalogListProps) : JSX.Element {
   const dispatch = useAppDispatch();
+  const isCamerasLoading = useAppSelector(getIsCamerasLoading);
   const storeSearchParams = useAppSelector(getSearchParams);
   const minCurrentPrice = useAppSelector(getMinPrice);
 
@@ -57,7 +58,7 @@ function CatalogList({currentPage, openModal, setCamera} : CatalogListProps) : J
     return <Navigate to='/*' />;
   }
 
-  if(products.length === 0){
+  if(products.length === 0 && !isCamerasLoading){
     return <EmptyFilter />;
   }
 

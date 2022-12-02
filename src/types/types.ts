@@ -107,10 +107,11 @@ export type FilterData = {
 };
 
 export type ShoppingCartItem = {
-  id: number,
+  camera: Camera,
   count: number,
 }
 
 export type ShoppingCartData = {
-  products: ShoppingCartItem[];
+  products: ShoppingCartItem[],
+  discount: number,
 }

@@ -19,6 +19,7 @@ export enum AppRoute {
   Root = '/',
   Catalog = '/catalog/:page',
   Product = '/product/:id/:tab',
+  Cart = '/cart',
   AnyPage = '*',
 }
 

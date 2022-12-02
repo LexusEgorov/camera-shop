@@ -1,13 +1,15 @@
-import { Navigate, Outlet, useParams } from 'react-router-dom';
+import { Navigate, Outlet, useLocation, useParams } from 'react-router-dom';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
+import { AppRoute } from '../../const';
 
 const EMPTY_KEYS = 0;
 
 function Layout() : JSX.Element {
   const params = useParams();
+  const currentLocation = useLocation().pathname;
 
-  if(!params || Object.keys(params).length === EMPTY_KEYS){
+  if((!params || Object.keys(params).length === EMPTY_KEYS) && currentLocation !== AppRoute.Cart){
     return <Navigate to={'/catalog/1'} />;
   }
 
