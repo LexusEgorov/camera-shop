@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { getCartProductCount } from '../../store/shopping-cart-data/selectors';
-import { deleteProduct, updateProductCount } from '../../store/shopping-cart-data/shopping-cart-data';
+import { updateProductCount } from '../../store/shopping-cart-data/shopping-cart-data';
 import { Camera } from '../../types/types';
 
 const MAX_PRODUCT_COUNT = 99;
@@ -9,9 +9,11 @@ const MIN_PRODUCT_COUNT = 1;
 
 type ShoppingCartItemProps = {
   product: Camera,
+  openModal: React.Dispatch<React.SetStateAction<boolean>>,
+  setCamera: React.Dispatch<React.SetStateAction<Camera>>,
 }
 
-function ShoppingCartItem({product} : ShoppingCartItemProps) : JSX.Element {
+function ShoppingCartItem({product, openModal, setCamera} : ShoppingCartItemProps) : JSX.Element {
   const dispatch = useAppDispatch();
 
   const {
@@ -68,7 +70,10 @@ function ShoppingCartItem({product} : ShoppingCartItemProps) : JSX.Element {
     setCurrentCount(count);
   };
 
-  const handleDeleteProduct = () => dispatch(deleteProduct(id));
+  const handleDeleteProduct = () => {
+    setCamera(product);
+    openModal(true);
+  };
 
   return (
     <li className="basket-item">
