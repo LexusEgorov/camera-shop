@@ -68,6 +68,11 @@ export type CamerasResponse = {
   totalCount: number,
 }
 
+export type CouponResponse = {
+  data: number,
+  coupon: string,
+}
+
 export type IsLoading = boolean;
 export type IsServerError = boolean;
 
@@ -114,4 +119,6 @@ export type ShoppingCartItem = {
 export type ShoppingCartData = {
   products: ShoppingCartItem[],
   discount: number,
+  coupon: string,
+  couponStatus: string,
 }

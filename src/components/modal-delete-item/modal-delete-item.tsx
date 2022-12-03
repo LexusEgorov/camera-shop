@@ -1,5 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { FilterValue } from '../../const';
 import { useAppDispatch } from '../../hooks/hooks';
 import { deleteProduct } from '../../store/shopping-cart-data/shopping-cart-data';
 import { Camera } from '../../types/types';
@@ -81,10 +82,10 @@ function ModalDeleteItem({isOpened, setIsOpened, camera} : ModalDeleteItemProps)
               <p className="basket-item__title">{name}</p>
               <ul className="basket-item__list">
                 <li className="basket-item__list-item">
-                  <span className="basket-item__article">Артикул:</span>
+                  <span className="basket-item__article">Артикул: </span>
                   <span className="basket-item__number">{vendorCode}</span>
                 </li>
-                <li className="basket-item__list-item">{type} {category.toLowerCase()}</li>
+                <li className="basket-item__list-item">{type} {category === FilterValue.Photo ? 'фотокамера' : category.toLowerCase()}</li>
                 <li className="basket-item__list-item">{level} уровень</li>
               </ul>
             </div>
@@ -105,7 +106,12 @@ function ModalDeleteItem({isOpened, setIsOpened, camera} : ModalDeleteItemProps)
               Продолжить покупки
             </Link>
           </div>
-          <button className="cross-btn" type="button" aria-label="Закрыть попап">
+          <button
+            className="cross-btn"
+            type="button"
+            aria-label="Закрыть попап"
+            onClick={handleCloseModalClick}
+          >
             <svg width={10} height={10} aria-hidden="true">
               <use xlinkHref="#icon-close" />
             </svg>

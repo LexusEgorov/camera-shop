@@ -41,3 +41,7 @@ export const getCartTotalPrice = (state: State) : number => {
 export const getCartDiscount = (state: State) : number => state[NameSpace.ShoppingCartData].discount;
 
 export const getCartHasProduct = (id: number) => (state: State) : boolean => state[NameSpace.ShoppingCartData].products.findIndex((product) => product.camera.id === id) !== NOT_FOUND;
+
+export const getCoupon = (state: State) : string => state[NameSpace.ShoppingCartData].coupon;
+
+export const getCouponStatus = (state: State) : string => state[NameSpace.ShoppingCartData].couponStatus;

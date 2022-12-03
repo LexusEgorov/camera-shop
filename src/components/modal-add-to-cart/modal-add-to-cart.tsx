@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { FilterValue } from '../../const';
 import { useAppDispatch } from '../../hooks/hooks';
 import { addProduct } from '../../store/shopping-cart-data/shopping-cart-data';
 import { Camera } from '../../types/types';
@@ -13,6 +15,7 @@ type ModalAddToCartProps = {
 
 function ModalAddToCart({isOpened, setIsOpened, camera} : ModalAddToCartProps) : JSX.Element {
   const dispatch = useAppDispatch();
+  const currentLocation = useLocation().pathname;
 
   const {
     name,
@@ -40,6 +43,7 @@ function ModalAddToCart({isOpened, setIsOpened, camera} : ModalAddToCartProps) :
 
   const handleCloseModalClick = () => {
     setIsOpened(false);
+    document.body.style.overflow = 'visible';
     document.removeEventListener('keydown', handleCloseModalKeydown);
     setTimeout(() => {
       setIsSuccess(false);
@@ -47,8 +51,11 @@ function ModalAddToCart({isOpened, setIsOpened, camera} : ModalAddToCartProps) :
   };
 
   const handleContinueShopping = (evt : React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-    evt.preventDefault();
     handleCloseModalClick();
+
+    if(currentLocation.includes('catalog')){
+      evt.preventDefault();
+    }
   };
 
   const handleCloseModalKeydown = useCallback((evt : KeyboardEvent) => {
@@ -86,14 +93,20 @@ function ModalAddToCart({isOpened, setIsOpened, camera} : ModalAddToCartProps) :
                   <use xlinkHref="#icon-success" />
                 </svg>
                 <div className="modal__buttons">
-                  <a
+                  <Link
                     className="btn btn--transparent modal__btn"
-                    href="/catalog"
+                    to="/catalog/1"
                     onClick={handleContinueShopping}
                   >
                     Продолжить покупки
-                  </a>
-                  <button className="btn btn--purple modal__btn modal__btn--fit-width">Перейти в корзину</button>
+                  </Link>
+                  <Link
+                    className="btn btn--purple modal__btn modal__btn--fit-width"
+                    to="/cart"
+                    onClick={handleCloseModalClick}
+                  >
+                    Перейти в корзину
+                  </Link>
                 </div>
               </> :
               <>
@@ -109,10 +122,10 @@ function ModalAddToCart({isOpened, setIsOpened, camera} : ModalAddToCartProps) :
                     <p className="basket-item__title">{name}</p>
                     <ul className="basket-item__list">
                       <li className="basket-item__list-item">
-                        <span className="basket-item__article">Артикул:</span>
+                        <span className="basket-item__article">Артикул: </span>
                         <span className="basket-item__number">{vendorCode}</span>
                       </li>
-                      <li className="basket-item__list-item">{type} {category.toLowerCase()}</li>
+                      <li className="basket-item__list-item">{type} {category === FilterValue.Photo ? 'фотокамера' : category.toLowerCase()}</li>
                       <li className="basket-item__list-item">{level} уровень</li>
                     </ul>
                     <p className="basket-item__price"><span className="visually-hidden">Цена:</span>{price} ₽</p>

@@ -35,6 +35,7 @@ export enum APIRoute {
   Promo = '/promo',
   Reviews = '/reviews',
   Similar = '/similar',
+  Coupons = '/coupons',
 }
 
 export enum Tab {
@@ -89,4 +90,10 @@ export enum FilterValue {
   Zero = 'Нулевой',
   NonProfessional = 'Любительский',
   Professional = 'Профессиональный',
+}
+
+export enum CouponStatus {
+  Accept = 'ACCEPTED',
+  Reject = 'REJECTED',
+  NoCoupon = 'NO_COUPON',
 }
