@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react';
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
 import ModalDeleteItem from '../../components/modal-delete-item/modal-delete-item';
+import ModalOrderSuccess from '../../components/modal-order-success/modal-order-success';
 import ShoppingCartCouponForm from '../../components/shopping-cart-coupon-form/shopping-cart-coupon-form';
 import ShoppingCartList from '../../components/shopping-cart-list/shopping-cart-list';
+import { OrderStatus } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { sendOrderAction } from '../../store/api-actions';
 import { setSearchParams } from '../../store/app-process/app-process';
+import { getOrderStatus } from '../../store/app-process/selectors';
 import { getCartDiscount, getCartProductsIds, getCartTotalPrice, getCoupon } from '../../store/shopping-cart-data/selectors';
 import { Camera } from '../../types/types';
 
@@ -16,6 +20,7 @@ function ShoppingCart() : JSX.Element {
   const discountPercent = useAppSelector(getCartDiscount);
   const camerasIds = useAppSelector(getCartProductsIds);
   const coupon = useAppSelector(getCoupon);
+  const orderStatus = useAppSelector(getOrderStatus);
 
   const discount = Math.floor(totalPrice * discountPercent / PERCENT);
   const resultPrice = totalPrice - discount;
@@ -23,17 +28,24 @@ function ShoppingCart() : JSX.Element {
   const [isModalDeleteOpened, setIsModalDeleteOpened] = useState(false);
   const [choosenCamera, setChoosenCamera] = useState(undefined as unknown as Camera);
 
+  const [isModalSuccessOpened, setIsModalSuccessOpened] = useState(false);
+
   useEffect(() => {
     dispatch(setSearchParams(''));
     window.scrollTo(0, 0);
   }, [dispatch]);
 
+  useEffect(() => {
+    setIsModalSuccessOpened(orderStatus !== OrderStatus.NoStatus);
+  }, [orderStatus, dispatch]);
+
   const handleSubmit = () => {
-    // eslint-disable-next-line no-console
-    console.log({
-      camerasIds: camerasIds,
-      coupon: coupon ? coupon : null,
-    });
+    dispatch(sendOrderAction(
+      {
+        camerasIds: camerasIds,
+        coupon: coupon ? coupon : null,
+      }
+    ));
   };
 
   return(
@@ -69,6 +81,7 @@ function ShoppingCart() : JSX.Element {
                 className="btn btn--purple"
                 type="submit"
                 onClick={handleSubmit}
+                disabled={!camerasIds.length}
               >
                 Оформить заказ
               </button>
@@ -79,6 +92,7 @@ function ShoppingCart() : JSX.Element {
       {
         choosenCamera && <ModalDeleteItem isOpened={isModalDeleteOpened} setIsOpened={setIsModalDeleteOpened} camera={choosenCamera}/>
       }
+      <ModalOrderSuccess isOpened={isModalSuccessOpened} setIsOpened={setIsModalSuccessOpened}/>
     </>
   );
 }

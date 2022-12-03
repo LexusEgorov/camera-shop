@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { Id, toast } from 'react-toastify';
-import { NameSpace } from '../../const';
+import { NameSpace, OrderStatus } from '../../const';
 import { AppProcess } from '../../types/types';
-import { fetchCameraAction, fetchCamerasAction, fetchPromoAction, fetchReviewsAction, fetchSimilarAction, findLikeCamerasAction, sendReviewAction } from '../api-actions';
+import { fetchCameraAction, fetchCamerasAction, fetchPromoAction, fetchReviewsAction, fetchSimilarAction, findLikeCamerasAction, sendOrderAction, sendReviewAction } from '../api-actions';
 
 const initialState : AppProcess = {
   isCamerasLoading: false,
@@ -12,6 +12,7 @@ const initialState : AppProcess = {
   isReviewsLoading: false,
   isServerError: false,
   searchParams: '',
+  orderStatus: OrderStatus.NoStatus,
 };
 
 let cameraToast : Id;
@@ -28,10 +29,14 @@ export const appProcess = createSlice({
   reducers: {
     resetError: (state) => {
       state.isServerError = false;
+      state.orderStatus = OrderStatus.NoStatus;
     },
     setSearchParams: (state, action) => {
       state.searchParams = action.payload;
     },
+    resetOrderStatus: (state) => {
+      state.orderStatus = OrderStatus.NoStatus;
+    }
   },
   extraReducers(builder) {
     builder
@@ -73,6 +78,9 @@ export const appProcess = createSlice({
           searchToast = toast.loading('Поиск камер');
         }
       })
+      .addCase(sendOrderAction.fulfilled, (state) => {
+        state.orderStatus = OrderStatus.Accept;
+      })
       .addCase(fetchCameraAction.fulfilled, (state) => {
         toast.dismiss(cameraToast);
         state.isCameraLoading = false;
@@ -99,6 +107,9 @@ export const appProcess = createSlice({
       .addCase(findLikeCamerasAction.fulfilled, () => {
         toast.dismiss(searchToast);
         searchToast = undefined;
+      })
+      .addCase(sendOrderAction.rejected, (state) => {
+        state.orderStatus = OrderStatus.Reject;
       })
       .addCase(fetchCameraAction.rejected, (state) => {
         toast.update(cameraToast, {render: 'Не удалось загрузить камеру', type: 'error', isLoading: false, autoClose: 1000});
@@ -132,4 +143,4 @@ export const appProcess = createSlice({
   },
 });
 
-export const {resetError, setSearchParams} = appProcess.actions;
+export const {resetError, setSearchParams, resetOrderStatus} = appProcess.actions;

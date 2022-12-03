@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import ReactFocusLock from 'react-focus-lock';
 import { Link, useLocation } from 'react-router-dom';
 import { FilterValue } from '../../const';
 import { useAppDispatch } from '../../hooks/hooks';
@@ -79,79 +80,81 @@ function ModalAddToCart({isOpened, setIsOpened, camera} : ModalAddToCartProps) :
 
   return (
     <div className={`modal ${isOpened ? 'is-active' : ''}`} onClick={handleCloseModalClick}>
-      <div className="modal__wrapper">
-        <div className="modal__overlay" />
-        <div
-          className="modal__content"
-          onClick={handleContentClick}
-        >
-          {
-            isSuccess ?
-              <>
-                <p className="title title--h4">Товар успешно добавлен в корзину</p>
-                <svg className="modal__icon" width={86} height={80} aria-hidden="true">
-                  <use xlinkHref="#icon-success" />
-                </svg>
-                <div className="modal__buttons">
-                  <Link
-                    className="btn btn--transparent modal__btn"
-                    to="/catalog/1"
-                    onClick={handleContinueShopping}
-                  >
-                    Продолжить покупки
-                  </Link>
-                  <Link
-                    className="btn btn--purple modal__btn modal__btn--fit-width"
-                    to="/cart"
-                    onClick={handleCloseModalClick}
-                  >
-                    Перейти в корзину
-                  </Link>
-                </div>
-              </> :
-              <>
-                <p className="title title--h4">Добавить товар в корзину</p>
-                <div className="basket-item basket-item--short">
-                  <div className="basket-item__img">
-                    <picture>
-                      <source type="image/webp" srcSet={`${previewImgWebp}, ${previewImgWebp2x} 2x`}/>
-                      <img src={previewImg} srcSet={`${previewImg2x} 2x`} width={140} height={120} alt={name} />
-                    </picture>
+      <ReactFocusLock>
+        <div className="modal__wrapper">
+          <div className="modal__overlay" />
+          <div
+            className="modal__content"
+            onClick={handleContentClick}
+          >
+            {
+              isSuccess ?
+                <>
+                  <p className="title title--h4">Товар успешно добавлен в корзину</p>
+                  <svg className="modal__icon" width={86} height={80} aria-hidden="true">
+                    <use xlinkHref="#icon-success" />
+                  </svg>
+                  <div className="modal__buttons">
+                    <Link
+                      className="btn btn--transparent modal__btn"
+                      to="/catalog/1"
+                      onClick={handleContinueShopping}
+                    >
+                      Продолжить покупки
+                    </Link>
+                    <Link
+                      className="btn btn--purple modal__btn modal__btn--fit-width"
+                      to="/cart"
+                      onClick={handleCloseModalClick}
+                    >
+                      Перейти в корзину
+                    </Link>
                   </div>
-                  <div className="basket-item__description">
-                    <p className="basket-item__title">{name}</p>
-                    <ul className="basket-item__list">
-                      <li className="basket-item__list-item">
-                        <span className="basket-item__article">Артикул: </span>
-                        <span className="basket-item__number">{vendorCode}</span>
-                      </li>
-                      <li className="basket-item__list-item">{type} {category === FilterValue.Photo ? 'фотокамера' : category.toLowerCase()}</li>
-                      <li className="basket-item__list-item">{level} уровень</li>
-                    </ul>
-                    <p className="basket-item__price"><span className="visually-hidden">Цена:</span>{price} ₽</p>
+                </> :
+                <>
+                  <p className="title title--h4">Добавить товар в корзину</p>
+                  <div className="basket-item basket-item--short">
+                    <div className="basket-item__img">
+                      <picture>
+                        <source type="image/webp" srcSet={`${previewImgWebp}, ${previewImgWebp2x} 2x`}/>
+                        <img src={previewImg} srcSet={`${previewImg2x} 2x`} width={140} height={120} alt={name} />
+                      </picture>
+                    </div>
+                    <div className="basket-item__description">
+                      <p className="basket-item__title">{name}</p>
+                      <ul className="basket-item__list">
+                        <li className="basket-item__list-item">
+                          <span className="basket-item__article">Артикул: </span>
+                          <span className="basket-item__number">{vendorCode}</span>
+                        </li>
+                        <li className="basket-item__list-item">{type} {category === FilterValue.Photo ? 'фотокамера' : category.toLowerCase()}</li>
+                        <li className="basket-item__list-item">{level} уровень</li>
+                      </ul>
+                      <p className="basket-item__price"><span className="visually-hidden">Цена:</span>{price} ₽</p>
+                    </div>
                   </div>
-                </div>
-                <div className="modal__buttons">
-                  <button
-                    className="btn btn--purple modal__btn modal__btn--fit-width"
-                    type="button"
-                    onClick={handleAddToShoppingCart}
-                  >
-                    <svg width={24} height={16} aria-hidden="true">
-                      <use xlinkHref="#icon-add-basket" />
-                    </svg>
-                    Добавить в корзину
-                  </button>
-                </div>
-              </>
-          }
-          <button className="cross-btn" type="button" aria-label="Закрыть попап" onClick={handleCloseModalClick}>
-            <svg width={10} height={10} aria-hidden="true">
-              <use xlinkHref="#icon-close" />
-            </svg>
-          </button>
+                  <div className="modal__buttons">
+                    <button
+                      className="btn btn--purple modal__btn modal__btn--fit-width"
+                      type="button"
+                      onClick={handleAddToShoppingCart}
+                    >
+                      <svg width={24} height={16} aria-hidden="true">
+                        <use xlinkHref="#icon-add-basket" />
+                      </svg>
+                      Добавить в корзину
+                    </button>
+                  </div>
+                </>
+            }
+            <button className="cross-btn" type="button" aria-label="Закрыть попап" onClick={handleCloseModalClick}>
+              <svg width={10} height={10} aria-hidden="true">
+                <use xlinkHref="#icon-close" />
+              </svg>
+            </button>
+          </div>
         </div>
-      </div>
+      </ReactFocusLock>
     </div>
   );
 }

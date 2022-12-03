@@ -97,6 +97,7 @@ export type AppProcess = {
   isReviewsLoading: IsLoading,
   isServerError: IsServerError,
   searchParams: string,
+  orderStatus: string,
 }
 
 export type CameraData = {

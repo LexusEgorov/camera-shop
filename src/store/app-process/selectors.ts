@@ -14,3 +14,5 @@ export const getIsReviewsLoading = (state: State) : IsLoading => state[NameSpace
 export const getIsServerError = (state: State) : IsServerError => state[NameSpace.App].isServerError;
 
 export const getSearchParams = (state: State) : string => state[NameSpace.App].searchParams;
+
+export const getOrderStatus = (state: State) : string => state[NameSpace.App].orderStatus;

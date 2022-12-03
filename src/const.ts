@@ -20,6 +20,7 @@ export enum AppRoute {
   Catalog = '/catalog/:page',
   Product = '/product/:id/:tab',
   Cart = '/cart',
+  Error = '/error',
   AnyPage = '*',
 }
 
@@ -36,6 +37,7 @@ export enum APIRoute {
   Reviews = '/reviews',
   Similar = '/similar',
   Coupons = '/coupons',
+  Orders = '/orders',
 }
 
 export enum Tab {
@@ -96,4 +98,10 @@ export enum CouponStatus {
   Accept = 'ACCEPTED',
   Reject = 'REJECTED',
   NoCoupon = 'NO_COUPON',
+}
+
+export enum OrderStatus {
+  Accept = 'ACCEPTED',
+  Reject = 'REJECTED',
+  NoStatus = 'NO_STATUS',
 }
