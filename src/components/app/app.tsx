@@ -5,6 +5,7 @@ import { AppRoute } from '../../const';
 import Catalog from '../../pages/catalog/catalog';
 import Layout from '../../pages/layout/layout';
 import NotFound from '../../pages/not-found/not-found';
+import Error from '../../pages/error/error';
 import Product from '../../pages/product/product';
 import ShoppingCart from '../../pages/shopping-cart/shopping-cart';
 import { getIsServerError } from '../../store/app-process/selectors';
@@ -23,6 +24,7 @@ function App(): JSX.Element {
   return (
     <Router>
       <Routes>
+        <Route path={AppRoute.Error} element={<Error />} />
         <Route path={AppRoute.Root} element={<Layout />}>
           <Route path={AppRoute.Catalog} element={<Catalog />} />
           <Route path={AppRoute.Product} element={<Product />} />

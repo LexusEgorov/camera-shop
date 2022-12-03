@@ -1,3 +1,4 @@
+import { OrderStatus } from '../../const';
 import { AppProcess } from '../../types/types';
 import { fetchCameraAction, fetchCamerasAction, fetchPromoAction, fetchReviewsAction, fetchSimilarAction, sendReviewAction } from '../api-actions';
 import { appProcess, resetError, setSearchParams } from './app-process';
@@ -14,6 +15,7 @@ describe('Reducer: app', () => {
       isReviewsLoading: false,
       isServerError: false,
       searchParams: '',
+      orderStatus: OrderStatus.NoStatus,
     };
   });
 

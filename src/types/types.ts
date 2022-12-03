@@ -58,6 +58,11 @@ export type ParamsRequest = {
   queryParams: URLSearchParams,
 }
 
+export type OrderPost = {
+  camerasIds: number[],
+  coupon: string | null,
+}
+
 /*Псевдонимы типов*/
 
 export type Cameras = Camera[];
@@ -66,6 +71,11 @@ export type Reviews = Review[];
 export type CamerasResponse = {
   data: Cameras,
   totalCount: number,
+}
+
+export type CouponResponse = {
+  data: number,
+  coupon: string,
 }
 
 export type IsLoading = boolean;
@@ -87,6 +97,7 @@ export type AppProcess = {
   isReviewsLoading: IsLoading,
   isServerError: IsServerError,
   searchParams: string,
+  orderStatus: string,
 }
 
 export type CameraData = {
@@ -114,4 +125,6 @@ export type ShoppingCartItem = {
 export type ShoppingCartData = {
   products: ShoppingCartItem[],
   discount: number,
+  coupon: string,
+  couponStatus: string,
 }

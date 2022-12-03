@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { FilterValue } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { getCartProductCount } from '../../store/shopping-cart-data/selectors';
 import { updateProductCount } from '../../store/shopping-cart-data/shopping-cart-data';
@@ -88,7 +89,7 @@ function ShoppingCartItem({product, openModal, setCamera} : ShoppingCartItemProp
         <ul className="basket-item__list">
           <li className="basket-item__list-item"><span className="basket-item__article">Артикул:</span> <span className="basket-item__number">{vendorCode}</span>
           </li>
-          <li className="basket-item__list-item">{type} {category.toLowerCase()}</li>
+          <li className="basket-item__list-item">{type} {category === FilterValue.Photo ? 'фотокамера' : category.toLowerCase()}</li>
           <li className="basket-item__list-item">{level} уровень</li>
         </ul>
       </div>

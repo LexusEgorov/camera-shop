@@ -5,6 +5,8 @@ const NOT_FOUND = -1;
 
 export const getCartProducts = (state: State) : ShoppingCartItem[] => state[NameSpace.ShoppingCartData].products;
 
+export const getCartProductsIds = (state: State) : number[] => state[NameSpace.ShoppingCartData].products.map((product) => product.camera.id);
+
 export const getCartProductCount = (id: number) => (state: State) : number => {
   const products = state[NameSpace.ShoppingCartData].products;
   const findIndex = products.findIndex((product) => product.camera.id === id);
@@ -41,3 +43,7 @@ export const getCartTotalPrice = (state: State) : number => {
 export const getCartDiscount = (state: State) : number => state[NameSpace.ShoppingCartData].discount;
 
 export const getCartHasProduct = (id: number) => (state: State) : boolean => state[NameSpace.ShoppingCartData].products.findIndex((product) => product.camera.id === id) !== NOT_FOUND;
+
+export const getCoupon = (state: State) : string => state[NameSpace.ShoppingCartData].coupon;
+
+export const getCouponStatus = (state: State) : string => state[NameSpace.ShoppingCartData].couponStatus;

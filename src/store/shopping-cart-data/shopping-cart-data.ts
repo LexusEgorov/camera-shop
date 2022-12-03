@@ -1,12 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { NameSpace } from '../../const';
+import { CouponStatus, NameSpace } from '../../const';
 import { ShoppingCartData } from '../../types/types';
+import { getDiscountAction } from '../api-actions';
 
 const NOT_FOUND = -1;
 
 const initialState : ShoppingCartData = {
   products: [],
   discount: 0,
+  coupon: '',
+  couponStatus: CouponStatus.NoCoupon,
 };
 
 export const shoppingCartData = createSlice({
@@ -38,7 +41,26 @@ export const shoppingCartData = createSlice({
         state.products = [...state.products.slice(0, deleteIndex), ...state.products.slice(deleteIndex + 1)];
       }
     },
+    resetCoupon: (state) => {
+      state.coupon = '';
+      state.couponStatus = CouponStatus.NoCoupon;
+      state.discount = 0;
+    }
+  },
+  extraReducers(builder) {
+    builder
+      .addCase(getDiscountAction.rejected, (state) => {
+        state.couponStatus = CouponStatus.Reject;
+        state.coupon = '';
+        state.discount = 0;
+      })
+      .addCase(getDiscountAction.fulfilled, (state, action) => {
+        const {data, coupon} = action.payload;
+        state.couponStatus = CouponStatus.Accept;
+        state.discount = data;
+        state.coupon = coupon;
+      });
   },
 });
 
-export const {addProduct, deleteProduct, updateProductCount} = shoppingCartData.actions;
+export const {addProduct, deleteProduct, updateProductCount, resetCoupon} = shoppingCartData.actions;
