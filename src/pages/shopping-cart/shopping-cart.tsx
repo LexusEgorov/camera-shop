@@ -5,13 +5,20 @@ import ShoppingCartCouponForm from '../../components/shopping-cart-coupon-form/s
 import ShoppingCartList from '../../components/shopping-cart-list/shopping-cart-list';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { setSearchParams } from '../../store/app-process/app-process';
-import { getCartDiscount, getCartTotalPrice } from '../../store/shopping-cart-data/selectors';
+import { getCartDiscount, getCartProductsIds, getCartTotalPrice, getCoupon } from '../../store/shopping-cart-data/selectors';
 import { Camera } from '../../types/types';
+
+const PERCENT = 100;
 
 function ShoppingCart() : JSX.Element {
   const dispatch = useAppDispatch();
   const totalPrice = useAppSelector(getCartTotalPrice);
-  const discount = useAppSelector(getCartDiscount);
+  const discountPercent = useAppSelector(getCartDiscount);
+  const camerasIds = useAppSelector(getCartProductsIds);
+  const coupon = useAppSelector(getCoupon);
+
+  const discount = Math.floor(totalPrice * discountPercent / PERCENT);
+  const resultPrice = totalPrice - discount;
 
   const [isModalDeleteOpened, setIsModalDeleteOpened] = useState(false);
   const [choosenCamera, setChoosenCamera] = useState(undefined as unknown as Camera);
@@ -20,6 +27,14 @@ function ShoppingCart() : JSX.Element {
     dispatch(setSearchParams(''));
     window.scrollTo(0, 0);
   }, [dispatch]);
+
+  const handleSubmit = () => {
+    // eslint-disable-next-line no-console
+    console.log({
+      camerasIds: camerasIds,
+      coupon: coupon ? coupon : null,
+    });
+  };
 
   return(
     <>
@@ -48,9 +63,13 @@ function ShoppingCart() : JSX.Element {
               }
               <p className="basket__summary-item">
                 <span className="basket__summary-text basket__summary-text--total">К оплате:</span>
-                <span className="basket__summary-value basket__summary-value--total">111 390 ₽</span>
+                <span className="basket__summary-value basket__summary-value--total">{resultPrice} ₽</span>
               </p>
-              <button className="btn btn--purple" type="submit">
+              <button
+                className="btn btn--purple"
+                type="submit"
+                onClick={handleSubmit}
+              >
                 Оформить заказ
               </button>
             </div>

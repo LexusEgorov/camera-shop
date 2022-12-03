@@ -5,6 +5,8 @@ const NOT_FOUND = -1;
 
 export const getCartProducts = (state: State) : ShoppingCartItem[] => state[NameSpace.ShoppingCartData].products;
 
+export const getCartProductsIds = (state: State) : number[] => state[NameSpace.ShoppingCartData].products.map((product) => product.camera.id);
+
 export const getCartProductCount = (id: number) => (state: State) : number => {
   const products = state[NameSpace.ShoppingCartData].products;
   const findIndex = products.findIndex((product) => product.camera.id === id);

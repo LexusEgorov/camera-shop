@@ -44,6 +44,7 @@ export const shoppingCartData = createSlice({
     resetCoupon: (state) => {
       state.coupon = '';
       state.couponStatus = CouponStatus.NoCoupon;
+      state.discount = 0;
     }
   },
   extraReducers(builder) {

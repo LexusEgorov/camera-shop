@@ -58,6 +58,11 @@ export type ParamsRequest = {
   queryParams: URLSearchParams,
 }
 
+export type OrderPost = {
+  camerasIds: number[],
+  coupon: string | null,
+}
+
 /*Псевдонимы типов*/
 
 export type Cameras = Camera[];
