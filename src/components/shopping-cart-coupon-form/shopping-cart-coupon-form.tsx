@@ -27,7 +27,10 @@ function ShoppingCartCouponForm() : JSX.Element {
 
   const handleSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    dispatch(getDiscountAction(coupon));
+
+    if(coupon){
+      dispatch(getDiscountAction(coupon));
+    }
   };
 
   const getCouponMessage = (status: string, value: string) : string => {
@@ -53,6 +56,7 @@ function ShoppingCartCouponForm() : JSX.Element {
               placeholder="Введите промокод"
               onInput={handleCouponInput}
               value={coupon}
+              data-testid='coupon-input'
             />
           </label>
           <p className="custom-input__error">Промокод неверный</p>

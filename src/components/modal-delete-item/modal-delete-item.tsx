@@ -97,6 +97,7 @@ function ModalDeleteItem({isOpened, setIsOpened, camera} : ModalDeleteItemProps)
                 className="btn btn--purple modal__btn modal__btn--half-width"
                 type="button"
                 onClick={handleDelete}
+                data-testid='modal-delete-btn'
               >
                 Удалить
               </button>

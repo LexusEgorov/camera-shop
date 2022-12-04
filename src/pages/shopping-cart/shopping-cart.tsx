@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
 import ModalDeleteItem from '../../components/modal-delete-item/modal-delete-item';
-import ModalOrderSuccess from '../../components/modal-order-success/modal-order-success';
+import ModalOrderResult from '../../components/modal-order-result/modal-order-result';
 import ShoppingCartCouponForm from '../../components/shopping-cart-coupon-form/shopping-cart-coupon-form';
 import ShoppingCartList from '../../components/shopping-cart-list/shopping-cart-list';
 import { OrderStatus } from '../../const';
@@ -28,7 +28,7 @@ function ShoppingCart() : JSX.Element {
   const [isModalDeleteOpened, setIsModalDeleteOpened] = useState(false);
   const [choosenCamera, setChoosenCamera] = useState(undefined as unknown as Camera);
 
-  const [isModalSuccessOpened, setIsModalSuccessOpened] = useState(false);
+  const [isModalResultOpened, setIsModalResultOpened] = useState(false);
 
   useEffect(() => {
     dispatch(setSearchParams(''));
@@ -36,7 +36,7 @@ function ShoppingCart() : JSX.Element {
   }, [dispatch]);
 
   useEffect(() => {
-    setIsModalSuccessOpened(orderStatus !== OrderStatus.NoStatus);
+    setIsModalResultOpened(orderStatus !== OrderStatus.NoStatus);
   }, [orderStatus, dispatch]);
 
   const handleSubmit = () => {
@@ -66,10 +66,10 @@ function ShoppingCart() : JSX.Element {
                 <span className="basket__summary-value">{totalPrice} ₽</span>
               </p>
               {
-                discount !== 0 && (
+                (
                   <p className="basket__summary-item">
                     <span className="basket__summary-text">Скидка:</span>
-                    <span className="basket__summary-value basket__summary-value--bonus">{discount} ₽</span>
+                    <span className={`basket__summary-value ${discount ? 'basket__summary-value--bonus' : ''}`}>{discount} ₽</span>
                   </p>
                 )
               }
@@ -92,7 +92,7 @@ function ShoppingCart() : JSX.Element {
       {
         choosenCamera && <ModalDeleteItem isOpened={isModalDeleteOpened} setIsOpened={setIsModalDeleteOpened} camera={choosenCamera}/>
       }
-      <ModalOrderSuccess isOpened={isModalSuccessOpened} setIsOpened={setIsModalSuccessOpened}/>
+      <ModalOrderResult isOpened={isModalResultOpened} setIsOpened={setIsModalResultOpened}/>
     </>
   );
 }

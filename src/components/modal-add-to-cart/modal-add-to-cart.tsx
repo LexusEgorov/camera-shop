@@ -79,7 +79,11 @@ function ModalAddToCart({isOpened, setIsOpened, camera} : ModalAddToCartProps) :
   }, [handleCloseModalKeydown, isOpened]);
 
   return (
-    <div className={`modal ${isOpened ? 'is-active' : ''}`} onClick={handleCloseModalClick}>
+    <div
+      className={`modal ${isOpened ? 'is-active' : ''}`}
+      onClick={handleCloseModalClick}
+      data-testid='modal-container'
+    >
       <ReactFocusLock>
         <div className="modal__wrapper">
           <div className="modal__overlay" />
@@ -147,7 +151,13 @@ function ModalAddToCart({isOpened, setIsOpened, camera} : ModalAddToCartProps) :
                   </div>
                 </>
             }
-            <button className="cross-btn" type="button" aria-label="Закрыть попап" onClick={handleCloseModalClick}>
+            <button
+              className="cross-btn"
+              type="button"
+              aria-label="Закрыть попап"
+              onClick={handleCloseModalClick}
+              data-testid='close-popup-btn'
+            >
               <svg width={10} height={10} aria-hidden="true">
                 <use xlinkHref="#icon-close" />
               </svg>

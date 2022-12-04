@@ -7,7 +7,7 @@ import { Action } from 'redux';
 import { ThunkDispatch } from '@reduxjs/toolkit';
 import { FISH_PRODUCTS, FISH_PROMO, FISH_REVIEWS, FISH_REVIEW_POST } from '../fish/fish';
 import { APIRoute } from '../const';
-import { fetchCameraAction, fetchCamerasAction, fetchMaxCatalogPriceAction, fetchMaxPriceAction, fetchMinCatalogPriceAction, fetchMinPriceAction, fetchPromoAction, fetchReviewsAction, fetchSimilarAction, findLikeCamerasAction, sendReviewAction } from './api-actions';
+import { fetchCameraAction, fetchCamerasAction, fetchMaxCatalogPriceAction, fetchMaxPriceAction, fetchMinCatalogPriceAction, fetchMinPriceAction, fetchPromoAction, fetchReviewsAction, fetchSimilarAction, findLikeCamerasAction, getDiscountAction, sendOrderAction, sendReviewAction } from './api-actions';
 
 describe('Async actions', () => {
   const api = createAPI();
@@ -215,6 +215,40 @@ describe('Async actions', () => {
     expect(actions).toEqual([
       findLikeCamerasAction.pending.type,
       findLikeCamerasAction.fulfilled.type,
+    ]);
+  });
+
+  it('should dispatch getDiscount when POST /coupons', async () => {
+    mockAPI
+      .onPost(APIRoute.Coupons)
+      .reply(200, 15);
+
+    const store = mockStore();
+
+    await store.dispatch(getDiscountAction('camera-333'));
+
+    const actions = store.getActions().map(({type}) => type);
+
+    expect(actions).toEqual([
+      getDiscountAction.pending.type,
+      getDiscountAction.fulfilled.type,
+    ]);
+  });
+
+  it('should dispatch sendOrder when POST /orders', async () => {
+    mockAPI
+      .onPost(APIRoute.Orders)
+      .reply(201);
+
+    const store = mockStore();
+
+    await store.dispatch(sendOrderAction({camerasIds: [1, 2], coupon: null}));
+
+    const actions = store.getActions().map(({type}) => type);
+
+    expect(actions).toEqual([
+      sendOrderAction.pending.type,
+      sendOrderAction.fulfilled.type,
     ]);
   });
 });
