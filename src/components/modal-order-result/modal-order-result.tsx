@@ -76,6 +76,7 @@ function ModalOrderResult({isOpened, setIsOpened} : ModalOrderResultProps) : JSX
               type="button"
               aria-label="Закрыть попап"
               onClick={handleCloseModalClick}
+              data-testid='close-btn'
             >
               <svg width={10} height={10} aria-hidden="true">
                 <use xlinkHref="#icon-close" />

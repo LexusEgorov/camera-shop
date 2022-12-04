@@ -15,6 +15,7 @@ function AddToCartButton({isAdded, currentCamera, openModal, setCamera} : AddToC
         className='btn product-card__btn btn--purple-border'
         type="button"
         to='/cart'
+        data-testid='add-to-cart-btn--added'
       >
         <svg width={16} height={16} aria-hidden="true">
           <use xlinkHref="#icon-basket"></use>
@@ -28,6 +29,7 @@ function AddToCartButton({isAdded, currentCamera, openModal, setCamera} : AddToC
           setCamera(currentCamera);
           openModal(true);
         }}
+        data-testid='add-to-cart-btn'
       >
         Купить
       </button>

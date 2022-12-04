@@ -11,6 +11,9 @@ const mockStore = configureMockStore([thunk]);
 const fakeStore = mockStore({
   [NameSpace.CameraData]: {
     searchedCameras: [],
+  },
+  [NameSpace.ShoppingCartData]: {
+    products: [],
   }
 });
 

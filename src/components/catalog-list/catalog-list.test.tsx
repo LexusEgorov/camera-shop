@@ -21,7 +21,10 @@ const fakeStore = mockStore({
   },
   [NameSpace.FilterData]: {
     minPrice: -1,
-  }
+  },
+  [NameSpace.ShoppingCartData]: {
+    products: [],
+  },
 });
 
 const fakeApp = (

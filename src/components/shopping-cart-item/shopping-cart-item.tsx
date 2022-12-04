@@ -77,7 +77,10 @@ function ShoppingCartItem({product, openModal, setCamera} : ShoppingCartItemProp
   };
 
   return (
-    <li className="basket-item">
+    <li
+      className="basket-item"
+      data-testid='shopping-cart-item'
+    >
       <div className="basket-item__img">
         <picture>
           <source type="image/webp" srcSet={`${previewImgWebp}, ${previewImgWebp2x} 2x`}/>
@@ -100,6 +103,7 @@ function ShoppingCartItem({product, openModal, setCamera} : ShoppingCartItemProp
           aria-label="уменьшить количество товара"
           onClick={handleProductDecrement}
           disabled={currentCount === MIN_PRODUCT_COUNT}
+          data-testid='count-decrement'
         >
           <svg width={7} height={12} aria-hidden="true">
             <use xlinkHref="#icon-arrow" />
@@ -115,12 +119,14 @@ function ShoppingCartItem({product, openModal, setCamera} : ShoppingCartItemProp
           value={currentInputCount}
           onInput={handleProductCountInput}
           onBlur={handleProductCountBlur}
+          data-testid='count-input'
         />
         <button
           className="btn-icon btn-icon--next"
           aria-label="увеличить количество товара"
           onClick={handleProductIncrement}
           disabled={currentCount === MAX_PRODUCT_COUNT}
+          data-testid='count-increment'
         >
           <svg width={7} height={12} aria-hidden="true">
             <use xlinkHref="#icon-arrow" />
@@ -133,6 +139,7 @@ function ShoppingCartItem({product, openModal, setCamera} : ShoppingCartItemProp
         type="button"
         aria-label="Удалить товар"
         onClick={handleDeleteProduct}
+        data-testid='delete-btn'
       >
         <svg width={10} height={10} aria-hidden="true">
           <use xlinkHref="#icon-close" />

@@ -26,7 +26,10 @@ const fakeStore = mockStore({
     currentCameraReviews: [],
     currentCameraSimilar: [],
     promo: {} as Promo,
-  }
+  },
+  [NameSpace.ShoppingCartData]: {
+    products: [],
+  },
 });
 describe('Component: ProductCard', () => {
   it('should render correctly', () => {

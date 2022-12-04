@@ -56,6 +56,7 @@ function ShoppingCartCouponForm() : JSX.Element {
               placeholder="Введите промокод"
               onInput={handleCouponInput}
               value={coupon}
+              data-testid='coupon-input'
             />
           </label>
           <p className="custom-input__error">Промокод неверный</p>
