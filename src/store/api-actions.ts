@@ -34,7 +34,7 @@ export const fetchMinCatalogPriceAction = createAsyncThunk<number, undefined, {
   state: State,
   extra: AxiosInstance,
 }>(
-  'camera/get-min-catalog',
+  'filter/get-min-catalog',
   async (_arg, {extra: api}) => {
     const {data} : AxiosResponse = await api.get<Camera>(APIRoute.Cameras, {
       params: {
@@ -53,7 +53,7 @@ export const fetchMaxCatalogPriceAction = createAsyncThunk<number, undefined, {
   state: State,
   extra: AxiosInstance,
 }>(
-  'camera/get-max-catalog',
+  'filter/get-max-catalog',
   async (_arg, {extra: api}) => {
     const {data} : AxiosResponse = await api.get<Camera>(APIRoute.Cameras, {
       params: {
@@ -72,7 +72,7 @@ export const fetchMinPriceAction = createAsyncThunk<number, ParamsRequest, {
   state: State,
   extra: AxiosInstance,
 }>(
-  'camera/get-min',
+  'filter/get-min',
   async ({queryParams}, {extra: api}) => {
     let params = new URLSearchParams(queryParams);
     if(params.getAll(QueryParameter.Category).length === 1 && params.get(QueryParameter.Category) === FilterValue.Video) {
@@ -106,7 +106,7 @@ export const fetchMaxPriceAction = createAsyncThunk<number, ParamsRequest, {
   state: State,
   extra: AxiosInstance,
 }>(
-  'camera/get-max',
+  'filter/get-max',
   async ({queryParams}, {extra: api}) => {
     let params = new URLSearchParams(queryParams);
     if(params.getAll(QueryParameter.Category).length === 1 && params.get(QueryParameter.Category) === FilterValue.Video) {
@@ -216,7 +216,7 @@ export const getDiscountAction = createAsyncThunk<CouponResponse, string, {
   state: State,
   extra: AxiosInstance,
 }>(
-  'camera/get-discount',
+  'shopping-cart/get-discount',
   async (coupon, {extra: api}) => {
     const {data} = await api.post(APIRoute.Coupons, {coupon: coupon});
     return {
@@ -231,7 +231,7 @@ export const sendOrderAction = createAsyncThunk<undefined, OrderPost, {
   state: State,
   extra: AxiosInstance,
 }>(
-  'camera/send-order',
+  'shopping-cart/send-order',
   async ({camerasIds, coupon}, {extra: api}) => {
     const {data} = await api.post(APIRoute.Orders, {camerasIds: camerasIds, coupon: coupon});
     return data;
