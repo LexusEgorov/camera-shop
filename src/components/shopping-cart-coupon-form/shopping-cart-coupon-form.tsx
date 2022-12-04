@@ -27,7 +27,10 @@ function ShoppingCartCouponForm() : JSX.Element {
 
   const handleSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    dispatch(getDiscountAction(coupon));
+
+    if(coupon){
+      dispatch(getDiscountAction(coupon));
+    }
   };
 
   const getCouponMessage = (status: string, value: string) : string => {

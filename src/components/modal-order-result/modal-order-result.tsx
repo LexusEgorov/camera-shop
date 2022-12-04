@@ -6,12 +6,12 @@ import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { resetOrderStatus } from '../../store/app-process/app-process';
 import { getOrderStatus } from '../../store/app-process/selectors';
 
-type ModalAddToCartProps = {
+type ModalOrderResultProps = {
   isOpened: boolean,
   setIsOpened: React.Dispatch<React.SetStateAction<boolean>>,
 }
 
-function ModalOrderSuccess({isOpened, setIsOpened} : ModalAddToCartProps) : JSX.Element {
+function ModalOrderResult({isOpened, setIsOpened} : ModalOrderResultProps) : JSX.Element {
   const dispatch = useAppDispatch();
   const orderStatus = useAppSelector(getOrderStatus);
 
@@ -89,4 +89,4 @@ function ModalOrderSuccess({isOpened, setIsOpened} : ModalAddToCartProps) : JSX.
   );
 }
 
-export default ModalOrderSuccess;
+export default ModalOrderResult;
