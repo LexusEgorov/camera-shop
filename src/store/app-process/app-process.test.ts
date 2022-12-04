@@ -1,7 +1,7 @@
 import { OrderStatus } from '../../const';
 import { AppProcess } from '../../types/types';
-import { fetchCameraAction, fetchCamerasAction, fetchPromoAction, fetchReviewsAction, fetchSimilarAction, sendReviewAction } from '../api-actions';
-import { appProcess, resetError, setSearchParams } from './app-process';
+import { fetchCameraAction, fetchCamerasAction, fetchPromoAction, fetchReviewsAction, fetchSimilarAction, sendOrderAction, sendReviewAction } from '../api-actions';
+import { appProcess, resetError, resetOrderStatus, setSearchParams } from './app-process';
 
 describe('Reducer: app', () => {
   let state: AppProcess;
@@ -177,6 +177,24 @@ describe('Reducer: app', () => {
     });
   });
 
+  describe('sendOrderAction test', () => {
+    it('should set orderStatus to ACCEPT if sendOrder fulfilled', () => {
+      expect(appProcess.reducer(state, {type: sendOrderAction.fulfilled}))
+        .toEqual({
+          ...state,
+          orderStatus: OrderStatus.Accept
+        });
+    });
+
+    it('should set orderStatus to REJECT if sendOrder rejected', () => {
+      expect(appProcess.reducer(state, {type: sendOrderAction.rejected}))
+        .toEqual({
+          ...state,
+          orderStatus: OrderStatus.Reject
+        });
+    });
+  });
+
   describe('resetError test', () => {
     it('should update isServerError to "false"', () => {
       expect(appProcess.reducer(state, {type: resetError.type}))
@@ -193,6 +211,22 @@ describe('Reducer: app', () => {
         .toEqual({
           ...state,
           searchParams: 'test',
+        });
+    });
+  });
+
+  describe('resetOrderStatus test', () => {
+    beforeEach(() => {
+      state = {
+        ...state,
+        orderStatus: OrderStatus.Accept,
+      };
+    });
+    it('should update orderStatus to NO_STATUS', () => {
+      expect(appProcess.reducer(state, {type: resetOrderStatus.type}))
+        .toEqual({
+          ...state,
+          orderStatus: OrderStatus.NoStatus
         });
     });
   });
