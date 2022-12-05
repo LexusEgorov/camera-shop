@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 
-function NotFound() : JSX.Element {
+function Error() : JSX.Element {
   return (
     <div className="not-found">
       <p>Произошла ошибка</p>
@@ -10,4 +10,4 @@ function NotFound() : JSX.Element {
   );
 }
 
-export default NotFound;
+export default Error;
